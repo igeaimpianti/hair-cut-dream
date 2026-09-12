@@ -91,85 +91,63 @@
       background:rgba(255,255,255,.96);backdrop-filter:blur(16px);
       border-top:1px solid var(--line);z-index:30;padding:8px 8px calc(8px + env(safe-area-inset-bottom));
     }
+    .tab{border:0;background:transparent;padding:9px 5px;font-size:12px;font-weight:800}
+    .tab.active{background:#0b0b0b;color:white;border-radius:12px}
+    .appointment{
+      border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:10px;
+    }
+    .row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .staff-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .agenda-item{
+      display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
+    }
+    .time{font-weight:900}
+    dialog{
+      border:0;border-radius:24px;padding:0;width:min(620px,calc(100% - 24px));
+      box-shadow:0 35px 100px rgba(0,0,0,.28);
+    }
+    dialog::backdrop{background:rgba(0,0,0,.5)}
+    .dialog-body{padding:22px}
+    @media(max-width:560px){
+      .grid.two{grid-template-columns:1fr}
+      .content{padding:14px}
+      .hero{padding:10px 12px 6px}
+      .hero img{max-height:110px}
+    }
     .tab{
-  border:0;
-  background:transparent;
-  padding:9px 3px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:4px;
-  color:#000;
-  font-size:11px;
-  font-weight:800;
-}
-
-.tab span{
-  color:#000;
-}
-
-.tab.active{
-  background:transparent;
-  color:#000;
 }
 
 .tabIcon{
-  width:23px;
-  height:23px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#000;
-  font-size:23px;
+  font-size:20px;
   line-height:1;
-}
-
-.tabIcon svg{
-  width:23px;
-  height:23px;
-  fill:none;
-  stroke:#000;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.tabIcon.scissors{
-  font-size:23px;
-}
-
-.tab.active .tabIcon{
-  transform:translateY(-1px);
-}
-
-.tab.active > span:last-child{
-  font-weight:900;
 }
 
 .bookingTab{
   position:relative;
   margin-top:-25px;
-  color:#000;
+  color:#0b0b0b;
 }
 
 .bookingTab .bookingIcon{
-  width:58px;
-  height:58px;
+  width:56px;
+  height:56px;
   border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#000;
+  background:#0b0b0b;
   color:#fff;
-  font-size:33px;
-  font-weight:400;
+  font-size:32px;
   line-height:1;
-  box-shadow:0 8px 24px rgba(0,0,0,.24);
+  box-shadow:0 8px 25px rgba(0,0,0,.25);
 }
 
 .bookingTab span:last-child{
-  color:#000;
   font-size:11px;
   font-weight:900;
   margin-top:2px;
@@ -177,8 +155,53 @@
 
 .bookingTab.active{
   background:transparent;
-  color:#000;
+  color:#0b0b0b;
 }
+
+
+    /* ===== GESTIONALE STAFF ===== */
+    .staff-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .staff-title{margin:0;font-size:26px;letter-spacing:-.04em}
+    .staff-subtitle{margin:2px 0 0;color:var(--muted);font-size:13px}
+    .barber-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 16px}
+    .barber-chip{border:1px solid var(--line);background:#fff;color:#000;border-radius:14px;padding:11px 8px;font-weight:800;font-size:13px}
+    .barber-chip.active{background:#0b0b0b;color:#fff;border-color:#0b0b0b}
+    .date-nav{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;margin-bottom:12px}
+    .date-nav button{height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;font-size:20px}
+    .date-main{height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;font-weight:900;text-align:center}
+    .view-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+    .view-btn{border:1px solid var(--line);background:#fff;color:#000;border-radius:12px;padding:10px;font-weight:800}
+    .view-btn.active{background:#0b0b0b;color:#fff;border-color:#0b0b0b}
+    .staff-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .staff-kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;min-width:0}
+    .staff-kpi b{display:block;font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .staff-kpi span{font-size:11px;color:var(--muted);font-weight:800}
+    .agenda-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .agenda-column{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;min-width:0}
+    .agenda-column h3{font-size:16px;margin-bottom:10px}
+    .agenda-card{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:9px;background:#fff}
+    .agenda-card:last-child{margin-bottom:0}
+    .agenda-time{font-size:18px;font-weight:950;letter-spacing:-.02em}
+    .agenda-client{font-weight:900;margin-top:5px}
+    .agenda-service{font-size:13px;margin-top:2px}
+    .agenda-meta{font-size:12px;color:var(--muted);margin-top:3px}
+    .agenda-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .agenda-actions .btn{min-height:34px;padding:7px 9px;font-size:12px}
+    .week-day{margin-bottom:14px}
+    .week-day-title{font-weight:950;margin:2px 0 8px;text-transform:capitalize}
+    .client-search{position:sticky;top:0;background:var(--bg);padding-bottom:10px;z-index:2}
+    .client-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:9px}
+    .client-card strong{font-size:15px}
+    .staff-bottom-space{height:90px}
+    .staff-tabs .tab.active{background:transparent;color:#000}
+    .staff-tabs .tab.active .tabIcon{transform:translateY(-1px)}
+    .staff-tabs .tab.active>span:last-child{font-weight:950}
+    .staff-tabs .bookingTab{margin-top:-25px}
+    .empty-state{padding:24px 12px;text-align:center;color:var(--muted)}
+    .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#111;margin-right:6px}
+    @media(max-width:700px){.agenda-columns{grid-template-columns:1fr}.staff-kpis{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:420px){.staff-kpi{padding:10px 8px}.staff-kpi b{font-size:16px}.barber-chip{font-size:12px;padding:10px 5px}}
+
   </style>
 </head>
 <body>
@@ -296,51 +319,79 @@
     </section>
 
     <section id="staffApp" class="hide">
-      <div class="card">
-        <div class="staff-head">
-          <div>
-            <p class="muted">Gestionale</p>
-            <h1>Hair Cut Dream</h1>
+      <div id="staffAgendaPage" class="staff-page">
+        <div class="card">
+          <div class="staff-topbar">
+            <div>
+              <p class="staff-subtitle">Gestionale Hair Cut Dream</p>
+              <h1 class="staff-title">Agenda</h1>
+            </div>
+            <button class="btn ghost small" onclick="loadStaffAgenda()">Aggiorna</button>
           </div>
-          <button class="btn primary small" onclick="openManualAppointment()">+ Appuntamento</button>
+
+          <div id="staffBarberSwitch" class="barber-switch"></div>
+
+          <div class="date-nav">
+            <button type="button" onclick="shiftStaffDate(-1)">‹</button>
+            <button id="staffDateLabel" type="button" class="date-main" onclick="goStaffToday()">Oggi</button>
+            <button type="button" onclick="shiftStaffDate(1)">›</button>
+          </div>
+
+          <div class="view-switch">
+            <button id="dayViewBtn" class="view-btn active" type="button" onclick="setStaffView('day')">Giorno</button>
+            <button id="weekViewBtn" class="view-btn" type="button" onclick="setStaffView('week')">Settimana</button>
+          </div>
+
+          <div class="staff-kpis">
+            <div class="staff-kpi"><b id="staffCountKpi">0</b><span>APPUNTAMENTI</span></div>
+            <div class="staff-kpi"><b id="staffNextKpi">—</b><span>PROSSIMO</span></div>
+            <div class="staff-kpi"><b id="staffMinutesKpi">0 min</b><span>TEMPO PRENOTATO</span></div>
+          </div>
+        </div>
+
+        <div id="staffAgendaView"></div>
+      </div>
+
+      <div id="staffClientsPage" class="staff-page hide">
+        <div class="card">
+          <h1 class="staff-title">Clienti</h1>
+          <p class="muted">Cerca rapidamente un cliente e consulta i suoi dati.</p>
+          <div class="client-search">
+            <input id="staffClientSearch" placeholder="Cerca nome, telefono o email..." oninput="renderStaffClients()">
+          </div>
+          <div id="staffClientsList"></div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="row">
-          <h2>Agenda di oggi</h2>
-          <button class="btn ghost small" onclick="loadTodayAgenda()">Aggiorna</button>
+      <div id="staffServicesPage" class="staff-page hide">
+        <div class="card">
+          <h1 class="staff-title">Servizi</h1>
+          <p class="muted">Modifica nome, durata e prezzo dei servizi.</p>
+          <div id="staffServices"></div>
         </div>
-        <div id="todayAgenda"></div>
       </div>
 
-      <div class="card">
-        <h2>Servizi</h2>
-        <p class="muted">Durate e prezzi sono modificabili solo dal gestionale.</p>
-        <div id="staffServices"></div>
+      <div id="staffMorePage" class="staff-page hide">
+        <div class="card">
+          <h1 class="staff-title">Altro</h1>
+          <div class="service"><div><strong>Barbiere selezionato</strong><div class="muted" id="staffSelectedBarberText">Tutti</div></div></div>
+          <div class="service"><div><strong>Orari e disponibilità</strong><div class="muted">Gestione turni, chiusure e assenze</div></div><button class="btn ghost small" onclick="showStaffHours()">Apri</button></div>
+          <div class="service"><div><strong>Aggiorna dati</strong><div class="muted">Ricarica agenda, clienti e servizi</div></div><button class="btn ghost small" onclick="refreshStaffAll()">Aggiorna</button></div>
+          <button class="btn secondary" style="width:100%;margin-top:18px" onclick="logout()">Esci dal gestionale</button>
+        </div>
       </div>
-
-      <div class="card">
-        <button class="btn secondary" onclick="logout()">Esci</button>
-      </div>
+      <div class="staff-bottom-space"></div>
     </section>
   </main>
 
-<nav id="customerTabs" class="tabs hide">
-
+  <nav id="customerTabs" class="tabs hide">
   <button class="tab active" data-page="customerHome" onclick="goPage(this)">
-    <span class="tabIcon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 10.5 12 3l9 7.5"/>
-        <path d="M5 9.5V21h14V9.5"/>
-        <path d="M9 21v-7h6v7"/>
-      </svg>
-    </span>
+    <span class="tabIcon">⌂</span>
     <span>Home</span>
   </button>
 
   <button class="tab" data-page="customerServices" onclick="goPage(this)">
-    <span class="tabIcon scissors">✂</span>
+    <span class="tabIcon">✂</span>
     <span>Servizi</span>
   </button>
 
@@ -350,27 +401,39 @@
   </button>
 
   <button class="tab" data-page="customerAppointments" onclick="goPage(this)">
-    <span class="tabIcon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="5" width="18" height="16" rx="2"/>
-        <path d="M8 3v4M16 3v4M3 10h18"/>
-        <path d="M8 14h2M14 14h2M8 17h2M14 17h2"/>
-      </svg>
-    </span>
+    <span class="tabIcon">▣</span>
     <span>Appuntamenti</span>
   </button>
 
   <button class="tab" data-page="customerProfile" onclick="goPage(this)">
-    <span class="tabIcon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4.5 21c.7-4.1 3.3-6.5 7.5-6.5s6.8 2.4 7.5 6.5"/>
-      </svg>
-    </span>
+    <span class="tabIcon">♙</span>
     <span>Profilo</span>
   </button>
-
 </nav>
+
+  <nav id="staffTabs" class="tabs staff-tabs hide">
+    <button class="tab active" data-staff-page="staffAgendaPage" onclick="goStaffPage(this)">
+      <span class="tabIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+      </span><span>Agenda</span>
+    </button>
+    <button class="tab" data-staff-page="staffClientsPage" onclick="goStaffPage(this)">
+      <span class="tabIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c.5-3.4 2.5-5.5 5.5-5.5s5 2.1 5.5 5.5M16 8h5M18.5 5.5v5"/></svg>
+      </span><span>Clienti</span>
+    </button>
+    <button class="tab bookingTab" onclick="openManualAppointment()">
+      <span class="bookingIcon">＋</span><span>APPUNTAMENTO</span>
+    </button>
+    <button class="tab" data-staff-page="staffServicesPage" onclick="goStaffPage(this)">
+      <span class="tabIcon scissors">✂</span><span>Servizi</span>
+    </button>
+    <button class="tab" data-staff-page="staffMorePage" onclick="goStaffPage(this)">
+      <span class="tabIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      </span><span>Altro</span>
+    </button>
+  </nav>
 </div>
 
 <dialog id="bookingDialog">
@@ -454,6 +517,51 @@
   </div>
 </dialog>
 
+
+<dialog id="editAppointmentDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Modifica appuntamento</h2><button class="btn ghost small" type="button" onclick="editAppointmentDialog.close()">Chiudi</button></div>
+    <form id="editAppointmentForm">
+      <input id="editAppointmentId" type="hidden">
+      <div class="grid two">
+        <div class="field"><label>Cliente</label><input id="editCustomerName"></div>
+        <div class="field"><label>Telefono</label><input id="editCustomerPhone"></div>
+      </div>
+      <div class="field"><label>Servizio</label><select id="editService"></select></div>
+      <div class="field"><label>Barbiere</label><select id="editBarber" required></select></div>
+      <div class="grid two">
+        <div class="field"><label>Giorno</label><input id="editDate" type="date" required></div>
+        <div class="field"><label>Ora</label><input id="editTime" type="time" required></div>
+      </div>
+      <div class="field"><label>Durata (minuti)</label><input id="editDuration" type="number" min="5" step="5" required></div>
+      <div class="field"><label>Note</label><textarea id="editNotes"></textarea></div>
+      <button class="btn primary" style="width:100%" type="submit">SALVA MODIFICHE</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="serviceEditDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Modifica servizio</h2><button class="btn ghost small" type="button" onclick="serviceEditDialog.close()">Chiudi</button></div>
+    <form id="serviceEditForm">
+      <input id="serviceEditId" type="hidden">
+      <div class="field"><label>Nome</label><input id="serviceEditName" required></div>
+      <div class="grid two">
+        <div class="field"><label>Durata (minuti)</label><input id="serviceEditDuration" type="number" min="5" step="5" required></div>
+        <div class="field"><label>Prezzo (€)</label><input id="serviceEditPrice" type="number" min="0" step="0.01"></div>
+      </div>
+      <button class="btn primary" style="width:100%" type="submit">SALVA SERVIZIO</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="staffHoursDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Orari e disponibilità</h2><button class="btn ghost small" type="button" onclick="staffHoursDialog.close()">Chiudi</button></div>
+    <div id="staffHoursList"></div>
+  </div>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
@@ -463,6 +571,12 @@ let appRole = "customer";
 let customerRow = null;
 let services = [];
 let barbers = [];
+let staffSelectedBarberId = localStorage.getItem("hcd_staff_barber") || "all";
+let staffCurrentDate = new Date().toISOString().slice(0,10);
+let staffViewMode = "day";
+let staffAgendaRows = [];
+let staffClients = [];
+let realtimeChannel = null;
 
 const $ = id => document.getElementById(id);
 
@@ -480,6 +594,7 @@ function msg(text, type=""){
 function hideAll(){
   ["guestHome","authView","customerApp","staffApp"].forEach(id=>$(id).classList.add("hide"));
   $("customerTabs").classList.add("hide");
+  $("staffTabs")?.classList.add("hide");
 }
 
 function showGuest(){
@@ -541,6 +656,7 @@ async function loadPublicData(){
 renderPublicServices();
 renderCustomerServices();
 fillSelects();
+  renderStaffBarberSwitch();
 }
 
 function renderPublicServices(){
@@ -591,6 +707,230 @@ function fillSelects(){
   $("manualBarber").innerHTML = `<option value="">Scegli barbiere</option>${barberOptions}`;
 }
 
+
+function renderStaffBarberSwitch(){
+  const wrap=$("staffBarberSwitch");
+  if(!wrap) return;
+  const items=[{id:"all",full_name:"Tutti"},...barbers];
+  wrap.innerHTML=items.map(b=>`<button type="button" class="barber-chip ${staffSelectedBarberId===b.id?'active':''}" onclick="selectStaffBarber('${b.id}')">${escapeHtml(b.full_name.replace('Raffaele ',''))}</button>`).join('');
+  updateStaffSelectedBarberText();
+}
+
+function selectStaffBarber(id){
+  staffSelectedBarberId=id;
+  localStorage.setItem("hcd_staff_barber",id);
+  renderStaffBarberSwitch();
+  loadStaffAgenda();
+}
+
+function updateStaffSelectedBarberText(){
+  const el=$("staffSelectedBarberText"); if(!el) return;
+  if(staffSelectedBarberId==="all") el.textContent="Tutti i barbieri";
+  else el.textContent=barbers.find(b=>b.id===staffSelectedBarberId)?.full_name || "Barbiere";
+}
+
+function goStaffPage(btn){
+  document.querySelectorAll("#staffApp .staff-page").forEach(x=>x.classList.add("hide"));
+  const id=btn.dataset.staffPage;
+  if(id) $(id).classList.remove("hide");
+  document.querySelectorAll("#staffTabs .tab").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  if(id==="staffAgendaPage") loadStaffAgenda();
+  if(id==="staffClientsPage") loadStaffClients();
+  if(id==="staffServicesPage") renderStaffServices();
+}
+
+function shiftStaffDate(days){
+  const d=new Date(staffCurrentDate+"T12:00:00");
+  d.setDate(d.getDate()+days);
+  staffCurrentDate=d.toISOString().slice(0,10);
+  loadStaffAgenda();
+}
+
+function goStaffToday(){
+  staffCurrentDate=new Date().toISOString().slice(0,10);
+  loadStaffAgenda();
+}
+
+function setStaffView(mode){
+  staffViewMode=mode;
+  $("dayViewBtn")?.classList.toggle("active",mode==="day");
+  $("weekViewBtn")?.classList.toggle("active",mode==="week");
+  loadStaffAgenda();
+}
+
+function startOfWeekISO(dateStr){
+  const d=new Date(dateStr+"T12:00:00");
+  const day=(d.getDay()+6)%7;
+  d.setDate(d.getDate()-day);
+  return d.toISOString().slice(0,10);
+}
+function addDaysISO(dateStr,n){ const d=new Date(dateStr+"T12:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+
+function staffDateText(){
+  const d=new Date(staffCurrentDate+"T12:00:00");
+  if(staffViewMode==="week"){
+    const a=startOfWeekISO(staffCurrentDate), b=addDaysISO(a,6);
+    return `${fmtShortDate(a)} – ${fmtShortDate(b)}`;
+  }
+  const today=new Date().toISOString().slice(0,10);
+  return staffCurrentDate===today ? "Oggi" : new Intl.DateTimeFormat("it-IT",{weekday:"short",day:"2-digit",month:"short"}).format(d);
+}
+function fmtShortDate(d){ return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"short"}).format(new Date(d+"T12:00:00")); }
+
+async function loadStaffAgenda(){
+  if(!sb || !$("staffAgendaView")) return;
+  $("staffDateLabel").textContent=staffDateText();
+  let q=sb.from("appointments").select("*, services(name), barbers(full_name)").neq("status","cancelled");
+  if(staffViewMode==="day") q=q.eq("appointment_date",staffCurrentDate);
+  else {
+    const start=startOfWeekISO(staffCurrentDate), end=addDaysISO(start,6);
+    q=q.gte("appointment_date",start).lte("appointment_date",end);
+  }
+  if(staffSelectedBarberId!=="all") q=q.eq("barber_id",staffSelectedBarberId);
+  q=q.order("appointment_date",{ascending:true}).order("start_time",{ascending:true});
+  const {data,error}=await q;
+  if(error){ $("staffAgendaView").innerHTML=`<div class="card"><p class="muted">${escapeHtml(error.message)}</p></div>`; return; }
+  staffAgendaRows=data||[];
+  renderStaffAgenda();
+}
+
+function renderStaffAgenda(){
+  const rows=staffAgendaRows;
+  $("staffCountKpi").textContent=rows.length;
+  $("staffMinutesKpi").textContent=`${rows.reduce((n,a)=>n+Number(a.duration_minutes||0),0)} min`;
+  const now=new Date();
+  const today=new Date().toISOString().slice(0,10);
+  const next=rows.find(a=>a.appointment_date>today || (a.appointment_date===today && new Date(`${a.appointment_date}T${a.start_time}`)>=now));
+  $("staffNextKpi").textContent=next ? `${next.start_time.slice(0,5)}` : "—";
+
+  const root=$("staffAgendaView");
+  if(!rows.length){ root.innerHTML=`<div class="card empty-state">Nessun appuntamento nel periodo selezionato.</div>`; return; }
+
+  if(staffViewMode==="week"){
+    const start=startOfWeekISO(staffCurrentDate);
+    root.innerHTML=Array.from({length:7},(_,i)=>addDaysISO(start,i)).map(day=>{
+      const dayRows=rows.filter(a=>a.appointment_date===day);
+      return `<div class="card week-day"><div class="week-day-title">${new Intl.DateTimeFormat('it-IT',{weekday:'long',day:'2-digit',month:'long'}).format(new Date(day+'T12:00:00'))}</div>${dayRows.length?dayRows.map(staffAppointmentCard).join(''):'<div class="muted">Nessun appuntamento</div>'}</div>`;
+    }).join('');
+    return;
+  }
+
+  if(staffSelectedBarberId==="all"){
+    root.innerHTML=`<div class="agenda-columns">${barbers.map(b=>{
+      const list=rows.filter(a=>a.barber_id===b.id);
+      return `<div class="agenda-column"><h3>${escapeHtml(b.full_name)}</h3>${list.length?list.map(staffAppointmentCard).join(''):'<div class="empty-state">Nessun appuntamento</div>'}</div>`;
+    }).join('')}</div>`;
+  } else {
+    root.innerHTML=`<div class="card">${rows.map(staffAppointmentCard).join('')}</div>`;
+  }
+}
+
+function staffAppointmentCard(a){
+  const phone=a.customer_phone ? `<div class="agenda-meta">☎ ${escapeHtml(a.customer_phone)}</div>` : '';
+  return `<div class="agenda-card">
+    <div class="row"><div class="agenda-time">${a.start_time.slice(0,5)}</div><span class="pill">${labelStatus(a.status)}</span></div>
+    <div class="agenda-client">${escapeHtml(a.customer_name||"Cliente")}</div>
+    <div class="agenda-service">${escapeHtml(a.services?.name||"Servizio")} · ${Number(a.duration_minutes||0)} min</div>
+    ${staffSelectedBarberId==="all"?`<div class="agenda-meta">${escapeHtml(a.barbers?.full_name||"")}</div>`:''}${phone}
+    <div class="agenda-actions">
+      ${a.status!=="completed"?`<button class="btn ghost small" onclick="setAppointmentStatus('${a.id}','completed')">Completa</button>`:''}
+      <button class="btn ghost small" onclick="openEditAppointment('${a.id}')">Modifica</button>
+      <button class="btn ghost small" onclick="setAppointmentStatus('${a.id}','no_show')">No-show</button>
+      <button class="btn danger small" onclick="deleteStaffAppointment('${a.id}')">Elimina</button>
+    </div>
+  </div>`;
+}
+
+async function setAppointmentStatus(id,status){
+  const {error}=await sb.from("appointments").update({status}).eq("id",id);
+  if(error) msg(error.message,"error"); else loadStaffAgenda();
+}
+
+function openEditAppointment(id){
+  const a=staffAgendaRows.find(x=>x.id===id); if(!a) return;
+  $("editAppointmentId").value=a.id;
+  $("editCustomerName").value=a.customer_name||"";
+  $("editCustomerPhone").value=a.customer_phone||"";
+  $("editService").innerHTML=`<option value="">Nessun servizio</option>`+services.map(s=>`<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+  $("editBarber").innerHTML=barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join('');
+  $("editService").value=a.service_id||"";
+  $("editBarber").value=a.barber_id;
+  $("editDate").value=a.appointment_date;
+  $("editTime").value=a.start_time.slice(0,5);
+  $("editDuration").value=a.duration_minutes||30;
+  $("editNotes").value=a.barber_notes||"";
+  editAppointmentDialog.showModal();
+}
+
+$("editAppointmentForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const service=services.find(s=>s.id===$("editService").value);
+  const payload={
+    customer_name:$("editCustomerName").value.trim()||null,
+    customer_phone:$("editCustomerPhone").value.trim()||null,
+    service_id:service?.id||null,
+    barber_id:$("editBarber").value,
+    appointment_date:$("editDate").value,
+    start_time:$("editTime").value,
+    duration_minutes:Number($("editDuration").value)||30,
+    price:service?.price??null,
+    barber_notes:$("editNotes").value.trim()||null
+  };
+  const {error}=await sb.from("appointments").update(payload).eq("id",$("editAppointmentId").value);
+  if(error) return msg(error.message,"error");
+  editAppointmentDialog.close(); msg("Appuntamento aggiornato.","ok"); loadStaffAgenda();
+});
+
+async function loadStaffClients(){
+  const {data,error}=await sb.from("customers").select("*").order("full_name");
+  if(error){ msg(error.message,"error"); return; }
+  staffClients=data||[]; renderStaffClients();
+}
+function renderStaffClients(){
+  const root=$("staffClientsList"); if(!root) return;
+  const q=($("staffClientSearch")?.value||"").trim().toLowerCase();
+  const list=staffClients.filter(c=>!q || [c.full_name,c.phone,c.email].some(v=>String(v||'').toLowerCase().includes(q)));
+  root.innerHTML=list.length?list.slice(0,100).map(c=>`<div class="client-card"><strong>${escapeHtml(c.full_name||"Cliente")}</strong>${c.phone?`<div class="muted">${escapeHtml(c.phone)}</div>`:''}${c.email?`<div class="muted">${escapeHtml(c.email)}</div>`:''}</div>`).join(''):`<div class="empty-state">Nessun cliente trovato.</div>`;
+}
+
+async function refreshStaffAll(){
+  await loadPublicData(); await Promise.all([loadStaffAgenda(),loadStaffClients()]); renderStaffServices(); msg("Gestionale aggiornato.","ok");
+}
+
+async function showStaffHours(){
+  let q=sb.from("working_hours").select("*, barbers(full_name)").eq("active",true).order("day_of_week").order("start_time");
+  if(staffSelectedBarberId!=="all") q=q.eq("barber_id",staffSelectedBarberId);
+  const {data,error}=await q;
+  const root=$("staffHoursList");
+  if(error) root.innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`;
+  else {
+    const dayNames=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+    root.innerHTML=(data||[]).map(h=>`<div class="service"><div><strong>${dayNames[h.day_of_week]}</strong><div class="muted">${escapeHtml(h.barbers?.full_name||'')}</div></div><span class="pill">${h.start_time.slice(0,5)}–${h.end_time.slice(0,5)}</span></div>`).join('')||'<p class="muted">Nessun orario configurato.</p>';
+  }
+  staffHoursDialog.showModal();
+}
+
+function startRealtimeAppointments(){
+  if(!sb) return;
+  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+  realtimeChannel=sb.channel("appointments-live")
+    .on("postgres_changes",{event:"*",schema:"public",table:"appointments"},async payload=>{
+      if(appRole==="admin"||appRole==="barber"){
+        await loadStaffAgenda();
+        showRealtimeToast(payload);
+      }
+      if(customerRow) await loadCustomerAppointments();
+    }).subscribe();
+}
+
+function showRealtimeToast(payload){
+  if(payload.eventType!=="INSERT") return;
+  const row=payload.new||{};
+  const barber=barbers.find(b=>b.id===row.barber_id)?.full_name||"";
+  msg(`Nuova prenotazione: ${escapeHtml(row.customer_name||"Cliente")} · ${String(row.start_time||'').slice(0,5)} ${barber?`· ${escapeHtml(barber)}`:''}`,"ok");
+}
+
 $("registerForm").addEventListener("submit", async e=>{
   e.preventDefault();
   const name=$("regName").value.trim(), surname=$("regSurname").value.trim();
@@ -638,9 +978,12 @@ async function afterLogin(user){
 
   if(appRole === "admin" || appRole === "barber"){
     $("staffApp").classList.remove("hide");
+    $("staffTabs").classList.remove("hide");
     await loadPublicData();
     renderStaffServices();
-    await loadTodayAgenda();
+    renderStaffBarberSwitch();
+    await Promise.all([loadStaffAgenda(),loadStaffClients()]);
+    startRealtimeAppointments();
   } else {
     $("customerApp").classList.remove("hide");
     $("customerTabs").classList.remove("hide");
@@ -648,6 +991,7 @@ async function afterLogin(user){
     $("helloName").textContent = (profile.full_name || "Cliente").split(" ")[0];
     $("profileSummary").innerHTML = `<p><strong>${escapeHtml(profile.full_name || "")}</strong><br>${escapeHtml(user.email || "")}</p>`;
     await loadCustomerAppointments();
+    startRealtimeAppointments();
   }
 }
 
@@ -666,6 +1010,7 @@ async function ensureCustomer(profile){
 }
 
 async function logout(){
+  if(realtimeChannel && sb){ await sb.removeChannel(realtimeChannel); realtimeChannel=null; }
   await sb.auth.signOut();
   sessionUser=null; customerRow=null;
   showGuest();
@@ -809,39 +1154,38 @@ async function cancelAppointment(id){
 }
 
 function renderStaffServices(){
-  $("staffServices").innerHTML=services.map(s=>`
+  const root=$("staffServices"); if(!root) return;
+  root.innerHTML=services.map(s=>`
     <div class="service">
-      <div>
-        <strong>${escapeHtml(s.name)}</strong><br>
-        <span class="muted">${s.price==null ? "Prezzo non impostato" : "€"+Number(s.price).toFixed(2)}</span>
-      </div>
-      <div class="row">
-        <span class="pill">${s.duration_minutes} min</span>
-        <button class="btn ghost small" onclick="editService('${s.id}')">Modifica</button>
-      </div>
-    </div>
-  `).join("");
+      <div><strong>${escapeHtml(s.name)}</strong><br><span class="muted">${s.price==null ? "Prezzo non impostato" : "€"+Number(s.price).toFixed(2)}</span></div>
+      <div class="row"><span class="pill">${s.duration_minutes} min</span><button class="btn ghost small" onclick="editService('${s.id}')">Modifica</button></div>
+    </div>`).join("");
 }
 
-async function editService(id){
-  const s=services.find(x=>x.id===id);
-  const mins=prompt(`Durata in minuti per "${s.name}"`, s.duration_minutes);
-  if(mins===null) return;
-  const n=parseInt(mins,10);
-  if(!Number.isFinite(n)||n<=0) return alert("Durata non valida.");
-
-  const priceInput=prompt("Prezzo in euro (lascia vuoto per nessun prezzo)", s.price ?? "");
-  if(priceInput===null) return;
-  const price=priceInput.trim()==="" ? null : Number(priceInput.replace(",","."));
-  if(price!==null && (!Number.isFinite(price)||price<0)) return alert("Prezzo non valido.");
-
-  const {error}=await sb.from("services").update({duration_minutes:n,price}).eq("id",id);
-  if(error) msg(error.message,"error");
-  else { msg("Servizio aggiornato.","ok"); await loadPublicData(); renderStaffServices(); }
+function editService(id){
+  const s=services.find(x=>x.id===id); if(!s) return;
+  $("serviceEditId").value=s.id;
+  $("serviceEditName").value=s.name||"";
+  $("serviceEditDuration").value=s.duration_minutes||30;
+  $("serviceEditPrice").value=s.price??"";
+  serviceEditDialog.showModal();
 }
+
+$("serviceEditForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const payload={
+    name:$("serviceEditName").value.trim(),
+    duration_minutes:Number($("serviceEditDuration").value),
+    price:$("serviceEditPrice").value===""?null:Number($("serviceEditPrice").value)
+  };
+  const {error}=await sb.from("services").update(payload).eq("id",$("serviceEditId").value);
+  if(error) return msg(error.message,"error");
+  serviceEditDialog.close(); await loadPublicData(); renderStaffServices(); msg("Servizio aggiornato.","ok");
+});
 
 function openManualAppointment(){
-  $("manualDate").value=new Date().toISOString().slice(0,10);
+  $("manualDate").value=staffCurrentDate || new Date().toISOString().slice(0,10);
+  if(staffSelectedBarberId!=="all") $("manualBarber").value=staffSelectedBarberId;
   manualDialog.showModal();
 }
 
@@ -881,50 +1225,14 @@ $("manualForm").addEventListener("submit", async e=>{
   manualDialog.close();
   $("manualForm").reset();
   msg("Appuntamento inserito.","ok");
-  loadTodayAgenda();
+  loadStaffAgenda();
 });
-
-async function loadTodayAgenda(){
-  const today=new Date().toISOString().slice(0,10);
-  const {data,error}=await sb.from("appointments")
-    .select("*, services(name), barbers(full_name)")
-    .eq("appointment_date",today)
-    .neq("status","cancelled")
-    .order("start_time");
-
-  if(error){ $("todayAgenda").innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`; return; }
-
-  $("todayAgenda").innerHTML=(data||[]).map(a=>`
-    <div class="agenda-item">
-      <div class="time">${a.start_time.slice(0,5)}</div>
-      <div>
-        <strong>${escapeHtml(a.customer_name || "Cliente")}</strong>
-        <div>${escapeHtml(a.services?.name || "Servizio")}</div>
-        <div class="muted">${escapeHtml(a.barbers?.full_name || "")} · ${a.duration_minutes} min</div>
-        <div style="margin-top:8px" class="row">
-          <button class="btn ghost small" onclick="moveStaffAppointment('${a.id}','${a.appointment_date}','${a.start_time.slice(0,5)}')">Sposta</button>
-          <button class="btn danger small" onclick="deleteStaffAppointment('${a.id}')">Elimina</button>
-        </div>
-      </div>
-    </div>
-  `).join("") || `<p class="muted">Nessun appuntamento oggi.</p>`;
-}
-
-async function moveStaffAppointment(id,date,time){
-  const newDate=prompt("Nuova data (AAAA-MM-GG)",date);
-  if(!newDate) return;
-  const newTime=prompt("Nuovo orario (HH:MM)",time);
-  if(!newTime) return;
-  const {error}=await sb.from("appointments").update({appointment_date:newDate,start_time:newTime}).eq("id",id);
-  if(error) msg(error.message,"error");
-  else { msg("Appuntamento spostato.","ok"); loadTodayAgenda(); }
-}
 
 async function deleteStaffAppointment(id){
   if(!confirm("Eliminare definitivamente questo appuntamento?")) return;
   const {error}=await sb.from("appointments").delete().eq("id",id);
   if(error) msg(error.message,"error");
-  else { msg("Appuntamento eliminato.","ok"); loadTodayAgenda(); }
+  else { msg("Appuntamento eliminato.","ok"); loadStaffAgenda(); }
 }
 
 function toMin(t){ const [h,m]=t.slice(0,5).split(":").map(Number); return h*60+m; }
