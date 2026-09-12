@@ -304,6 +304,62 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
   .hours-inputs,.hours-range-row{grid-template-columns:1fr 1fr auto}
 }
 
+
+/* ===== FIX EDITOR ORARI V5.1 ===== */
+.hours-day-v5 .hours-ranges-list{
+  display:block;
+}
+.hours-day-v5.closed .hours-ranges-list{
+  opacity:.35;
+  pointer-events:none;
+}
+.hours-day-v5.closed .add-range{
+  opacity:.65;
+}
+.hours-day-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.hours-day-head .day-toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+}
+.hours-day-head .day-toggle input{
+  width:20px;
+  height:20px;
+  accent-color:#0b0b0b;
+}
+.hours-range-row input[type="time"]{
+  width:100%;
+  min-height:48px;
+  background:#f7f7f5;
+  border:1px solid #d9d9d5;
+  border-radius:13px;
+  padding:11px 12px;
+  color:#0b0b0b;
+  font-weight:800;
+}
+.hours-range-row input[type="time"]:focus{
+  background:#fff;
+  border-color:#0b0b0b;
+}
+.hours-day-v5.closed .hours-range-row{
+  display:none;
+}
+.hours-day-v5.closed .add-range{
+  display:block;
+}
+.hours-day-v5:not(.closed) .add-range{
+  display:block;
+}
+
 </style>
 </head>
 <body>
@@ -523,9 +579,12 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
           <h1 class="staff-title">Orari e disponibilità</h1>
           <p class="muted">Scegli il barbiere e modifica giorni e fasce orarie. Le disponibilità dei clienti si aggiornano automaticamente.</p>
           <div id="hoursBarberButtonsPage" class="hours-barber-select"></div>
-          <button class="btn ghost small" type="button" style="width:100%;margin-bottom:14px" onclick="copyHoursToOtherBarber()">COPIA QUESTI ORARI ALL'ALTRO BARBIERE</button>
+          <div class="notice" style="margin-bottom:14px">
+            Tocca <strong>Aperto/Chiuso</strong> per attivare il giorno e modifica direttamente gli orari nei campi <strong>Dalle</strong> e <strong>Alle</strong>.
+          </div>
           <div id="staffHoursEditorPage"></div>
-          <div class="hours-savebar"><button class="btn primary" style="width:100%" type="button" onclick="saveStaffHoursPage()">SALVA ORARI</button></div>
+          <button class="btn ghost small" type="button" style="width:100%;margin-top:8px;margin-bottom:14px" onclick="copyHoursToOtherBarber()">COPIA QUESTI ORARI ALL'ALTRO BARBIERE</button>
+          <div class="hours-savebar"><button class="btn primary" style="width:100%" type="button" onclick="saveStaffHoursPage()">SALVA MODIFICHE ORARI</button></div>
         </div>
       </div>
       <div class="staff-bottom-space"></div>
@@ -1121,12 +1180,15 @@ async function loadHoursEditorPage(){
     return `<div class="hours-day-v5 ${r.length?'':'closed'}" data-day="${day}">
       <div class="hours-day-head">
         <strong>${name}</strong>
-        <label style="margin:0;display:flex;align-items:center;gap:7px"><input class="day-active" type="checkbox" style="width:auto" ${r.length?'checked':''} onchange="toggleHoursDay(this)"> ${r.length?'Aperto':'Chiuso'}</label>
+        <label class="day-toggle">
+          <input class="day-active" type="checkbox" ${r.length?'checked':''} onchange="toggleHoursDay(this)">
+          <span class="day-state">${r.length?'Aperto':'Chiuso'}</span>
+        </label>
       </div>
       <div class="hours-ranges-list">
         ${ranges.map((x,i)=>hoursRangeHtml(x?.start_time?.slice(0,5)||'',x?.end_time?.slice(0,5)||'',i)).join('')}
       </div>
-      <button class="add-range" type="button" onclick="addHoursRange(this)">+ Aggiungi fascia</button>
+      <button class="add-range" type="button" onclick="addHoursRange(this)">+ Aggiungi / modifica fascia</button>
     </div>`;
   }).join('');
 }
@@ -1136,7 +1198,8 @@ function hoursRangeHtml(start='',end='',i=0){
 function toggleHoursDay(cb){
   const day=cb.closest('.hours-day-v5');
   day.classList.toggle('closed',!cb.checked);
-  cb.parentElement.lastChild.textContent=cb.checked?' Aperto':' Chiuso';
+  const state=cb.closest('.day-toggle')?.querySelector('.day-state');
+  if(state) state.textContent=cb.checked?'Aperto':'Chiuso';
   if(cb.checked && !day.querySelector('.hours-range-row')) day.querySelector('.hours-ranges-list').innerHTML=hoursRangeHtml();
 }
 function addHoursRange(btn){
