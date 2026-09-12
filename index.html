@@ -199,6 +199,15 @@
     .staff-tabs .bookingTab{margin-top:-25px}
     .empty-state{padding:24px 12px;text-align:center;color:var(--muted)}
     .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#111;margin-right:6px}
+    .hours-barber-select{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 16px}
+    .hours-day{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;background:#fff}
+    .hours-day-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .hours-ranges{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .profile-avatar{width:88px;height:88px;border-radius:24px;object-fit:cover;border:1px solid var(--line);background:var(--soft)}
+    .profile-avatar-wrap{display:flex;align-items:center;gap:16px;margin:14px 0 18px}
+    .more-section{margin-top:12px}
+    .staff-tabs .tab{color:#000!important}.staff-tabs .tab span{color:#000}.staff-tabs .bookingIcon{color:#fff!important}
+    @media(min-width:900px){.shell{max-width:1100px}.staff-page>.card,#staffAgendaView{max-width:1000px;margin-left:auto;margin-right:auto}.hero img{max-height:130px}}
     @media(max-width:700px){.agenda-columns{grid-template-columns:1fr}.staff-kpis{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:420px){.staff-kpi{padding:10px 8px}.staff-kpi b{font-size:16px}.barber-chip{font-size:12px;padding:10px 5px}}
 
@@ -375,7 +384,9 @@
         <div class="card">
           <h1 class="staff-title">Altro</h1>
           <div class="service"><div><strong>Barbiere selezionato</strong><div class="muted" id="staffSelectedBarberText">Tutti</div></div></div>
-          <div class="service"><div><strong>Orari e disponibilità</strong><div class="muted">Gestione turni, chiusure e assenze</div></div><button class="btn ghost small" onclick="showStaffHours()">Apri</button></div>
+          <div class="service"><div><strong>Orari e disponibilità</strong><div class="muted">Giorni e fasce orarie di Maiello e Apollo</div></div><button class="btn ghost small" onclick="showStaffHours()">Apri</button></div>
+          <div class="service"><div><strong>Ferie e assenze</strong><div class="muted">Blocca giorni o fasce orarie per ogni barbiere</div></div><button class="btn ghost small" onclick="showStaffTimeOff()">Apri</button></div>
+          <div class="service"><div><strong>Profilo</strong><div class="muted">Foto account e modifica password</div></div><button class="btn ghost small" onclick="showStaffProfile()">Apri</button></div>
           <div class="service"><div><strong>Aggiorna dati</strong><div class="muted">Ricarica agenda, clienti e servizi</div></div><button class="btn ghost small" onclick="refreshStaffAll()">Aggiorna</button></div>
           <button class="btn secondary" style="width:100%;margin-top:18px" onclick="logout()">Esci dal gestionale</button>
         </div>
@@ -558,7 +569,34 @@
 <dialog id="staffHoursDialog">
   <div class="dialog-body">
     <div class="row"><h2>Orari e disponibilità</h2><button class="btn ghost small" type="button" onclick="staffHoursDialog.close()">Chiudi</button></div>
-    <div id="staffHoursList"></div>
+    <p class="muted">Seleziona il barbiere e modifica giorni e fasce. Puoi usare due fasce per la pausa pranzo.</p>
+    <div id="hoursBarberButtons" class="hours-barber-select"></div>
+    <div id="staffHoursEditor"></div>
+    <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveStaffHours()">SALVA ORARI</button>
+  </div>
+</dialog>
+
+<dialog id="staffTimeOffDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Ferie e assenze</h2><button class="btn ghost small" type="button" onclick="staffTimeOffDialog.close()">Chiudi</button></div>
+    <div class="field"><label>Barbiere</label><select id="timeOffBarber"></select></div>
+    <div class="grid two"><div class="field"><label>Dal</label><input id="timeOffStart" type="datetime-local"></div><div class="field"><label>Al</label><input id="timeOffEnd" type="datetime-local"></div></div>
+    <div class="field"><label>Motivo (facoltativo)</label><input id="timeOffReason" placeholder="Ferie, permesso..."></div>
+    <button class="btn primary" style="width:100%" onclick="addStaffTimeOff()">AGGIUNGI ASSENZA</button>
+    <div id="staffTimeOffList" style="margin-top:16px"></div>
+  </div>
+</dialog>
+
+<dialog id="staffProfileDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Profilo gestionale</h2><button class="btn ghost small" type="button" onclick="staffProfileDialog.close()">Chiudi</button></div>
+    <div class="profile-avatar-wrap"><img id="staffAvatarPreview" class="profile-avatar" alt="Foto profilo"><div><strong id="staffProfileName">Hair Cut Dream</strong><div class="muted" id="staffProfileEmail"></div></div></div>
+    <div class="field"><label>Foto profilo</label><input id="staffAvatarFile" type="file" accept="image/*"></div>
+    <button class="btn ghost" style="width:100%;margin-bottom:18px" onclick="uploadStaffAvatar()">CARICA FOTO</button>
+    <h3>Cambia password</h3>
+    <div class="field"><label>Nuova password</label><input id="staffNewPassword" type="password" minlength="8"></div>
+    <div class="field"><label>Conferma nuova password</label><input id="staffNewPassword2" type="password" minlength="8"></div>
+    <button class="btn primary" style="width:100%" onclick="changeStaffPassword()">MODIFICA PASSWORD</button>
   </div>
 </dialog>
 
@@ -577,6 +615,8 @@ let staffViewMode = "day";
 let staffAgendaRows = [];
 let staffClients = [];
 let realtimeChannel = null;
+let hoursEditorBarberId = null;
+let currentProfile = null;
 
 const $ = id => document.getElementById(id);
 
@@ -899,16 +939,72 @@ async function refreshStaffAll(){
 }
 
 async function showStaffHours(){
-  let q=sb.from("working_hours").select("*, barbers(full_name)").eq("active",true).order("day_of_week").order("start_time");
-  if(staffSelectedBarberId!=="all") q=q.eq("barber_id",staffSelectedBarberId);
-  const {data,error}=await q;
-  const root=$("staffHoursList");
-  if(error) root.innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`;
-  else {
-    const dayNames=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
-    root.innerHTML=(data||[]).map(h=>`<div class="service"><div><strong>${dayNames[h.day_of_week]}</strong><div class="muted">${escapeHtml(h.barbers?.full_name||'')}</div></div><span class="pill">${h.start_time.slice(0,5)}–${h.end_time.slice(0,5)}</span></div>`).join('')||'<p class="muted">Nessun orario configurato.</p>';
-  }
+  hoursEditorBarberId = staffSelectedBarberId!=="all" ? staffSelectedBarberId : (barbers[0]?.id||null);
+  renderHoursBarberButtons();
+  await loadHoursEditor();
   staffHoursDialog.showModal();
+}
+function renderHoursBarberButtons(){
+  const root=$("hoursBarberButtons"); if(!root) return;
+  root.innerHTML=barbers.map(b=>`<button class="barber-chip ${b.id===hoursEditorBarberId?'active':''}" onclick="selectHoursBarber('${b.id}')">${escapeHtml(shortBarberName(b.full_name))}</button>`).join('');
+}
+async function selectHoursBarber(id){ hoursEditorBarberId=id; renderHoursBarberButtons(); await loadHoursEditor(); }
+async function loadHoursEditor(){
+  const root=$("staffHoursEditor"); if(!root||!hoursEditorBarberId) return;
+  const {data,error}=await sb.from("working_hours").select("*").eq("barber_id",hoursEditorBarberId).eq("active",true).order("day_of_week").order("start_time");
+  if(error){root.innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`;return;}
+  const rows=data||[], names=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+  root.innerHTML=names.map((name,day)=>{
+    const r=rows.filter(x=>Number(x.day_of_week)===day);
+    return `<div class="hours-day" data-day="${day}"><div class="hours-day-head"><strong>${name}</strong><label style="margin:0"><input class="day-active" type="checkbox" style="width:auto" ${r.length?'checked':''}> Aperto</label></div>
+      <div class="hours-ranges"><input class="h1s" type="time" value="${r[0]?.start_time?.slice(0,5)||''}"><input class="h1e" type="time" value="${r[0]?.end_time?.slice(0,5)||''}"><input class="h2s" type="time" value="${r[1]?.start_time?.slice(0,5)||''}"><input class="h2e" type="time" value="${r[1]?.end_time?.slice(0,5)||''}"></div></div>`;
+  }).join('');
+}
+async function saveStaffHours(){
+  if(!hoursEditorBarberId) return;
+  const inserts=[];
+  for(const el of document.querySelectorAll('#staffHoursEditor .hours-day')){
+    if(!el.querySelector('.day-active').checked) continue;
+    const day=Number(el.dataset.day), pairs=[[el.querySelector('.h1s').value,el.querySelector('.h1e').value],[el.querySelector('.h2s').value,el.querySelector('.h2e').value]];
+    for(const [a,b] of pairs){ if(a&&b){ if(a>=b) return msg(`Orario non valido per il giorno selezionato.`,"error"); inserts.push({barber_id:hoursEditorBarberId,day_of_week:day,start_time:a,end_time:b,active:true}); } }
+  }
+  const {error:delErr}=await sb.from('working_hours').delete().eq('barber_id',hoursEditorBarberId); if(delErr) return msg(delErr.message,'error');
+  if(inserts.length){const {error}=await sb.from('working_hours').insert(inserts); if(error) return msg(error.message,'error');}
+  msg('Orari salvati. Le disponibilità cliente sono già aggiornate.','ok'); await loadHoursEditor();
+}
+async function showStaffTimeOff(){
+  $("timeOffBarber").innerHTML=barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join('');
+  if(staffSelectedBarberId!=="all") $("timeOffBarber").value=staffSelectedBarberId;
+  await loadStaffTimeOff(); staffTimeOffDialog.showModal();
+}
+async function loadStaffTimeOff(){
+  const {data,error}=await sb.from('time_off').select('*, barbers(full_name)').order('start_datetime',{ascending:true}); const root=$("staffTimeOffList");
+  if(error){root.innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`;return;}
+  root.innerHTML=(data||[]).map(x=>`<div class="service"><div><strong>${escapeHtml(x.barbers?.full_name||'')}</strong><div class="muted">${new Date(x.start_datetime).toLocaleString('it-IT')} → ${new Date(x.end_datetime).toLocaleString('it-IT')}${x.reason?` · ${escapeHtml(x.reason)}`:''}</div></div><button class="btn danger small" onclick="deleteStaffTimeOff('${x.id}')">Elimina</button></div>`).join('')||'<p class="muted">Nessuna assenza programmata.</p>';
+}
+async function addStaffTimeOff(){
+  const barber_id=$("timeOffBarber").value,start=$("timeOffStart").value,end=$("timeOffEnd").value,reason=$("timeOffReason").value.trim()||null;
+  if(!barber_id||!start||!end||new Date(start)>=new Date(end)) return msg('Controlla barbiere, inizio e fine.','error');
+  const {error}=await sb.from('time_off').insert({barber_id,start_datetime:new Date(start).toISOString(),end_datetime:new Date(end).toISOString(),reason});
+  if(error)return msg(error.message,'error'); $("timeOffReason").value=''; msg('Assenza aggiunta.','ok'); await loadStaffTimeOff();
+}
+async function deleteStaffTimeOff(id){ if(!confirm('Eliminare questa assenza?'))return; const {error}=await sb.from('time_off').delete().eq('id',id); if(error)msg(error.message,'error'); else loadStaffTimeOff(); }
+function showStaffProfile(){
+  $("staffProfileName").textContent=currentProfile?.full_name||'Hair Cut Dream'; $("staffProfileEmail").textContent=sessionUser?.email||'';
+  $("staffAvatarPreview").src=currentProfile?.avatar_url||'icon-192.png'; staffProfileDialog.showModal();
+}
+async function uploadStaffAvatar(){
+  const file=$("staffAvatarFile").files?.[0]; if(!file)return msg('Seleziona prima una foto.','error');
+  if(file.size>5*1024*1024)return msg('La foto deve essere inferiore a 5 MB.','error');
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase(), path=`${sessionUser.id}/avatar.${ext}`;
+  const {error}=await sb.storage.from('avatars').upload(path,file,{upsert:true,contentType:file.type}); if(error)return msg(error.message,'error');
+  const {data}=sb.storage.from('avatars').getPublicUrl(path); const url=data.publicUrl+`?v=${Date.now()}`;
+  const {error:pErr}=await sb.from('profiles').update({avatar_url:url}).eq('id',sessionUser.id); if(pErr)return msg(pErr.message,'error');
+  currentProfile={...currentProfile,avatar_url:url}; $("staffAvatarPreview").src=url; msg('Foto profilo aggiornata.','ok');
+}
+async function changeStaffPassword(){
+  const a=$("staffNewPassword").value,b=$("staffNewPassword2").value; if(a.length<8)return msg('La password deve avere almeno 8 caratteri.','error'); if(a!==b)return msg('Le password non coincidono.','error');
+  const {error}=await sb.auth.updateUser({password:a}); if(error)return msg(error.message,'error'); $("staffNewPassword").value=$("staffNewPassword2").value=''; msg('Password modificata correttamente.','ok');
 }
 
 function startRealtimeAppointments(){
@@ -974,6 +1070,7 @@ async function afterLogin(user){
   if(pErr){ msg("Impossibile leggere il profilo: "+pErr.message,"error"); return; }
 
   appRole = profile.role || "customer";
+  currentProfile = profile;
   hideAll();
 
   if(appRole === "admin" || appRole === "barber"){
