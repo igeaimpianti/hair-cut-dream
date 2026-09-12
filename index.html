@@ -255,7 +255,7 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 @keyframes hcdDialogIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
 .dialog-body{max-height:min(88vh,760px);overflow:auto;padding:24px}
 #staffHoursDialog{width:min(760px,calc(100% - 24px))}
-.hours-barber-select{display:grid;grid-template-columns:1fr 1fr;background:#efefed;padding:4px;border-radius:15px;margin:14px 0 16px;gap:4px}
+.hours-barber-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#efefed;padding:4px;border-radius:15px;margin:14px 0 16px;gap:4px}
 .hours-barber-select .barber-chip{border:0;background:transparent;border-radius:11px;padding:11px;font-weight:900}.hours-barber-select .barber-chip.active{background:#0b0b0b;color:#fff}
 .hours-day{border:1px solid #e6e6e3!important;border-radius:18px!important;padding:15px!important;margin-bottom:9px!important;background:#fff!important}
 .hours-day-head strong{font-size:15px}.hours-day-head label{display:flex;align-items:center;gap:7px;font-size:12px}
@@ -1144,39 +1144,120 @@ async function refreshStaffAll(){
   await loadPublicData(); await Promise.all([loadStaffAgenda(),loadStaffClients()]); renderStaffServices(); msg("Gestionale aggiornato.","ok");
 }
 
+async function ensureHoursBarbers(){
+  // La pagina Orari deve funzionare anche se il caricamento pubblico dei barbieri
+  // non è andato a buon fine o se il filtro "active" non restituisce righe.
+  if(barbers.length) return true;
+
+  const {data,error}=await sb
+    .from("barbers")
+    .select("*")
+    .order("full_name");
+
+  if(error){
+    const root=$("staffHoursEditorPage");
+    if(root) root.innerHTML=`<div class="notice error">Impossibile caricare i barbieri: ${escapeHtml(error.message)}</div>`;
+    return false;
+  }
+
+  barbers=data||[];
+  fillSelects();
+  renderStaffBarberSwitch();
+  return barbers.length>0;
+}
+
 async function openStaffHoursPage(){
   document.querySelectorAll("#staffApp .staff-page").forEach(x=>x.classList.add("hide"));
   $("staffHoursPage").classList.remove("hide");
   document.querySelectorAll("#staffTabs .tab").forEach(x=>x.classList.remove("active"));
+
   const moreTab=document.querySelector('[data-staff-page="staffMorePage"]');
   if(moreTab) moreTab.classList.add("active");
-  if(!barbers.length) await loadPublicData();
-  hoursEditorBarberId=staffSelectedBarberId!=="all" ? staffSelectedBarberId : (barbers[0]?.id||null);
+
+  const root=$("staffHoursEditorPage");
+  if(root) root.innerHTML='<div class="loading-box">Caricamento barbieri e orari…</div>';
+
+  const ok=await ensureHoursBarbers();
+  if(!ok){
+    $("hoursBarberButtonsPage").innerHTML="";
+    if(root && !root.querySelector(".notice.error")){
+      root.innerHTML='<div class="notice error">Nessun barbiere trovato nel database.</div>';
+    }
+    return;
+  }
+
+  // Se "Tutti" è selezionato, apre il primo barbiere disponibile.
+  const preferred = staffSelectedBarberId!=="all"
+    ? barbers.find(b=>String(b.id)===String(staffSelectedBarberId))
+    : null;
+
+  hoursEditorBarberId = preferred?.id || barbers[0].id;
+
   renderHoursBarberButtonsPage();
   await loadHoursEditorPage();
 }
+
 function backToStaffMore(){
   const btn=document.querySelector('[data-staff-page="staffMorePage"]');
   if(btn) goStaffPage(btn);
 }
+
 function renderHoursBarberButtonsPage(){
-  const root=$("hoursBarberButtonsPage"); if(!root) return;
-  root.innerHTML=barbers.map(b=>`<button type="button" class="barber-chip ${b.id===hoursEditorBarberId?'active':''}" onclick="selectHoursBarberPage('${b.id}')">${escapeHtml(shortBarberName(b.full_name))}</button>`).join('');
+  const root=$("hoursBarberButtonsPage");
+  if(!root) return;
+
+  if(!barbers.length){
+    root.innerHTML='<div class="notice error">Nessun barbiere disponibile.</div>';
+    return;
+  }
+
+  root.innerHTML=barbers.map(b=>`
+    <button type="button"
+      class="barber-chip ${String(b.id)===String(hoursEditorBarberId)?'active':''}"
+      onclick="selectHoursBarberPage('${b.id}')">
+      ${escapeHtml(shortBarberName(b.full_name))}
+    </button>
+  `).join('');
 }
+
 async function selectHoursBarberPage(id){
   hoursEditorBarberId=id;
   renderHoursBarberButtonsPage();
   await loadHoursEditorPage();
 }
+
 async function loadHoursEditorPage(){
-  const root=$("staffHoursEditorPage"); if(!root||!hoursEditorBarberId) return;
+  const root=$("staffHoursEditorPage");
+  if(!root) return;
+
+  if(!hoursEditorBarberId){
+    root.innerHTML='<div class="notice error">Seleziona prima un barbiere.</div>';
+    return;
+  }
+
   root.innerHTML='<div class="loading-box">Caricamento orari…</div>';
-  const {data,error}=await sb.from("working_hours").select("*").eq("barber_id",hoursEditorBarberId).eq("active",true).order("day_of_week").order("start_time");
-  if(error){root.innerHTML=`<p class="notice error">${escapeHtml(error.message)}</p>`;return;}
-  const rows=data||[], names=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+
+  const {data,error}=await sb
+    .from("working_hours")
+    .select("*")
+    .eq("barber_id",hoursEditorBarberId)
+    .order("day_of_week")
+    .order("start_time");
+
+  if(error){
+    root.innerHTML=`<div class="notice error">Errore caricamento orari: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+
+  // Consideriamo solo le righe attive. Se il campo active fosse assente/null,
+  // la riga viene comunque mostrata per non lasciare l'editor vuoto.
+  const rows=(data||[]).filter(x=>x.active!==false);
+  const names=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+
   root.innerHTML=names.map((name,day)=>{
     const r=rows.filter(x=>Number(x.day_of_week)===day);
     const ranges=r.length?r:[null];
+
     return `<div class="hours-day-v5 ${r.length?'':'closed'}" data-day="${day}">
       <div class="hours-day-head">
         <strong>${name}</strong>
@@ -1185,69 +1266,156 @@ async function loadHoursEditorPage(){
           <span class="day-state">${r.length?'Aperto':'Chiuso'}</span>
         </label>
       </div>
+
       <div class="hours-ranges-list">
-        ${ranges.map((x,i)=>hoursRangeHtml(x?.start_time?.slice(0,5)||'',x?.end_time?.slice(0,5)||'',i)).join('')}
+        ${ranges.map((x,i)=>hoursRangeHtml(
+          String(x?.start_time||'').slice(0,5),
+          String(x?.end_time||'').slice(0,5),
+          i
+        )).join('')}
       </div>
-      <button class="add-range" type="button" onclick="addHoursRange(this)">+ Aggiungi / modifica fascia</button>
+
+      <button class="add-range" type="button" onclick="addHoursRange(this)">+ Aggiungi fascia</button>
     </div>`;
   }).join('');
 }
+
 function hoursRangeHtml(start='',end='',i=0){
-  return `<div class="hours-range-row"><div><div class="range-label">Dalle</div><input class="range-start" type="time" value="${start}"></div><div><div class="range-label">Alle</div><input class="range-end" type="time" value="${end}"></div><button class="remove-range" type="button" onclick="removeHoursRange(this)" aria-label="Rimuovi fascia">×</button></div>`;
+  return `<div class="hours-range-row">
+    <div>
+      <div class="range-label">Dalle</div>
+      <input class="range-start" type="time" value="${start}">
+    </div>
+    <div>
+      <div class="range-label">Alle</div>
+      <input class="range-end" type="time" value="${end}">
+    </div>
+    <button class="remove-range" type="button" onclick="removeHoursRange(this)" aria-label="Rimuovi fascia">×</button>
+  </div>`;
 }
+
 function toggleHoursDay(cb){
   const day=cb.closest('.hours-day-v5');
+  if(!day) return;
+
   day.classList.toggle('closed',!cb.checked);
-  const state=cb.closest('.day-toggle')?.querySelector('.day-state');
+
+  const state=day.querySelector('.day-state');
   if(state) state.textContent=cb.checked?'Aperto':'Chiuso';
-  if(cb.checked && !day.querySelector('.hours-range-row')) day.querySelector('.hours-ranges-list').innerHTML=hoursRangeHtml();
+
+  if(cb.checked && !day.querySelector('.hours-range-row')){
+    day.querySelector('.hours-ranges-list').innerHTML=hoursRangeHtml();
+  }
 }
+
 function addHoursRange(btn){
   const day=btn.closest('.hours-day-v5');
-  day.querySelector('.day-active').checked=true; day.classList.remove('closed');
+  if(!day) return;
+
+  const cb=day.querySelector('.day-active');
+  cb.checked=true;
+  day.classList.remove('closed');
+
+  const state=day.querySelector('.day-state');
+  if(state) state.textContent='Aperto';
+
   day.querySelector('.hours-ranges-list').insertAdjacentHTML('beforeend',hoursRangeHtml());
 }
+
 function removeHoursRange(btn){
   const day=btn.closest('.hours-day-v5');
-  btn.closest('.hours-range-row').remove();
-  if(!day.querySelector('.hours-range-row')){day.querySelector('.day-active').checked=false;day.classList.add('closed');}
+  if(!day) return;
+
+  btn.closest('.hours-range-row')?.remove();
+
+  if(!day.querySelector('.hours-range-row')){
+    const cb=day.querySelector('.day-active');
+    cb.checked=false;
+    day.classList.add('closed');
+
+    const state=day.querySelector('.day-state');
+    if(state) state.textContent='Chiuso';
+  }
 }
+
 function collectHoursFromPage(barberId){
   const inserts=[];
+
   for(const el of document.querySelectorAll('#staffHoursEditorPage .hours-day-v5')){
-    if(!el.querySelector('.day-active').checked) continue;
+    if(!el.querySelector('.day-active')?.checked) continue;
+
     const day=Number(el.dataset.day);
+
     for(const row of el.querySelectorAll('.hours-range-row')){
-      const a=row.querySelector('.range-start').value,b=row.querySelector('.range-end').value;
+      const a=row.querySelector('.range-start')?.value||"";
+      const b=row.querySelector('.range-end')?.value||"";
+
       if(!a&&!b) continue;
-      if(!a||!b||a>=b) throw new Error('Controlla le fasce orarie di '+["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"][day]+'.');
-      inserts.push({barber_id:barberId,day_of_week:day,start_time:a,end_time:b,active:true});
+
+      if(!a||!b||a>=b){
+        throw new Error(
+          'Controlla le fasce orarie di '+
+          ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"][day]+'.'
+        );
+      }
+
+      inserts.push({
+        barber_id:barberId,
+        day_of_week:day,
+        start_time:a,
+        end_time:b,
+        active:true
+      });
     }
   }
+
   return inserts;
 }
+
 async function replaceBarberHours(barberId,inserts){
-  const {error:delErr}=await sb.from('working_hours').delete().eq('barber_id',barberId); if(delErr) throw delErr;
-  if(inserts.length){const {error}=await sb.from('working_hours').insert(inserts); if(error) throw error;}
+  const {error:delErr}=await sb
+    .from('working_hours')
+    .delete()
+    .eq('barber_id',barberId);
+
+  if(delErr) throw delErr;
+
+  if(inserts.length){
+    const {error}=await sb.from('working_hours').insert(inserts);
+    if(error) throw error;
+  }
 }
+
 async function saveStaffHoursPage(){
   if(!hoursEditorBarberId) return msg('Seleziona un barbiere.','error');
+
   try{
     const inserts=collectHoursFromPage(hoursEditorBarberId);
     await replaceBarberHours(hoursEditorBarberId,inserts);
-    msg('Orari salvati. Le prenotazioni cliente usano già i nuovi orari.','ok');
+    msg('Orari salvati correttamente.','ok');
     await loadHoursEditorPage();
-  }catch(e){msg(e.message||'Errore durante il salvataggio.','error');}
+  }catch(e){
+    msg(e.message||'Errore durante il salvataggio.','error');
+  }
 }
+
 async function copyHoursToOtherBarber(){
   if(!hoursEditorBarberId||barbers.length<2) return;
-  const other=barbers.find(b=>b.id!==hoursEditorBarberId); if(!other) return;
+
+  const other=barbers.find(b=>String(b.id)!==String(hoursEditorBarberId));
+  if(!other) return;
+
   if(!confirm(`Copiare gli orari su ${other.full_name}? I suoi orari attuali verranno sostituiti.`)) return;
+
   try{
-    const src=collectHoursFromPage(hoursEditorBarberId).map(x=>({...x,barber_id:other.id}));
+    const src=collectHoursFromPage(hoursEditorBarberId)
+      .map(x=>({...x,barber_id:other.id}));
+
     await replaceBarberHours(other.id,src);
     msg(`Orari copiati su ${other.full_name}.`,'ok');
-  }catch(e){msg(e.message||'Errore durante la copia.','error');}
+  }catch(e){
+    msg(e.message||'Errore durante la copia.','error');
+  }
 }
 
 async function showStaffTimeOff(){
