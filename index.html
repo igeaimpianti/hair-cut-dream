@@ -1849,7 +1849,8 @@ async function loadCustomerAppointments(){
 
   if(error){ msg(error.message,"error"); return; }
 
-  const list=(data||[]).map(a=>`
+  const visibleAppointments=(data||[]).filter(a=>a.status!=="cancelled");
+  const list=visibleAppointments.map(a=>`
     <div class="appointment">
       <div class="row">
         <strong>${fmtDate(a.appointment_date)} · ${a.start_time.slice(0,5)}</strong>
@@ -1864,7 +1865,7 @@ async function loadCustomerAppointments(){
 
   $("customerAppointmentsList").innerHTML=list || `<p class="muted">Nessun appuntamento.</p>`;
 
-  const future=(data||[]).find(a=>["booked","confirmed"].includes(a.status) && a.appointment_date>=new Date().toISOString().slice(0,10));
+  const future=visibleAppointments.find(a=>["booked","confirmed"].includes(a.status) && a.appointment_date>=new Date().toISOString().slice(0,10));
   $("nextAppointment").innerHTML=future ? `
     <div class="appointment">
       <strong>${fmtDate(future.appointment_date)} · ${future.start_time.slice(0,5)}</strong>
