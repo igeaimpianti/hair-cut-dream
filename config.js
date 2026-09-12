@@ -1,5 +1,4 @@
-// Inserisci i dati del tuo progetto Supabase qui.
 window.HCD_CONFIG = {
-  SUPABASE_URL: "INCOLLA_QUI_LA_SUPABASE_URL",
-  SUPABASE_ANON_KEY: "INCOLLA_QUI_LA_SUPABASE_ANON_KEY"
+  SUPABASE_URL: "https://eyleezsqhlfqewcamihk.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_v-nScbaG3ZV1akC19PDwMw_VsLsYGHY"
 };
