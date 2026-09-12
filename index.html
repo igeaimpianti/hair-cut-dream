@@ -393,6 +393,10 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 .notification-setting-icon{background:#fff4e8!important;color:#e67e22!important}
 .notification-setting-icon svg{stroke:currentColor!important}
 
+
+.notification-test-icon{background:#eef6ff!important;color:#2563eb!important}
+.notification-test-icon svg{stroke:currentColor!important}
+
 </style>
 </head>
 <body>
@@ -598,6 +602,13 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
               <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 21h4"/></svg>
             </span>
             <span><strong>Notifiche</strong><small id="staffPushStatus">Controllo stato notifiche…</small></span>
+            <span class="setting-arrow">›</span>
+          </button>
+          <button class="setting-card" type="button" onclick="testStaffNotification()">
+            <span class="setting-icon notification-test-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3v3M5.6 5.6l2.1 2.1M18.4 5.6l-2.1 2.1"/><path d="M6 14a6 6 0 0 1 12 0c0 4 2 4 2 6H4c0-2 2-2 2-6"/><path d="M10 22h4"/></svg>
+            </span>
+            <span><strong>Test notifica</strong><small>Invia subito una notifica di prova su questo dispositivo.</small></span>
             <span class="setting-arrow">›</span>
           </button>
           <button class="setting-card" type="button" onclick="refreshStaffAll()">
@@ -980,6 +991,30 @@ async function enableStaffPushNotifications(){
   }
 }
 
+
+async function testStaffNotification(){
+  if(!("Notification" in window) || !("serviceWorker" in navigator)){
+    return msg("Questo dispositivo non supporta le notifiche.","error");
+  }
+  if(Notification.permission !== "granted"){
+    return msg("Prima attiva le notifiche su questo dispositivo.","error");
+  }
+  try{
+    const reg = await navigator.serviceWorker.ready;
+    await reg.showNotification("Hair Cut Dream",{
+      body:"Notifica di prova: il dispositivo è pronto a ricevere gli avvisi.",
+      icon:"./icon-192.png",
+      badge:"./icon-192.png",
+      tag:"hcd-local-test-"+Date.now(),
+      data:{url:"./"}
+    });
+    msg("Test inviato. Dovresti vedere la notifica adesso.","ok");
+  }catch(e){
+    console.error("Notification test error", e);
+    msg("Errore test notifica: "+(e.message||e),"error");
+  }
+}
+
 async function notifyStaffPush(type, id){
   if(!sb || !sessionUser || !id) return;
   try{
@@ -993,7 +1028,14 @@ async function notifyStaffPush(type, id){
 }
 
 async function init(){
-  if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+  if("serviceWorker" in navigator){
+    try{
+      const reg = await navigator.serviceWorker.register("./sw.js?v=56", { updateViaCache:"none" });
+      await reg.update();
+    }catch(e){
+      console.error("Service worker update error:", e);
+    }
+  }
 
   if(!configured()){
     showGuest();
