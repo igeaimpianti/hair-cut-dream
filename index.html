@@ -397,6 +397,30 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 .notification-test-icon{background:#eef6ff!important;color:#2563eb!important}
 .notification-test-icon svg{stroke:currentColor!important}
 
+
+.customer-home-color{background:#eef6ff!important;color:#2563eb!important}
+.customer-services-color{background:#f4efff!important;color:#7c3aed!important}
+.customer-appointments-color{background:#fff3e8!important;color:#ea580c!important}
+.customer-profile-color{background:#ecfdf3!important;color:#16a34a!important}
+#customerTabs .staff-color-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 4px;
+}
+#customerTabs .staff-color-icon svg{
+  width:21px;
+  height:21px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
 </style>
 </head>
 <body>
@@ -644,12 +668,27 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 
   <nav id="customerTabs" class="tabs hide">
   <button class="tab active" data-page="customerHome" onclick="goPage(this)">
-    <span class="tabIcon">⌂</span>
+    <span class="tabIcon staff-color-icon customer-home-color">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 11.5 12 4l9 7.5"/>
+        <path d="M5.5 10.5V20h13v-9.5"/>
+        <path d="M9.5 20v-6h5v6"/>
+      </svg>
+    </span>
     <span>Home</span>
   </button>
 
   <button class="tab" data-page="customerServices" onclick="goPage(this)">
-    <span class="tabIcon">✂</span>
+    <span class="tabIcon staff-color-icon customer-services-color">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="6.5" cy="7" r="2.5"/>
+        <circle cx="6.5" cy="17" r="2.5"/>
+        <path d="M8.5 8.5 20 3"/>
+        <path d="M8.5 15.5 20 21"/>
+        <path d="m11 12 9-4.5"/>
+        <path d="m11 12 9 4.5"/>
+      </svg>
+    </span>
     <span>Servizi</span>
   </button>
 
@@ -659,12 +698,23 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
   </button>
 
   <button class="tab" data-page="customerAppointments" onclick="goPage(this)">
-    <span class="tabIcon">▣</span>
+    <span class="tabIcon staff-color-icon customer-appointments-color">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="3"/>
+        <path d="M8 3v4M16 3v4M3 10h18"/>
+        <path d="M7.5 14h3M13.5 14h3M7.5 18h3"/>
+      </svg>
+    </span>
     <span>Appuntamenti</span>
   </button>
 
   <button class="tab" data-page="customerProfile" onclick="goPage(this)">
-    <span class="tabIcon">♙</span>
+    <span class="tabIcon staff-color-icon customer-profile-color">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4.5 21c.8-4.3 3.3-6.5 7.5-6.5s6.7 2.2 7.5 6.5"/>
+      </svg>
+    </span>
     <span>Profilo</span>
   </button>
 </nav>
