@@ -211,7 +211,60 @@
     @media(max-width:700px){.agenda-columns{grid-template-columns:1fr}.staff-kpis{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:420px){.staff-kpi{padding:10px 8px}.staff-kpi b{font-size:16px}.barber-chip{font-size:12px;padding:10px 5px}}
 
-  </style>
+  
+/* ===== GESTIONALE V4 — UI professionale ===== */
+.staff-mode{background:#f3f4f6}
+.staff-mode .hero{display:none}
+.staff-mode .shell{max-width:1180px;padding-bottom:106px}
+.staff-mode .content{padding:24px 22px 36px}
+.staff-mode #staffApp{max-width:1120px;margin:0 auto}
+.staff-mode .card{border:1px solid #e8e8e6;border-radius:26px;box-shadow:0 10px 34px rgba(0,0,0,.055);padding:24px}
+.staff-mode .staff-title{font-size:30px;line-height:1.05;letter-spacing:-.045em}
+.staff-mode .staff-subtitle,.eyebrow{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#858585}
+.staff-mode .staff-topbar{margin-bottom:18px}
+.staff-mode .barber-switch{background:#ececea;padding:4px;border-radius:16px;gap:4px}
+.staff-mode .barber-chip{border:0!important;border-radius:12px!important;background:transparent!important;padding:12px 10px!important;font-weight:850}
+.staff-mode .barber-chip.active{background:#fff!important;color:#0b0b0b!important;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.staff-mode .date-nav{grid-template-columns:46px 1fr 46px;gap:10px}
+.staff-mode .date-nav button{height:46px;border-color:#e2e2df;border-radius:14px;font-weight:900}
+.staff-mode .date-main{font-size:16px!important}
+.staff-mode .view-switch{background:#ececea;padding:4px;border-radius:16px;gap:4px}
+.staff-mode .view-btn{border:0!important;background:transparent!important;border-radius:12px!important;height:42px;font-weight:900}
+.staff-mode .view-btn.active{background:#0b0b0b!important;color:#fff!important}
+.staff-mode .staff-kpis{gap:10px;margin:18px 0 0}
+.staff-mode .staff-kpi{background:#fafafa;border-color:#e7e7e4;border-radius:18px;padding:16px}
+.staff-mode .staff-kpi b{font-size:22px}
+.staff-mode .staff-kpi span{font-size:10px;letter-spacing:.04em}
+.staff-section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;padding:4px 2px}
+.staff-section-head .muted{margin:7px 0 0}
+.selected-barber-card{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#0b0b0b;color:#fff;border-radius:22px;padding:19px 20px;margin-bottom:14px;box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.selected-barber-card strong{display:block;font-size:18px;margin-top:4px}.selected-barber-card .eyebrow{color:#aaa}.mini-link{border:1px solid #3a3a3a;background:#202020;color:#fff;border-radius:999px;padding:9px 14px;font-weight:800}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.setting-card{width:100%;text-align:left;border:1px solid #e5e5e2;background:#fff;border-radius:22px;padding:18px;display:grid;grid-template-columns:48px 1fr 24px;align-items:center;gap:14px;box-shadow:0 5px 18px rgba(0,0,0,.035);transition:.16s transform,.16s box-shadow}
+.setting-card:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.065)}
+.setting-card:active{transform:scale(.99)}
+.setting-card strong{display:block;font-size:16px;color:#111;margin-bottom:4px}.setting-card small{display:block;font-size:13px;line-height:1.35;color:#777}
+.setting-icon{width:48px;height:48px;border-radius:15px;background:#f1f1ef;display:grid;place-items:center}.setting-icon svg{width:23px;height:23px;fill:none;stroke:#111;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.setting-arrow{font-size:30px;line-height:1;color:#aaa}
+.logout-card{width:100%;margin-top:14px;border:1px solid #e4caca;background:#fff7f7;color:#9c2525;border-radius:18px;padding:15px;font-weight:900}
+.staff-tabs{box-shadow:0 -10px 30px rgba(0,0,0,.07);border-top-color:#ededeb!important}
+.staff-tabs .tab{min-width:0}.staff-tabs .tabIcon svg{stroke-width:1.9}.staff-tabs .tab.active .tabIcon svg{stroke-width:2.5}
+.staff-tabs .bookingTab .bookingIcon{border-radius:17px;box-shadow:0 10px 26px rgba(0,0,0,.28)}
+/* dialogs */
+dialog{max-height:min(88vh,760px);overflow:hidden;border:1px solid #e8e8e5}
+dialog[open]{animation:hcdDialogIn .16s ease-out}
+@keyframes hcdDialogIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+.dialog-body{max-height:min(88vh,760px);overflow:auto;padding:24px}
+#staffHoursDialog{width:min(760px,calc(100% - 24px))}
+.hours-barber-select{display:grid;grid-template-columns:1fr 1fr;background:#efefed;padding:4px;border-radius:15px;margin:14px 0 16px;gap:4px}
+.hours-barber-select .barber-chip{border:0;background:transparent;border-radius:11px;padding:11px;font-weight:900}.hours-barber-select .barber-chip.active{background:#0b0b0b;color:#fff}
+.hours-day{border:1px solid #e6e6e3!important;border-radius:18px!important;padding:15px!important;margin-bottom:9px!important;background:#fff!important}
+.hours-day-head strong{font-size:15px}.hours-day-head label{display:flex;align-items:center;gap:7px;font-size:12px}
+.hours-ranges{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}.hours-ranges input{padding:11px 9px}
+.loading-box{padding:28px;text-align:center;color:#777;background:#f6f6f4;border-radius:16px}
+@media(max-width:700px){.staff-mode .content{padding:14px 12px 26px}.staff-mode .card{padding:17px;border-radius:22px}.staff-mode .staff-title{font-size:27px}.settings-grid{grid-template-columns:1fr}.setting-card{padding:15px;grid-template-columns:44px 1fr 20px}.setting-icon{width:44px;height:44px;border-radius:14px}.hours-ranges{grid-template-columns:1fr 1fr}.staff-section-head{padding-top:4px}.staff-kpis{grid-template-columns:repeat(3,1fr)!important}.staff-kpi{padding:12px 9px!important}.staff-kpi b{font-size:17px!important}}
+@media(max-width:430px){.staff-tabs .tab{font-size:10px!important;padding-left:2px!important;padding-right:2px!important}.staff-tabs .tabIcon,.staff-tabs .tabIcon svg{width:21px;height:21px}.staff-tabs .bookingTab span:last-child{font-size:9px}.selected-barber-card{padding:16px}}
+
+</style>
 </head>
 <body>
 <div class="shell">
@@ -381,15 +434,39 @@
       </div>
 
       <div id="staffMorePage" class="staff-page hide">
-        <div class="card">
-          <h1 class="staff-title">Altro</h1>
-          <div class="service"><div><strong>Barbiere selezionato</strong><div class="muted" id="staffSelectedBarberText">Tutti</div></div></div>
-          <div class="service"><div><strong>Orari e disponibilità</strong><div class="muted">Giorni e fasce orarie di Maiello e Apollo</div></div><button class="btn ghost small" onclick="showStaffHours()">Apri</button></div>
-          <div class="service"><div><strong>Ferie e assenze</strong><div class="muted">Blocca giorni o fasce orarie per ogni barbiere</div></div><button class="btn ghost small" onclick="showStaffTimeOff()">Apri</button></div>
-          <div class="service"><div><strong>Profilo</strong><div class="muted">Foto account e modifica password</div></div><button class="btn ghost small" onclick="showStaffProfile()">Apri</button></div>
-          <div class="service"><div><strong>Aggiorna dati</strong><div class="muted">Ricarica agenda, clienti e servizi</div></div><button class="btn ghost small" onclick="refreshStaffAll()">Aggiorna</button></div>
-          <button class="btn secondary" style="width:100%;margin-top:18px" onclick="logout()">Esci dal gestionale</button>
+        <div class="staff-section-head">
+          <div><span class="eyebrow">IMPOSTAZIONI</span><h1 class="staff-title">Altro</h1><p class="muted">Gestisci disponibilità, assenze e account del salone.</p></div>
         </div>
+
+        <div class="selected-barber-card">
+          <div><span class="eyebrow">BARBIERE ATTIVO</span><strong id="staffSelectedBarberText">Tutti i barbieri</strong></div>
+          <button class="mini-link" type="button" onclick="goStaffPage(document.querySelector('[data-staff-page=staffAgendaPage]'))">Cambia</button>
+        </div>
+
+        <div class="settings-grid">
+          <button class="setting-card" type="button" onclick="showStaffHours()">
+            <span class="setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span><strong>Orari e disponibilità</strong><small>Giorni, aperture e fasce orarie per ogni barbiere</small></span>
+            <span class="setting-arrow">›</span>
+          </button>
+          <button class="setting-card" type="button" onclick="showStaffTimeOff()">
+            <span class="setting-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 15h8"/></svg></span>
+            <span><strong>Ferie e assenze</strong><small>Blocca giornate intere o singole fasce orarie</small></span>
+            <span class="setting-arrow">›</span>
+          </button>
+          <button class="setting-card" type="button" onclick="showStaffProfile()">
+            <span class="setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c.7-4.1 3.3-6.5 7.5-6.5s6.8 2.4 7.5 6.5"/></svg></span>
+            <span><strong>Profilo gestionale</strong><small>Foto account, email e modifica password</small></span>
+            <span class="setting-arrow">›</span>
+          </button>
+          <button class="setting-card" type="button" onclick="refreshStaffAll()">
+            <span class="setting-icon"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span>
+            <span><strong>Sincronizza dati</strong><small>Ricarica agenda, clienti, servizi e disponibilità</small></span>
+            <span class="setting-arrow">›</span>
+          </button>
+        </div>
+
+        <button class="logout-card" type="button" onclick="logout()">Esci dal gestionale</button>
       </div>
       <div class="staff-bottom-space"></div>
     </section>
@@ -451,7 +528,7 @@
   <div class="dialog-body">
     <div class="row">
       <h2>Prenota</h2>
-      <button class="btn ghost small" onclick="bookingDialog.close()">Chiudi</button>
+      <button class="btn ghost small" onclick="document.getElementById('bookingDialog').close()">Chiudi</button>
     </div>
 
     <form id="bookingForm">
@@ -482,7 +559,7 @@
   <div class="dialog-body">
     <div class="row">
       <h2>Nuovo appuntamento</h2>
-      <button class="btn ghost small" onclick="manualDialog.close()">Chiudi</button>
+      <button class="btn ghost small" onclick="document.getElementById('manualDialog').close()">Chiudi</button>
     </div>
     <form id="manualForm">
       <div class="grid two">
@@ -531,7 +608,7 @@
 
 <dialog id="editAppointmentDialog">
   <div class="dialog-body">
-    <div class="row"><h2>Modifica appuntamento</h2><button class="btn ghost small" type="button" onclick="editAppointmentDialog.close()">Chiudi</button></div>
+    <div class="row"><h2>Modifica appuntamento</h2><button class="btn ghost small" type="button" onclick="document.getElementById('editAppointmentDialog').close()">Chiudi</button></div>
     <form id="editAppointmentForm">
       <input id="editAppointmentId" type="hidden">
       <div class="grid two">
@@ -553,7 +630,7 @@
 
 <dialog id="serviceEditDialog">
   <div class="dialog-body">
-    <div class="row"><h2>Modifica servizio</h2><button class="btn ghost small" type="button" onclick="serviceEditDialog.close()">Chiudi</button></div>
+    <div class="row"><h2>Modifica servizio</h2><button class="btn ghost small" type="button" onclick="document.getElementById('serviceEditDialog').close()">Chiudi</button></div>
     <form id="serviceEditForm">
       <input id="serviceEditId" type="hidden">
       <div class="field"><label>Nome</label><input id="serviceEditName" required></div>
@@ -568,7 +645,7 @@
 
 <dialog id="staffHoursDialog">
   <div class="dialog-body">
-    <div class="row"><h2>Orari e disponibilità</h2><button class="btn ghost small" type="button" onclick="staffHoursDialog.close()">Chiudi</button></div>
+    <div class="row"><h2>Orari e disponibilità</h2><button class="btn ghost small" type="button" onclick="document.getElementById('staffHoursDialog').close()">Chiudi</button></div>
     <p class="muted">Seleziona il barbiere e modifica giorni e fasce. Puoi usare due fasce per la pausa pranzo.</p>
     <div id="hoursBarberButtons" class="hours-barber-select"></div>
     <div id="staffHoursEditor"></div>
@@ -578,7 +655,7 @@
 
 <dialog id="staffTimeOffDialog">
   <div class="dialog-body">
-    <div class="row"><h2>Ferie e assenze</h2><button class="btn ghost small" type="button" onclick="staffTimeOffDialog.close()">Chiudi</button></div>
+    <div class="row"><h2>Ferie e assenze</h2><button class="btn ghost small" type="button" onclick="document.getElementById('staffTimeOffDialog').close()">Chiudi</button></div>
     <div class="field"><label>Barbiere</label><select id="timeOffBarber"></select></div>
     <div class="grid two"><div class="field"><label>Dal</label><input id="timeOffStart" type="datetime-local"></div><div class="field"><label>Al</label><input id="timeOffEnd" type="datetime-local"></div></div>
     <div class="field"><label>Motivo (facoltativo)</label><input id="timeOffReason" placeholder="Ferie, permesso..."></div>
@@ -589,7 +666,7 @@
 
 <dialog id="staffProfileDialog">
   <div class="dialog-body">
-    <div class="row"><h2>Profilo gestionale</h2><button class="btn ghost small" type="button" onclick="staffProfileDialog.close()">Chiudi</button></div>
+    <div class="row"><h2>Profilo gestionale</h2><button class="btn ghost small" type="button" onclick="document.getElementById('staffProfileDialog').close()">Chiudi</button></div>
     <div class="profile-avatar-wrap"><img id="staffAvatarPreview" class="profile-avatar" alt="Foto profilo"><div><strong id="staffProfileName">Hair Cut Dream</strong><div class="muted" id="staffProfileEmail"></div></div></div>
     <div class="field"><label>Foto profilo</label><input id="staffAvatarFile" type="file" accept="image/*"></div>
     <button class="btn ghost" style="width:100%;margin-bottom:18px" onclick="uploadStaffAvatar()">CARICA FOTO</button>
@@ -638,6 +715,7 @@ function hideAll(){
 }
 
 function showGuest(){
+  document.body.classList.remove("staff-mode");
   hideAll();
   $("guestHome").classList.remove("hide");
 }
@@ -900,7 +978,7 @@ function openEditAppointment(id){
   $("editTime").value=a.start_time.slice(0,5);
   $("editDuration").value=a.duration_minutes||30;
   $("editNotes").value=a.barber_notes||"";
-  editAppointmentDialog.showModal();
+  $("editAppointmentDialog").showModal();
 }
 
 $("editAppointmentForm").addEventListener("submit", async e=>{
@@ -919,7 +997,7 @@ $("editAppointmentForm").addEventListener("submit", async e=>{
   };
   const {error}=await sb.from("appointments").update(payload).eq("id",$("editAppointmentId").value);
   if(error) return msg(error.message,"error");
-  editAppointmentDialog.close(); msg("Appuntamento aggiornato.","ok"); loadStaffAgenda();
+  $("editAppointmentDialog").close(); msg("Appuntamento aggiornato.","ok"); loadStaffAgenda();
 });
 
 async function loadStaffClients(){
@@ -939,10 +1017,15 @@ async function refreshStaffAll(){
 }
 
 async function showStaffHours(){
+  const dlg=$("staffHoursDialog");
+  if(!dlg) return msg("Finestra orari non disponibile.","error");
+  if(!barbers.length) await loadPublicData();
   hoursEditorBarberId = staffSelectedBarberId!=="all" ? staffSelectedBarberId : (barbers[0]?.id||null);
   renderHoursBarberButtons();
+  dlg.showModal();
+  const root=$("staffHoursEditor");
+  if(root) root.innerHTML='<div class="loading-box">Caricamento orari…</div>';
   await loadHoursEditor();
-  staffHoursDialog.showModal();
 }
 function renderHoursBarberButtons(){
   const root=$("hoursBarberButtons"); if(!root) return;
@@ -975,7 +1058,7 @@ async function saveStaffHours(){
 async function showStaffTimeOff(){
   $("timeOffBarber").innerHTML=barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join('');
   if(staffSelectedBarberId!=="all") $("timeOffBarber").value=staffSelectedBarberId;
-  await loadStaffTimeOff(); staffTimeOffDialog.showModal();
+  await loadStaffTimeOff(); $("staffTimeOffDialog").showModal();
 }
 async function loadStaffTimeOff(){
   const {data,error}=await sb.from('time_off').select('*, barbers(full_name)').order('start_datetime',{ascending:true}); const root=$("staffTimeOffList");
@@ -991,7 +1074,7 @@ async function addStaffTimeOff(){
 async function deleteStaffTimeOff(id){ if(!confirm('Eliminare questa assenza?'))return; const {error}=await sb.from('time_off').delete().eq('id',id); if(error)msg(error.message,'error'); else loadStaffTimeOff(); }
 function showStaffProfile(){
   $("staffProfileName").textContent=currentProfile?.full_name||'Hair Cut Dream'; $("staffProfileEmail").textContent=sessionUser?.email||'';
-  $("staffAvatarPreview").src=currentProfile?.avatar_url||'icon-192.png'; staffProfileDialog.showModal();
+  $("staffAvatarPreview").src=currentProfile?.avatar_url||'icon-192.png'; $("staffProfileDialog").showModal();
 }
 async function uploadStaffAvatar(){
   const file=$("staffAvatarFile").files?.[0]; if(!file)return msg('Seleziona prima una foto.','error');
@@ -1074,6 +1157,7 @@ async function afterLogin(user){
   hideAll();
 
   if(appRole === "admin" || appRole === "barber"){
+    document.body.classList.add("staff-mode");
     $("staffApp").classList.remove("hide");
     $("staffTabs").classList.remove("hide");
     await loadPublicData();
@@ -1082,6 +1166,7 @@ async function afterLogin(user){
     await Promise.all([loadStaffAgenda(),loadStaffClients()]);
     startRealtimeAppointments();
   } else {
+    document.body.classList.remove("staff-mode");
     $("customerApp").classList.remove("hide");
     $("customerTabs").classList.remove("hide");
     await ensureCustomer(profile);
@@ -1116,7 +1201,7 @@ async function logout(){
 function openBooking(){
   if(!sessionUser) return showAuth("login");
   $("bookingDate").min = new Date().toISOString().slice(0,10);
-  bookingDialog.showModal();
+  $("bookingDialog").showModal();
   refreshSlots();
 }
 
@@ -1204,7 +1289,7 @@ $("bookingForm").addEventListener("submit", async e=>{
   const {error}=await sb.from("appointments").insert(payload);
   if(error) return msg(error.message,"error");
 
-  bookingDialog.close();
+  $("bookingDialog").close();
   msg("Prenotazione confermata.","ok");
   await loadCustomerAppointments();
 });
@@ -1265,7 +1350,7 @@ function editService(id){
   $("serviceEditName").value=s.name||"";
   $("serviceEditDuration").value=s.duration_minutes||30;
   $("serviceEditPrice").value=s.price??"";
-  serviceEditDialog.showModal();
+  $("serviceEditDialog").showModal();
 }
 
 $("serviceEditForm").addEventListener("submit", async e=>{
@@ -1277,13 +1362,13 @@ $("serviceEditForm").addEventListener("submit", async e=>{
   };
   const {error}=await sb.from("services").update(payload).eq("id",$("serviceEditId").value);
   if(error) return msg(error.message,"error");
-  serviceEditDialog.close(); await loadPublicData(); renderStaffServices(); msg("Servizio aggiornato.","ok");
+  $("serviceEditDialog").close(); await loadPublicData(); renderStaffServices(); msg("Servizio aggiornato.","ok");
 });
 
 function openManualAppointment(){
   $("manualDate").value=staffCurrentDate || new Date().toISOString().slice(0,10);
   if(staffSelectedBarberId!=="all") $("manualBarber").value=staffSelectedBarberId;
-  manualDialog.showModal();
+  $("manualDialog").showModal();
 }
 
 $("manualService").addEventListener("change", ()=>{
@@ -1319,7 +1404,7 @@ $("manualForm").addEventListener("submit", async e=>{
   const {error}=await sb.from("appointments").insert(payload);
   if(error) return msg(error.message,"error");
 
-  manualDialog.close();
+  $("manualDialog").close();
   $("manualForm").reset();
   msg("Appuntamento inserito.","ok");
   loadStaffAgenda();
