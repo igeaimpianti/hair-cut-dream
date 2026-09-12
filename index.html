@@ -264,6 +264,46 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 @media(max-width:700px){.staff-mode .content{padding:14px 12px 26px}.staff-mode .card{padding:17px;border-radius:22px}.staff-mode .staff-title{font-size:27px}.settings-grid{grid-template-columns:1fr}.setting-card{padding:15px;grid-template-columns:44px 1fr 20px}.setting-icon{width:44px;height:44px;border-radius:14px}.hours-ranges{grid-template-columns:1fr 1fr}.staff-section-head{padding-top:4px}.staff-kpis{grid-template-columns:repeat(3,1fr)!important}.staff-kpi{padding:12px 9px!important}.staff-kpi b{font-size:17px!important}}
 @media(max-width:430px){.staff-tabs .tab{font-size:10px!important;padding-left:2px!important;padding-right:2px!important}.staff-tabs .tabIcon,.staff-tabs .tabIcon svg{width:21px;height:21px}.staff-tabs .bookingTab span:last-child{font-size:9px}.selected-barber-card{padding:16px}}
 
+
+/* ===== GESTIONALE V5 ===== */
+.staff-tabs{
+  width:min(720px,calc(100% - 28px))!important;
+  bottom:14px!important;
+  border:1px solid #e7e7e4!important;
+  border-radius:24px!important;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important;
+  box-shadow:0 16px 45px rgba(0,0,0,.14)!important;
+  overflow:visible;
+}
+.staff-tabs .tab{min-height:58px;border-radius:16px!important;font-size:11px!important;transition:.15s ease}
+.staff-tabs .tab.active:not(.bookingTab){background:#f1f1ef!important;color:#000!important}
+.staff-tabs .tab.active:not(.bookingTab) .tabIcon{transform:none!important}
+.staff-tabs .tabIcon,.staff-tabs .tabIcon svg{width:22px;height:22px}
+.staff-tabs .bookingTab{margin-top:-28px!important}
+.staff-tabs .bookingTab .bookingIcon{width:58px;height:58px;border-radius:19px!important;border:4px solid #fff;box-shadow:0 10px 28px rgba(0,0,0,.25)!important}
+.staff-tabs .bookingTab>span:last-child{margin-top:1px!important;font-size:9.5px!important}
+.staff-hours-page{max-width:920px;margin:0 auto}
+.hours-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.back-btn{border:0;background:#ececea;border-radius:14px;padding:11px 14px;font-weight:900}
+.hours-savebar{position:sticky;bottom:96px;background:rgba(243,244,246,.92);backdrop-filter:blur(12px);padding:10px 0 2px;z-index:5}
+.hours-day-v5{border:1px solid #e5e5e2;background:#fff;border-radius:20px;padding:16px;margin-bottom:10px}
+.hours-day-v5.closed .hours-inputs{opacity:.35;pointer-events:none}
+.hours-day-v5 .hours-day-head{margin-bottom:12px}
+.hours-inputs{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end}
+.hours-range-row{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end;margin-top:8px}
+.range-label{font-size:10px;font-weight:900;color:#888;text-transform:uppercase;letter-spacing:.05em}
+.remove-range{border:0;background:#fff0f0;color:#9c2525;border-radius:12px;padding:12px;font-weight:900}
+.add-range{border:1px dashed #cfcfca;background:#fafafa;border-radius:13px;padding:11px 13px;font-weight:850;margin-top:9px}
+.install-card{border:1px solid #dededb;background:linear-gradient(180deg,#fff,#f7f7f5);border-radius:20px;padding:18px;margin-bottom:14px}
+.install-card h3{margin-bottom:5px}.install-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.install-actions .btn{flex:1}
+#iosInstallDialog{width:min(520px,calc(100% - 24px))}
+@media(max-width:700px){
+  .staff-tabs{width:calc(100% - 16px)!important;bottom:8px!important;border-radius:20px!important;padding-left:4px!important;padding-right:4px!important}
+  .staff-tabs .tab{font-size:9.5px!important;padding:7px 1px!important}
+  .staff-tabs .bookingTab>span:last-child{font-size:8.5px!important}
+  .hours-inputs,.hours-range-row{grid-template-columns:1fr 1fr auto}
+}
+
 </style>
 </head>
 <body>
@@ -279,6 +319,11 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
       <div class="card">
         <h1>Il tuo prossimo look, senza attese.</h1>
         <p class="muted">Prenota Hair Cut Dream in pochi secondi e gestisci i tuoi appuntamenti da un'unica app.</p>
+        <div id="installAppCard" class="install-card hide">
+          <h3>Installa Hair Cut Dream</h3>
+          <p class="muted" style="margin-bottom:0">Aggiungi l'app alla schermata Home per aprirla più velocemente.</p>
+          <div class="install-actions"><button class="btn primary" type="button" onclick="installHairCutDream()">INSTALLA APP</button></div>
+        </div>
         <div class="grid">
           <button class="btn primary" onclick="showAuth('register')">REGISTRATI</button>
           <button class="btn secondary" onclick="showAuth('login')">ACCEDI</button>
@@ -444,7 +489,7 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
         </div>
 
         <div class="settings-grid">
-          <button class="setting-card" type="button" onclick="showStaffHours()">
+          <button class="setting-card" type="button" onclick="openStaffHoursPage()">
             <span class="setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
             <span><strong>Orari e disponibilità</strong><small>Giorni, aperture e fasce orarie per ogni barbiere</small></span>
             <span class="setting-arrow">›</span>
@@ -467,6 +512,21 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
         </div>
 
         <button class="logout-card" type="button" onclick="logout()">Esci dal gestionale</button>
+      </div>
+
+      <div id="staffHoursPage" class="staff-page hide staff-hours-page">
+        <div class="hours-toolbar">
+          <button class="back-btn" type="button" onclick="backToStaffMore()">‹ Altro</button>
+          <span class="eyebrow">ORARI DI LAVORO</span>
+        </div>
+        <div class="card">
+          <h1 class="staff-title">Orari e disponibilità</h1>
+          <p class="muted">Scegli il barbiere e modifica giorni e fasce orarie. Le disponibilità dei clienti si aggiornano automaticamente.</p>
+          <div id="hoursBarberButtonsPage" class="hours-barber-select"></div>
+          <button class="btn ghost small" type="button" style="width:100%;margin-bottom:14px" onclick="copyHoursToOtherBarber()">COPIA QUESTI ORARI ALL'ALTRO BARBIERE</button>
+          <div id="staffHoursEditorPage"></div>
+          <div class="hours-savebar"><button class="btn primary" style="width:100%" type="button" onclick="saveStaffHoursPage()">SALVA ORARI</button></div>
+        </div>
       </div>
       <div class="staff-bottom-space"></div>
     </section>
@@ -677,6 +737,14 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
   </div>
 </dialog>
 
+<dialog id="iosInstallDialog">
+  <div class="dialog-body">
+    <div class="row"><h2>Installa Hair Cut Dream</h2><button class="btn ghost small" type="button" onclick="document.getElementById('iosInstallDialog').close()">Chiudi</button></div>
+    <p>Su iPhone apri il menu <strong>Condividi</strong> di Safari e scegli <strong>Aggiungi alla schermata Home</strong>, poi conferma con <strong>Aggiungi</strong>.</p>
+    <button class="btn primary" style="width:100%" type="button" onclick="document.getElementById('iosInstallDialog').close()">HO CAPITO</button>
+  </div>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
@@ -684,6 +752,7 @@ let sb = null;
 let sessionUser = null;
 let appRole = "customer";
 let customerRow = null;
+let deferredInstallPrompt = null;
 let services = [];
 let barbers = [];
 let staffSelectedBarberId = localStorage.getItem("hcd_staff_barber") || "all";
@@ -1016,45 +1085,108 @@ async function refreshStaffAll(){
   await loadPublicData(); await Promise.all([loadStaffAgenda(),loadStaffClients()]); renderStaffServices(); msg("Gestionale aggiornato.","ok");
 }
 
-async function showStaffHours(){
-  const dlg=$("staffHoursDialog");
-  if(!dlg) return msg("Finestra orari non disponibile.","error");
+async function openStaffHoursPage(){
+  document.querySelectorAll("#staffApp .staff-page").forEach(x=>x.classList.add("hide"));
+  $("staffHoursPage").classList.remove("hide");
+  document.querySelectorAll("#staffTabs .tab").forEach(x=>x.classList.remove("active"));
+  const moreTab=document.querySelector('[data-staff-page="staffMorePage"]');
+  if(moreTab) moreTab.classList.add("active");
   if(!barbers.length) await loadPublicData();
-  hoursEditorBarberId = staffSelectedBarberId!=="all" ? staffSelectedBarberId : (barbers[0]?.id||null);
-  renderHoursBarberButtons();
-  dlg.showModal();
-  const root=$("staffHoursEditor");
-  if(root) root.innerHTML='<div class="loading-box">Caricamento orari…</div>';
-  await loadHoursEditor();
+  hoursEditorBarberId=staffSelectedBarberId!=="all" ? staffSelectedBarberId : (barbers[0]?.id||null);
+  renderHoursBarberButtonsPage();
+  await loadHoursEditorPage();
 }
-function renderHoursBarberButtons(){
-  const root=$("hoursBarberButtons"); if(!root) return;
-  root.innerHTML=barbers.map(b=>`<button class="barber-chip ${b.id===hoursEditorBarberId?'active':''}" onclick="selectHoursBarber('${b.id}')">${escapeHtml(shortBarberName(b.full_name))}</button>`).join('');
+function backToStaffMore(){
+  const btn=document.querySelector('[data-staff-page="staffMorePage"]');
+  if(btn) goStaffPage(btn);
 }
-async function selectHoursBarber(id){ hoursEditorBarberId=id; renderHoursBarberButtons(); await loadHoursEditor(); }
-async function loadHoursEditor(){
-  const root=$("staffHoursEditor"); if(!root||!hoursEditorBarberId) return;
+function renderHoursBarberButtonsPage(){
+  const root=$("hoursBarberButtonsPage"); if(!root) return;
+  root.innerHTML=barbers.map(b=>`<button type="button" class="barber-chip ${b.id===hoursEditorBarberId?'active':''}" onclick="selectHoursBarberPage('${b.id}')">${escapeHtml(shortBarberName(b.full_name))}</button>`).join('');
+}
+async function selectHoursBarberPage(id){
+  hoursEditorBarberId=id;
+  renderHoursBarberButtonsPage();
+  await loadHoursEditorPage();
+}
+async function loadHoursEditorPage(){
+  const root=$("staffHoursEditorPage"); if(!root||!hoursEditorBarberId) return;
+  root.innerHTML='<div class="loading-box">Caricamento orari…</div>';
   const {data,error}=await sb.from("working_hours").select("*").eq("barber_id",hoursEditorBarberId).eq("active",true).order("day_of_week").order("start_time");
-  if(error){root.innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`;return;}
+  if(error){root.innerHTML=`<p class="notice error">${escapeHtml(error.message)}</p>`;return;}
   const rows=data||[], names=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
   root.innerHTML=names.map((name,day)=>{
     const r=rows.filter(x=>Number(x.day_of_week)===day);
-    return `<div class="hours-day" data-day="${day}"><div class="hours-day-head"><strong>${name}</strong><label style="margin:0"><input class="day-active" type="checkbox" style="width:auto" ${r.length?'checked':''}> Aperto</label></div>
-      <div class="hours-ranges"><input class="h1s" type="time" value="${r[0]?.start_time?.slice(0,5)||''}"><input class="h1e" type="time" value="${r[0]?.end_time?.slice(0,5)||''}"><input class="h2s" type="time" value="${r[1]?.start_time?.slice(0,5)||''}"><input class="h2e" type="time" value="${r[1]?.end_time?.slice(0,5)||''}"></div></div>`;
+    const ranges=r.length?r:[null];
+    return `<div class="hours-day-v5 ${r.length?'':'closed'}" data-day="${day}">
+      <div class="hours-day-head">
+        <strong>${name}</strong>
+        <label style="margin:0;display:flex;align-items:center;gap:7px"><input class="day-active" type="checkbox" style="width:auto" ${r.length?'checked':''} onchange="toggleHoursDay(this)"> ${r.length?'Aperto':'Chiuso'}</label>
+      </div>
+      <div class="hours-ranges-list">
+        ${ranges.map((x,i)=>hoursRangeHtml(x?.start_time?.slice(0,5)||'',x?.end_time?.slice(0,5)||'',i)).join('')}
+      </div>
+      <button class="add-range" type="button" onclick="addHoursRange(this)">+ Aggiungi fascia</button>
+    </div>`;
   }).join('');
 }
-async function saveStaffHours(){
-  if(!hoursEditorBarberId) return;
-  const inserts=[];
-  for(const el of document.querySelectorAll('#staffHoursEditor .hours-day')){
-    if(!el.querySelector('.day-active').checked) continue;
-    const day=Number(el.dataset.day), pairs=[[el.querySelector('.h1s').value,el.querySelector('.h1e').value],[el.querySelector('.h2s').value,el.querySelector('.h2e').value]];
-    for(const [a,b] of pairs){ if(a&&b){ if(a>=b) return msg(`Orario non valido per il giorno selezionato.`,"error"); inserts.push({barber_id:hoursEditorBarberId,day_of_week:day,start_time:a,end_time:b,active:true}); } }
-  }
-  const {error:delErr}=await sb.from('working_hours').delete().eq('barber_id',hoursEditorBarberId); if(delErr) return msg(delErr.message,'error');
-  if(inserts.length){const {error}=await sb.from('working_hours').insert(inserts); if(error) return msg(error.message,'error');}
-  msg('Orari salvati. Le disponibilità cliente sono già aggiornate.','ok'); await loadHoursEditor();
+function hoursRangeHtml(start='',end='',i=0){
+  return `<div class="hours-range-row"><div><div class="range-label">Dalle</div><input class="range-start" type="time" value="${start}"></div><div><div class="range-label">Alle</div><input class="range-end" type="time" value="${end}"></div><button class="remove-range" type="button" onclick="removeHoursRange(this)" aria-label="Rimuovi fascia">×</button></div>`;
 }
+function toggleHoursDay(cb){
+  const day=cb.closest('.hours-day-v5');
+  day.classList.toggle('closed',!cb.checked);
+  cb.parentElement.lastChild.textContent=cb.checked?' Aperto':' Chiuso';
+  if(cb.checked && !day.querySelector('.hours-range-row')) day.querySelector('.hours-ranges-list').innerHTML=hoursRangeHtml();
+}
+function addHoursRange(btn){
+  const day=btn.closest('.hours-day-v5');
+  day.querySelector('.day-active').checked=true; day.classList.remove('closed');
+  day.querySelector('.hours-ranges-list').insertAdjacentHTML('beforeend',hoursRangeHtml());
+}
+function removeHoursRange(btn){
+  const day=btn.closest('.hours-day-v5');
+  btn.closest('.hours-range-row').remove();
+  if(!day.querySelector('.hours-range-row')){day.querySelector('.day-active').checked=false;day.classList.add('closed');}
+}
+function collectHoursFromPage(barberId){
+  const inserts=[];
+  for(const el of document.querySelectorAll('#staffHoursEditorPage .hours-day-v5')){
+    if(!el.querySelector('.day-active').checked) continue;
+    const day=Number(el.dataset.day);
+    for(const row of el.querySelectorAll('.hours-range-row')){
+      const a=row.querySelector('.range-start').value,b=row.querySelector('.range-end').value;
+      if(!a&&!b) continue;
+      if(!a||!b||a>=b) throw new Error('Controlla le fasce orarie di '+["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"][day]+'.');
+      inserts.push({barber_id:barberId,day_of_week:day,start_time:a,end_time:b,active:true});
+    }
+  }
+  return inserts;
+}
+async function replaceBarberHours(barberId,inserts){
+  const {error:delErr}=await sb.from('working_hours').delete().eq('barber_id',barberId); if(delErr) throw delErr;
+  if(inserts.length){const {error}=await sb.from('working_hours').insert(inserts); if(error) throw error;}
+}
+async function saveStaffHoursPage(){
+  if(!hoursEditorBarberId) return msg('Seleziona un barbiere.','error');
+  try{
+    const inserts=collectHoursFromPage(hoursEditorBarberId);
+    await replaceBarberHours(hoursEditorBarberId,inserts);
+    msg('Orari salvati. Le prenotazioni cliente usano già i nuovi orari.','ok');
+    await loadHoursEditorPage();
+  }catch(e){msg(e.message||'Errore durante il salvataggio.','error');}
+}
+async function copyHoursToOtherBarber(){
+  if(!hoursEditorBarberId||barbers.length<2) return;
+  const other=barbers.find(b=>b.id!==hoursEditorBarberId); if(!other) return;
+  if(!confirm(`Copiare gli orari su ${other.full_name}? I suoi orari attuali verranno sostituiti.`)) return;
+  try{
+    const src=collectHoursFromPage(hoursEditorBarberId).map(x=>({...x,barber_id:other.id}));
+    await replaceBarberHours(other.id,src);
+    msg(`Orari copiati su ${other.full_name}.`,'ok');
+  }catch(e){msg(e.message||'Errore durante la copia.','error');}
+}
+
 async function showStaffTimeOff(){
   $("timeOffBarber").innerHTML=barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join('');
   if(staffSelectedBarberId!=="all") $("timeOffBarber").value=staffSelectedBarberId;
@@ -1422,6 +1554,32 @@ function fromMin(m){ return `${String(Math.floor(m/60)).padStart(2,"0")}:${Strin
 function fmtDate(d){ return new Intl.DateTimeFormat("it-IT",{weekday:"short",day:"2-digit",month:"short"}).format(new Date(d+"T12:00:00")); }
 function labelStatus(s){ return ({booked:"Prenotato",confirmed:"Confermato",completed:"Completato",cancelled:"Annullato",no_show:"No-show"})[s]||s; }
 function escapeHtml(v){ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c])); }
+
+let isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+function isIOSDevice(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+function updateInstallCard(){
+  const card=$("installAppCard"); if(!card) return;
+  card.classList.toggle('hide',isStandalone || (!deferredInstallPrompt && !isIOSDevice()));
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredInstallPrompt=e; updateInstallCard();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null; isStandalone=true; updateInstallCard();
+});
+async function installHairCutDream(){
+  if(isStandalone) return;
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt=null; updateInstallCard(); return;
+  }
+  if(isIOSDevice()){
+    const d=$("iosInstallDialog"); if(d) d.showModal(); return;
+  }
+  msg('Apri il menu del browser e scegli “Installa app” o “Aggiungi alla schermata Home”.','');
+}
+updateInstallCard();
 
 init();
 </script>
