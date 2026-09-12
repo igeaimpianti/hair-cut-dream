@@ -2,7 +2,6 @@ const CACHE = "hair-cut-dream-v2";
 const ASSETS = [
   "./",
   "./index.html",
-  "./config.js",
   "./manifest.webmanifest",
   "./banner-haircutdream.png",
   "./icon-192.png",
