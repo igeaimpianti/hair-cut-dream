@@ -251,11 +251,31 @@
   </main>
 
   <nav id="customerTabs" class="tabs hide">
-    <button class="tab active" data-page="customerHome" onclick="goPage(this)">Home</button>
-    <button class="tab" onclick="openBooking()">Prenota</button>
-    <button class="tab" data-page="customerAppointments" onclick="goPage(this)">Appuntamenti</button>
-    <button class="tab" data-page="customerProfile" onclick="goPage(this)">Profilo</button>
-  </nav>
+  <button class="tab active" data-page="customerHome" onclick="goPage(this)">
+    <span class="tabIcon">⌂</span>
+    <span>Home</span>
+  </button>
+
+  <button class="tab" data-page="customerServices" onclick="goPage(this)">
+    <span class="tabIcon">✂</span>
+    <span>Servizi</span>
+  </button>
+
+  <button class="tab bookingTab" onclick="openBooking()">
+    <span class="bookingIcon">＋</span>
+    <span>PRENOTA</span>
+  </button>
+
+  <button class="tab" data-page="customerAppointments" onclick="goPage(this)">
+    <span class="tabIcon">▣</span>
+    <span>Appuntamenti</span>
+  </button>
+
+  <button class="tab" data-page="customerProfile" onclick="goPage(this)">
+    <span class="tabIcon">♙</span>
+    <span>Profilo</span>
+  </button>
+</nav>
 </div>
 
 <dialog id="bookingDialog">
