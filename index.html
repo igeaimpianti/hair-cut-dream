@@ -1193,13 +1193,22 @@ async function openStaffHoursPage(){
 
   hoursEditorBarberId = preferred?.id || barbers[0].id;
 
-  renderHoursBarberButtonsPage();
-  await loadHoursEditorPage();
+  try{
+    renderHoursBarberButtonsPage();
+    await loadHoursEditorPage();
+  }catch(e){
+    console.error("Errore pagina orari:", e);
+    if(root) root.innerHTML=`<div class="notice error">Errore apertura orari: ${escapeHtml(e.message || String(e))}</div>`;
+  }
 }
 
 function backToStaffMore(){
   const btn=document.querySelector('[data-staff-page="staffMorePage"]');
   if(btn) goStaffPage(btn);
+}
+
+function shortBarberName(name){
+  return String(name || "").replace(/^Raffaele\s+/i, "").trim() || "Barbiere";
 }
 
 function renderHoursBarberButtonsPage(){
