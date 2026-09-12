@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hair Cut Dream">
+  <title>Hair Cut Dream</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <style>
+    :root{
+      --bg:#f5f5f3;
+      --card:#ffffff;
+      --ink:#0b0b0b;
+      --muted:#6b6b6b;
+      --line:#dededb;
+      --soft:#ececea;
+      --danger:#a12222;
+      --ok:#1f6c41;
+      --radius:22px;
+      --shadow:0 18px 55px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .shell{max-width:760px;margin:0 auto;min-height:100vh;padding-bottom:95px}
+    .hero{
+      background:#fff;
+      padding:18px 18px 8px;
+      border-bottom:1px solid var(--line);
+      position:sticky;top:0;z-index:20;
+    }
+    .hero img{display:block;width:100%;max-height:155px;object-fit:contain}
+    .content{padding:20px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+      margin-bottom:16px;
+    }
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:30px;letter-spacing:-.04em;margin-bottom:8px}
+    h2{font-size:22px;letter-spacing:-.025em}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:1fr 1fr}
+    .btn{
+      border:0;border-radius:16px;padding:15px 18px;font-weight:800;
+      min-height:50px;transition:.15s transform,.15s opacity;
+    }
+    .btn:active{transform:scale(.985)}
+    .btn.primary{background:#0b0b0b;color:#fff}
+    .btn.secondary{background:#fff;color:#0b0b0b;border:1px solid #0b0b0b}
+    .btn.ghost{background:var(--soft);color:#0b0b0b}
+    .btn.danger{background:#fff1f1;color:var(--danger);border:1px solid #efd0d0}
+    .btn.small{min-height:38px;padding:9px 12px;border-radius:12px;font-size:14px}
+    label{font-size:13px;font-weight:800;display:block;margin:4px 0 7px}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line);border-radius:14px;
+      padding:14px;background:#fff;color:#111;outline:none;
+    }
+    input:focus,select:focus,textarea:focus{border-color:#111}
+    textarea{min-height:90px;resize:vertical}
+    .field{margin-bottom:13px}
+    .hide{display:none!important}
+    .notice{padding:12px 14px;border-radius:14px;background:#f0f0ee;margin-bottom:14px;font-size:14px}
+    .notice.error{background:#fff0f0;color:#8e1b1b}
+    .notice.ok{background:#eef8f1;color:#215c37}
+    .service{
+      display:flex;justify-content:space-between;align-items:center;gap:14px;
+      padding:15px 0;border-bottom:1px solid var(--line);
+    }
+    .service:last-child{border-bottom:0}
+    .pill{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:6px 9px;white-space:nowrap}
+    .tabs{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;
+      width:min(760px,100%);display:grid;grid-template-columns:repeat(4,1fr);
+      background:rgba(255,255,255,.96);backdrop-filter:blur(16px);
+      border-top:1px solid var(--line);z-index:30;padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    }
+    .tab{border:0;background:transparent;padding:9px 5px;font-size:12px;font-weight:800}
+    .tab.active{background:#0b0b0b;color:white;border-radius:12px}
+    .appointment{
+      border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:10px;
+    }
+    .row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .staff-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .agenda-item{
+      display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
+    }
+    .time{font-weight:900}
+    dialog{
+      border:0;border-radius:24px;padding:0;width:min(620px,calc(100% - 24px));
+      box-shadow:0 35px 100px rgba(0,0,0,.28);
+    }
+    dialog::backdrop{background:rgba(0,0,0,.5)}
+    .dialog-body{padding:22px}
+    @media(max-width:560px){
+      .grid.two{grid-template-columns:1fr}
+      .content{padding:14px}
+      .hero{padding:10px 12px 6px}
+      .hero img{max-height:110px}
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <img src="banner-haircutdream.png" alt="Hair Cut Dream Salon">
+  </header>
+
+  <main class="content">
+    <div id="message"></div>
+
+    <section id="guestHome">
+      <div class="card">
+        <h1>Il tuo prossimo look, senza attese.</h1>
+        <p class="muted">Prenota Hair Cut Dream in pochi secondi e gestisci i tuoi appuntamenti da un'unica app.</p>
+        <div class="grid">
+          <button class="btn primary" onclick="showAuth('register')">REGISTRATI</button>
+          <button class="btn secondary" onclick="showAuth('login')">ACCEDI</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Servizi</h2>
+        <div id="publicServices"><p class="muted">Caricamento servizi…</p></div>
+      </div>
+    </section>
+
+    <section id="authView" class="hide">
+      <div class="card">
+        <div class="row">
+          <h2 id="authTitle">Accedi</h2>
+          <button class="btn ghost small" onclick="showGuest()">Chiudi</button>
+        </div>
+
+        <form id="registerForm" class="hide">
+          <div class="grid two">
+            <div class="field">
+              <label>Nome</label>
+              <input id="regName" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label>Cognome</label>
+              <input id="regSurname" autocomplete="family-name" required>
+            </div>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="regEmail" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input id="regPassword" type="password" minlength="8" autocomplete="new-password" required>
+          </div>
+          <div class="field">
+            <label>Conferma password</label>
+            <input id="regPassword2" type="password" minlength="8" autocomplete="new-password" required>
+          </div>
+          <button class="btn primary" type="submit">CREA ACCOUNT</button>
+        </form>
+
+        <form id="loginForm">
+          <div class="field">
+            <label>Email</label>
+            <input id="loginEmail" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input id="loginPassword" type="password" autocomplete="current-password" required>
+          </div>
+          <div class="grid">
+            <button class="btn primary" type="submit">ACCEDI</button>
+            <button class="btn ghost" type="button" onclick="forgotPassword()">Password dimenticata?</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="customerApp" class="hide">
+      <div id="customerHome" class="page">
+        <div class="card">
+          <p class="muted">Ciao,</p>
+          <h1 id="helloName">Cliente</h1>
+          <button class="btn primary" onclick="openBooking()">PRENOTA ORA</button>
+        </div>
+        <div class="card">
+          <h2>Prossimo appuntamento</h2>
+          <div id="nextAppointment"><p class="muted">Nessun appuntamento in programma.</p></div>
+        </div>
+      </div>
+
+      <div id="customerAppointments" class="page hide">
+        <div class="card">
+          <h2>I miei appuntamenti</h2>
+          <div id="customerAppointmentsList"></div>
+        </div>
+      </div>
+
+      <div id="customerProfile" class="page hide">
+        <div class="card">
+          <h2>Profilo</h2>
+          <div id="profileSummary"></div>
+          <div class="notice">
+            L'accesso biometrico con Face ID / impronta verrà attivato con Passkey in una fase dedicata. Non lo simuliamo: lo implementeremo in modo sicuro.
+          </div>
+          <button class="btn secondary" onclick="logout()">Esci</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="staffApp" class="hide">
+      <div class="card">
+        <div class="staff-head">
+          <div>
+            <p class="muted">Gestionale</p>
+            <h1>Hair Cut Dream</h1>
+          </div>
+          <button class="btn primary small" onclick="openManualAppointment()">+ Appuntamento</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <h2>Agenda di oggi</h2>
+          <button class="btn ghost small" onclick="loadTodayAgenda()">Aggiorna</button>
+        </div>
+        <div id="todayAgenda"></div>
+      </div>
+
+      <div class="card">
+        <h2>Servizi</h2>
+        <p class="muted">Durate e prezzi sono modificabili solo dal gestionale.</p>
+        <div id="staffServices"></div>
+      </div>
+
+      <div class="card">
+        <button class="btn secondary" onclick="logout()">Esci</button>
+      </div>
+    </section>
+  </main>
+
+  <nav id="customerTabs" class="tabs hide">
+    <button class="tab active" data-page="customerHome" onclick="goPage(this)">Home</button>
+    <button class="tab" onclick="openBooking()">Prenota</button>
+    <button class="tab" data-page="customerAppointments" onclick="goPage(this)">Appuntamenti</button>
+    <button class="tab" data-page="customerProfile" onclick="goPage(this)">Profilo</button>
+  </nav>
+</div>
+
+<dialog id="bookingDialog">
+  <div class="dialog-body">
+    <div class="row">
+      <h2>Prenota</h2>
+      <button class="btn ghost small" onclick="bookingDialog.close()">Chiudi</button>
+    </div>
+
+    <form id="bookingForm">
+      <div class="field">
+        <label>Servizio</label>
+        <select id="bookingService" required></select>
+      </div>
+      <div class="field">
+        <label>Barbiere</label>
+        <select id="bookingBarber" required></select>
+      </div>
+      <div class="field">
+        <label>Giorno</label>
+        <input id="bookingDate" type="date" required>
+      </div>
+      <div class="field">
+        <label>Orario</label>
+        <select id="bookingTime" required>
+          <option value="">Seleziona prima giorno, servizio e barbiere</option>
+        </select>
+      </div>
+      <button class="btn primary" type="submit">CONFERMA PRENOTAZIONE</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="manualDialog">
+  <div class="dialog-body">
+    <div class="row">
+      <h2>Nuovo appuntamento</h2>
+      <button class="btn ghost small" onclick="manualDialog.close()">Chiudi</button>
+    </div>
+    <form id="manualForm">
+      <div class="grid two">
+        <div class="field">
+          <label>Nome e cognome</label>
+          <input id="manualName" placeholder="Facoltativo">
+        </div>
+        <div class="field">
+          <label>Telefono</label>
+          <input id="manualPhone" placeholder="Facoltativo">
+        </div>
+      </div>
+      <div class="field">
+        <label>Servizio</label>
+        <select id="manualService">
+          <option value="">Nessun servizio specificato</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Barbiere *</label>
+        <select id="manualBarber" required></select>
+      </div>
+      <div class="grid two">
+        <div class="field">
+          <label>Giorno *</label>
+          <input id="manualDate" type="date" required>
+        </div>
+        <div class="field">
+          <label>Ora *</label>
+          <input id="manualTime" type="time" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Durata (minuti)</label>
+        <input id="manualDuration" type="number" min="5" step="5" value="30">
+      </div>
+      <div class="field">
+        <label>Note</label>
+        <textarea id="manualNotes"></textarea>
+      </div>
+      <button class="btn primary" type="submit">SALVA APPUNTAMENTO</button>
+    </form>
+  </div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+let sb = null;
+let sessionUser = null;
+let appRole = "customer";
+let customerRow = null;
+let services = [];
+let barbers = [];
+
+const $ = id => document.getElementById(id);
+
+function configured(){
+  return window.HCD_CONFIG &&
+    !window.HCD_CONFIG.SUPABASE_URL.includes("INCOLLA_QUI") &&
+    !window.HCD_CONFIG.SUPABASE_ANON_KEY.includes("INCOLLA_QUI");
+}
+
+function msg(text, type=""){
+  $("message").innerHTML = `<div class="notice ${type}">${text}</div>`;
+  setTimeout(()=>{$("message").innerHTML=""}, 6500);
+}
+
+function hideAll(){
+  ["guestHome","authView","customerApp","staffApp"].forEach(id=>$(id).classList.add("hide"));
+  $("customerTabs").classList.add("hide");
+}
+
+function showGuest(){
+  hideAll();
+  $("guestHome").classList.remove("hide");
+}
+
+function showAuth(mode){
+  hideAll();
+  $("authView").classList.remove("hide");
+  const reg = mode === "register";
+  $("authTitle").textContent = reg ? "Crea il tuo account" : "Accedi";
+  $("registerForm").classList.toggle("hide", !reg);
+  $("loginForm").classList.toggle("hide", reg);
+}
+
+function goPage(btn){
+  document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));
+  const id = btn.dataset.page;
+  if(id) $(id).classList.remove("hide");
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  if(id==="customerAppointments") loadCustomerAppointments();
+}
+
+async function init(){
+  if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+
+  if(!configured()){
+    showGuest();
+    msg("Prima di usare l'app inserisci SUPABASE_URL e SUPABASE_ANON_KEY nel file config.js.", "error");
+    return;
+  }
+
+  sb = supabase.createClient(
+    window.HCD_CONFIG.SUPABASE_URL,
+    window.HCD_CONFIG.SUPABASE_ANON_KEY
+  );
+
+  await loadPublicData();
+
+  const {data:{session}} = await sb.auth.getSession();
+  if(session) await afterLogin(session.user);
+  else showGuest();
+
+  sb.auth.onAuthStateChange(async (_event, session)=>{
+    if(session) await afterLogin(session.user);
+  });
+}
+
+async function loadPublicData(){
+  if(!sb) return;
+  const [{data:s},{data:b}] = await Promise.all([
+    sb.from("services").select("*").eq("active",true).order("name"),
+    sb.from("barbers").select("*").eq("active",true).order("full_name")
+  ]);
+  services = s || [];
+  barbers = b || [];
+  renderPublicServices();
+  fillSelects();
+}
+
+function renderPublicServices(){
+  $("publicServices").innerHTML = services.length
+    ? services.map(s=>`
+      <div class="service">
+        <div><strong>${escapeHtml(s.name)}</strong></div>
+        <span class="pill">${s.duration_minutes} min${s.price!=null ? ` · €${Number(s.price).toFixed(2)}` : ""}</span>
+      </div>`).join("")
+    : `<p class="muted">Nessun servizio disponibile.</p>`;
+}
+
+function fillSelects(){
+  const serviceOptions = services.map(s=>`<option value="${s.id}">${escapeHtml(s.name)} · ${s.duration_minutes} min</option>`).join("");
+  const barberOptions = barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join("");
+  $("bookingService").innerHTML = `<option value="">Scegli servizio</option>${serviceOptions}`;
+  $("manualService").innerHTML = `<option value="">Nessun servizio specificato</option>${serviceOptions}`;
+  $("bookingBarber").innerHTML = `<option value="">Scegli barbiere</option>${barberOptions}`;
+  $("manualBarber").innerHTML = `<option value="">Scegli barbiere</option>${barberOptions}`;
+}
+
+$("registerForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=$("regName").value.trim(), surname=$("regSurname").value.trim();
+  const email=$("regEmail").value.trim(), pass=$("regPassword").value;
+  if(pass !== $("regPassword2").value) return msg("Le password non coincidono.", "error");
+
+  const {data,error} = await sb.auth.signUp({
+    email, password:pass,
+    options:{ data:{ full_name:`${name} ${surname}`.trim() } }
+  });
+
+  if(error) return msg(error.message, "error");
+
+  // Se la conferma email è attiva, il customer verrà creato al primo login.
+  msg("Account creato. Controlla la tua email e conferma l'indirizzo prima di accedere.", "ok");
+  showAuth("login");
+});
+
+$("loginForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const {error} = await sb.auth.signInWithPassword({
+    email:$("loginEmail").value.trim(),
+    password:$("loginPassword").value
+  });
+  if(error) msg(error.message, "error");
+});
+
+async function forgotPassword(){
+  const email = $("loginEmail").value.trim() || prompt("Inserisci la tua email:");
+  if(!email) return;
+  const {error} = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: location.origin + location.pathname
+  });
+  if(error) msg(error.message,"error");
+  else msg("Ti abbiamo inviato l'email per reimpostare la password.","ok");
+}
+
+async function afterLogin(user){
+  sessionUser = user;
+  const {data:profile,error:pErr} = await sb.from("profiles").select("*").eq("id",user.id).single();
+  if(pErr){ msg("Impossibile leggere il profilo: "+pErr.message,"error"); return; }
+
+  appRole = profile.role || "customer";
+  hideAll();
+
+  if(appRole === "admin" || appRole === "barber"){
+    $("staffApp").classList.remove("hide");
+    await loadPublicData();
+    renderStaffServices();
+    await loadTodayAgenda();
+  } else {
+    $("customerApp").classList.remove("hide");
+    $("customerTabs").classList.remove("hide");
+    await ensureCustomer(profile);
+    $("helloName").textContent = (profile.full_name || "Cliente").split(" ")[0];
+    $("profileSummary").innerHTML = `<p><strong>${escapeHtml(profile.full_name || "")}</strong><br>${escapeHtml(user.email || "")}</p>`;
+    await loadCustomerAppointments();
+  }
+}
+
+async function ensureCustomer(profile){
+  const {data:existing} = await sb.from("customers").select("*").eq("profile_id",sessionUser.id).maybeSingle();
+  if(existing){ customerRow=existing; return; }
+
+  const {data:newRow,error} = await sb.from("customers").insert({
+    profile_id:sessionUser.id,
+    full_name:profile.full_name || sessionUser.email || "Cliente",
+    email:sessionUser.email
+  }).select().single();
+
+  if(error) msg("Profilo cliente non creato: "+error.message,"error");
+  else customerRow = newRow;
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  sessionUser=null; customerRow=null;
+  showGuest();
+}
+
+function openBooking(){
+  if(!sessionUser) return showAuth("login");
+  $("bookingDate").min = new Date().toISOString().slice(0,10);
+  bookingDialog.showModal();
+  refreshSlots();
+}
+
+["bookingService","bookingBarber","bookingDate"].forEach(id=>{
+  $(id).addEventListener("change", refreshSlots);
+});
+
+async function refreshSlots(){
+  const serviceId=$("bookingService").value, barberId=$("bookingBarber").value, date=$("bookingDate").value;
+  const sel=$("bookingTime");
+  if(!serviceId || !barberId || !date){
+    sel.innerHTML=`<option value="">Seleziona prima giorno, servizio e barbiere</option>`;
+    return;
+  }
+
+  const service=services.find(s=>s.id===serviceId);
+  const duration=service.duration_minutes;
+  const d=new Date(date+"T12:00:00");
+  const day=d.getDay();
+
+  const {data:hours,error:hErr}=await sb.from("working_hours")
+    .select("*").eq("barber_id",barberId).eq("day_of_week",day).eq("active",true)
+    .order("start_time");
+
+  if(hErr){ sel.innerHTML=`<option value="">Errore orari</option>`; return; }
+  if(!hours || !hours.length){
+    sel.innerHTML=`<option value="">Barbiere non disponibile quel giorno</option>`; return;
+  }
+
+  const {data:apps}=await sb.from("appointments")
+    .select("start_time,end_time,duration_minutes,status")
+    .eq("barber_id",barberId).eq("appointment_date",date)
+    .not("status","in",'("cancelled","completed","no_show")');
+
+  const {data:offs}=await sb.from("time_off")
+    .select("*").eq("barber_id",barberId);
+
+  const interval=15;
+  let slots=[];
+
+  for(const h of hours){
+    let t=toMin(h.start_time), end=toMin(h.end_time);
+    while(t+duration<=end){
+      const slotStart=t, slotEnd=t+duration;
+      const conflict=(apps||[]).some(a=>{
+        const aStart=toMin(a.start_time);
+        const aEnd=a.end_time ? toMin(a.end_time) : aStart+Number(a.duration_minutes);
+        return slotStart<aEnd && slotEnd>aStart;
+      });
+      const dtStart=new Date(`${date}T${fromMin(slotStart)}:00`);
+      const dtEnd=new Date(`${date}T${fromMin(slotEnd)}:00`);
+      const offConflict=(offs||[]).some(o=>{
+        const os=new Date(o.start_datetime), oe=new Date(o.end_datetime);
+        return dtStart<oe && dtEnd>os;
+      });
+      if(!conflict && !offConflict) slots.push(fromMin(t));
+      t+=interval;
+    }
+  }
+
+  sel.innerHTML=slots.length
+    ? `<option value="">Scegli orario</option>`+slots.map(x=>`<option value="${x}">${x}</option>`).join("")
+    : `<option value="">Nessun orario disponibile</option>`;
+}
+
+$("bookingForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  if(!customerRow) return msg("Profilo cliente non disponibile.","error");
+
+  const service=services.find(s=>s.id===$("bookingService").value);
+  const payload={
+    customer_id:customerRow.id,
+    customer_name:customerRow.full_name,
+    customer_phone:customerRow.phone,
+    barber_id:$("bookingBarber").value,
+    service_id:service.id,
+    appointment_date:$("bookingDate").value,
+    start_time:$("bookingTime").value,
+    duration_minutes:service.duration_minutes,
+    price:service.price,
+    booking_source:"app",
+    status:"booked"
+  };
+
+  const {error}=await sb.from("appointments").insert(payload);
+  if(error) return msg(error.message,"error");
+
+  bookingDialog.close();
+  msg("Prenotazione confermata.","ok");
+  await loadCustomerAppointments();
+});
+
+async function loadCustomerAppointments(){
+  if(!customerRow) return;
+  const {data,error}=await sb.from("appointments")
+    .select("*, services(name), barbers(full_name)")
+    .eq("customer_id",customerRow.id)
+    .order("appointment_date",{ascending:true})
+    .order("start_time",{ascending:true});
+
+  if(error){ msg(error.message,"error"); return; }
+
+  const list=(data||[]).map(a=>`
+    <div class="appointment">
+      <div class="row">
+        <strong>${fmtDate(a.appointment_date)} · ${a.start_time.slice(0,5)}</strong>
+        <span class="pill">${labelStatus(a.status)}</span>
+      </div>
+      <p style="margin:8px 0 3px">${escapeHtml(a.services?.name || "Servizio")}</p>
+      <p class="muted" style="margin-bottom:10px">${escapeHtml(a.barbers?.full_name || "")}</p>
+      ${["booked","confirmed"].includes(a.status)
+        ? `<button class="btn danger small" onclick="cancelAppointment('${a.id}')">Annulla appuntamento</button>`:""}
+    </div>
+  `).join("");
+
+  $("customerAppointmentsList").innerHTML=list || `<p class="muted">Nessun appuntamento.</p>`;
+
+  const future=(data||[]).find(a=>["booked","confirmed"].includes(a.status) && a.appointment_date>=new Date().toISOString().slice(0,10));
+  $("nextAppointment").innerHTML=future ? `
+    <div class="appointment">
+      <strong>${fmtDate(future.appointment_date)} · ${future.start_time.slice(0,5)}</strong>
+      <p style="margin:8px 0 0">${escapeHtml(future.services?.name || "")}</p>
+      <p class="muted">${escapeHtml(future.barbers?.full_name || "")}</p>
+    </div>` : `<p class="muted">Nessun appuntamento in programma.</p>`;
+}
+
+async function cancelAppointment(id){
+  if(!confirm("Vuoi annullare questo appuntamento?")) return;
+  const {error}=await sb.from("appointments").update({status:"cancelled"}).eq("id",id);
+  if(error) msg(error.message,"error");
+  else { msg("Appuntamento annullato.","ok"); loadCustomerAppointments(); }
+}
+
+function renderStaffServices(){
+  $("staffServices").innerHTML=services.map(s=>`
+    <div class="service">
+      <div>
+        <strong>${escapeHtml(s.name)}</strong><br>
+        <span class="muted">${s.price==null ? "Prezzo non impostato" : "€"+Number(s.price).toFixed(2)}</span>
+      </div>
+      <div class="row">
+        <span class="pill">${s.duration_minutes} min</span>
+        <button class="btn ghost small" onclick="editService('${s.id}')">Modifica</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function editService(id){
+  const s=services.find(x=>x.id===id);
+  const mins=prompt(`Durata in minuti per "${s.name}"`, s.duration_minutes);
+  if(mins===null) return;
+  const n=parseInt(mins,10);
+  if(!Number.isFinite(n)||n<=0) return alert("Durata non valida.");
+
+  const priceInput=prompt("Prezzo in euro (lascia vuoto per nessun prezzo)", s.price ?? "");
+  if(priceInput===null) return;
+  const price=priceInput.trim()==="" ? null : Number(priceInput.replace(",","."));
+  if(price!==null && (!Number.isFinite(price)||price<0)) return alert("Prezzo non valido.");
+
+  const {error}=await sb.from("services").update({duration_minutes:n,price}).eq("id",id);
+  if(error) msg(error.message,"error");
+  else { msg("Servizio aggiornato.","ok"); await loadPublicData(); renderStaffServices(); }
+}
+
+function openManualAppointment(){
+  $("manualDate").value=new Date().toISOString().slice(0,10);
+  manualDialog.showModal();
+}
+
+$("manualService").addEventListener("change", ()=>{
+  const s=services.find(x=>x.id===$("manualService").value);
+  if(s) $("manualDuration").value=s.duration_minutes;
+});
+
+$("manualForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const service=services.find(s=>s.id===$("manualService").value);
+
+  const payload={
+    customer_id:null,
+    customer_name:$("manualName").value.trim() || null,
+    customer_phone:$("manualPhone").value.trim() || null,
+    barber_id:$("manualBarber").value,
+    service_id:service?.id || null,
+    appointment_date:$("manualDate").value,
+    start_time:$("manualTime").value,
+    duration_minutes:Number($("manualDuration").value)||30,
+    price:service?.price ?? null,
+    booking_source:"manual",
+    status:"booked",
+    barber_notes:$("manualNotes").value.trim() || null
+  };
+
+  // service_id attualmente nel DB è NOT NULL.
+  if(!service){
+    msg("Per questa V1 seleziona un servizio. Nel prossimo patch possiamo rendere anche il servizio facoltativo.","error");
+    return;
+  }
+
+  const {error}=await sb.from("appointments").insert(payload);
+  if(error) return msg(error.message,"error");
+
+  manualDialog.close();
+  $("manualForm").reset();
+  msg("Appuntamento inserito.","ok");
+  loadTodayAgenda();
+});
+
+async function loadTodayAgenda(){
+  const today=new Date().toISOString().slice(0,10);
+  const {data,error}=await sb.from("appointments")
+    .select("*, services(name), barbers(full_name)")
+    .eq("appointment_date",today)
+    .neq("status","cancelled")
+    .order("start_time");
+
+  if(error){ $("todayAgenda").innerHTML=`<p class="muted">${escapeHtml(error.message)}</p>`; return; }
+
+  $("todayAgenda").innerHTML=(data||[]).map(a=>`
+    <div class="agenda-item">
+      <div class="time">${a.start_time.slice(0,5)}</div>
+      <div>
+        <strong>${escapeHtml(a.customer_name || "Cliente")}</strong>
+        <div>${escapeHtml(a.services?.name || "Servizio")}</div>
+        <div class="muted">${escapeHtml(a.barbers?.full_name || "")} · ${a.duration_minutes} min</div>
+        <div style="margin-top:8px" class="row">
+          <button class="btn ghost small" onclick="moveStaffAppointment('${a.id}','${a.appointment_date}','${a.start_time.slice(0,5)}')">Sposta</button>
+          <button class="btn danger small" onclick="deleteStaffAppointment('${a.id}')">Elimina</button>
+        </div>
+      </div>
+    </div>
+  `).join("") || `<p class="muted">Nessun appuntamento oggi.</p>`;
+}
+
+async function moveStaffAppointment(id,date,time){
+  const newDate=prompt("Nuova data (AAAA-MM-GG)",date);
+  if(!newDate) return;
+  const newTime=prompt("Nuovo orario (HH:MM)",time);
+  if(!newTime) return;
+  const {error}=await sb.from("appointments").update({appointment_date:newDate,start_time:newTime}).eq("id",id);
+  if(error) msg(error.message,"error");
+  else { msg("Appuntamento spostato.","ok"); loadTodayAgenda(); }
+}
+
+async function deleteStaffAppointment(id){
+  if(!confirm("Eliminare definitivamente questo appuntamento?")) return;
+  const {error}=await sb.from("appointments").delete().eq("id",id);
+  if(error) msg(error.message,"error");
+  else { msg("Appuntamento eliminato.","ok"); loadTodayAgenda(); }
+}
+
+function toMin(t){ const [h,m]=t.slice(0,5).split(":").map(Number); return h*60+m; }
+function fromMin(m){ return `${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`; }
+function fmtDate(d){ return new Intl.DateTimeFormat("it-IT",{weekday:"short",day:"2-digit",month:"short"}).format(new Date(d+"T12:00:00")); }
+function labelStatus(s){ return ({booked:"Prenotato",confirmed:"Confermato",completed:"Completato",cancelled:"Annullato",no_show:"No-show"})[s]||s; }
+function escapeHtml(v){ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c])); }
+
+init();
+</script>
+</body>
+</html>
