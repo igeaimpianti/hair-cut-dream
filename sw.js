@@ -1,4 +1,4 @@
-const CACHE = "hair-cut-dream-v1";
+const CACHE = "hair-cut-dream-v2";
 const ASSETS = [
   "./",
   "./index.html",
