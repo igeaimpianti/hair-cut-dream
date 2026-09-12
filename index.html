@@ -514,6 +514,33 @@ function renderPublicServices(){
       </div>`).join("")
     : `<p class="muted">Nessun servizio disponibile.</p>`;
 }
+
+  function renderCustomerServices(){
+  const container = $("customerServicesList");
+  if (!container) return;
+
+  container.innerHTML = services.length
+    ? services.map(s => `
+        <div class="service">
+          <div>
+            <strong>${escapeHtml(s.name)}</strong>
+          </div>
+
+          <div style="text-align:right">
+            <span class="pill">${s.duration_minutes} min</span>
+            ${
+              s.price != null
+                ? `<div style="margin-top:7px;font-weight:800">
+                    €${Number(s.price).toFixed(2)}
+                  </div>`
+                : ""
+            }
+          </div>
+        </div>
+      `).join("")
+    : `<p class="muted">Nessun servizio disponibile.</p>`;
+}
+  
 function fillSelects(){
   const serviceOptions = services.map(s=>`<option value="${s.id}">${escapeHtml(s.name)} · ${s.duration_minutes} min</option>`).join("");
   const barberOptions = barbers.map(b=>`<option value="${b.id}">${escapeHtml(b.full_name)}</option>`).join("");
