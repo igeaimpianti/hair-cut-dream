@@ -1,7 +1,6 @@
 {
   "name": "Hair Cut Dream",
   "short_name": "Hair Cut Dream",
-  "description": "Prenotazioni e gestione appuntamenti Hair Cut Dream Salon",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
