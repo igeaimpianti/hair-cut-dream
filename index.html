@@ -497,8 +497,9 @@ async function loadPublicData(){
   ]);
   services = s || [];
   barbers = b || [];
-  renderPublicServices();
-  fillSelects();
+renderPublicServices();
+renderCustomerServices();
+fillSelects();
 }
 
 function renderPublicServices(){
