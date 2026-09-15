@@ -501,72 +501,65 @@ body:not(.staff-mode) .card{
 .or-divider{display:flex;align-items:center;gap:10px;color:#9aa2ad;font-size:12px;margin:12px 0}
 .or-divider:before,.or-divider:after{content:"";height:1px;background:#e5e7eb;flex:1}
 
-/* ===== FIX BARRA CLIENTE V6 ===== */
 
-#customerTabs{
-  position: fixed !important;
-
-  left: 50% !important;
-  right: auto !important;
-  bottom: 16px !important;
-
-  transform: translateX(-50%) !important;
-
-  width: calc(100% - 24px) !important;
-  max-width: 720px !important;
-
-  margin: 0 !important;
-  padding: 8px 6px 7px !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-
-  box-sizing: border-box !important;
-
-  background: #050505 !important;
-  border-radius: 24px !important;
-
-  z-index: 1000 !important;
+/* ===== V6.3 SAFE AREA + FIXED NAV + STAFF TIMELINE ===== */
+html{background:#f5f6f8}
+body{
+  padding-top:env(safe-area-inset-top,0px)!important;
+  padding-left:env(safe-area-inset-left,0px)!important;
+  padding-right:env(safe-area-inset-right,0px)!important;
+  min-height:100dvh;
+}
+#customerApp,#staffApp{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+dialog{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#customerTabs,#staffTabs{
+  position:fixed!important;
+  left:50%!important;right:auto!important;
+  transform:translateX(-50%)!important;
+  width:calc(100% - 24px)!important;
+  max-width:760px!important;
+  margin:0!important;
+  bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  z-index:10000!important;
+}
+#customerTabs.hide,#staffTabs.hide{display:none!important}
+#customerTabs .tab,#staffTabs .tab{
+  width:100%!important;min-width:0!important;margin:0!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;
+}
+#customerTabs .bookingTab,#staffTabs .bookingTab{left:auto!important;right:auto!important}
+#customerTabs .tab>span:last-child,#staffTabs .tab>span:last-child{width:100%;text-align:center;white-space:nowrap}
+@media(max-width:520px){
+  #customerTabs,#staffTabs{width:calc(100% - 16px)!important}
+  #customerTabs .tab,#staffTabs .tab{font-size:9px!important;padding-left:1px!important;padding-right:1px!important}
+}
+.staff-agenda-v63-head{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:12px;position:sticky;top:calc(6px + env(safe-area-inset-top,0px));z-index:20}
+.staff-agenda-v63-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.staff-agenda-v63-actions .btn{min-height:40px}
+.timeline-wrap{overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.timeline-board{min-width:680px;display:grid;grid-template-columns:72px repeat(var(--barber-count,2),minmax(260px,1fr));gap:8px;align-items:stretch}
+.timeline-head{position:sticky;top:0;background:#f5f6f8;z-index:5;padding:8px 5px;font-weight:900;text-align:center}
+.timeline-head .online-dot{display:inline-block;width:9px;height:9px;background:#16c79a;border-radius:50%;margin-right:7px}
+.timeline-time{height:62px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-weight:900;color:#4f5865;font-size:13px}
+.timeline-cell{height:62px;background:#fff;border:1px solid #e8ebef;border-radius:15px;position:relative;cursor:pointer;transition:.12s}
+.timeline-cell:hover{border-color:#aeb5bf;background:#fafafa}
+.timeline-cell.free:after{content:"";position:absolute;inset:50% 16px auto;height:1px;background:#f0f1f3}
+.timeline-appointment{position:absolute;left:4px;right:4px;top:4px;z-index:3;border-radius:12px;background:#fff;border:1px solid #dfe3e8;border-left:4px solid #111;padding:8px 9px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);cursor:pointer}
+.timeline-appointment strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timeline-appointment small{display:block;font-size:11px;color:#657080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.timeline-appointment .booked-at{font-size:9px;color:#9aa2ad;margin-top:2px}
+.timeline-appointment.status-completed{border-left-color:#16a36a;background:#f4fff9}
+.timeline-appointment.status-no_show{border-left-color:#d64b4b;background:#fff7f7}
+@media(max-width:700px){
+  #staffAgendaPage>.card{padding:12px}
+  .staff-kpis,.view-switch{display:none!important}
+  .timeline-board{min-width:640px}
 }
 
-#customerTabs.hide{
-  display: none !important;
-}
-
-#customerTabs .tab{
-  width: 100% !important;
-  min-width: 0 !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  padding: 4px 0 !important;
-  margin: 0 !important;
-
-  text-align: center !important;
-}
-
-#customerTabs .bookingTab{
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-
-  transform: translateY(-15px) !important;
-}
-
-#customerTabs .bookingIcon{
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-#customerTabs .tab > span:last-child{
-  width: 100% !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-}
-    
 </style>
 </head>
 <body>
@@ -749,37 +742,26 @@ body:not(.staff-mode) .card{
 
     <section id="staffApp" class="hide">
       <div id="staffAgendaPage" class="staff-page">
-        <div class="card">
-          <div class="staff-topbar">
-            <div>
-              <p class="staff-subtitle">Gestionale Hair Cut Dream</p>
-              <h1 class="staff-title">Agenda</h1>
-            </div>
-            <button class="btn ghost small" onclick="loadStaffAgenda()">Aggiorna</button>
-          </div>
-
-          <div id="staffBarberSwitch" class="barber-switch"></div>
-
-          <div class="date-nav">
-            <button type="button" onclick="shiftStaffDate(-1)">‹</button>
-            <button id="staffDateLabel" type="button" class="date-main" onclick="goStaffToday()">Oggi</button>
-            <button type="button" onclick="shiftStaffDate(1)">›</button>
-          </div>
-
-          <div class="view-switch">
-            <button id="dayViewBtn" class="view-btn active" type="button" onclick="setStaffView('day')">Giorno</button>
-            <button id="weekViewBtn" class="view-btn" type="button" onclick="setStaffView('week')">Settimana</button>
-          </div>
-
-          <div class="staff-kpis">
-            <div class="staff-kpi"><b id="staffCountKpi">0</b><span>APPUNTAMENTI</span></div>
-            <div class="staff-kpi"><b id="staffNextKpi">—</b><span>PROSSIMO</span></div>
-            <div class="staff-kpi"><b id="staffMinutesKpi">0 min</b><span>TEMPO PRENOTATO</span></div>
-          </div>
-        </div>
-
-        <div id="staffAgendaView"></div>
-      </div>
+  <div class="staff-agenda-v63-head">
+    <div class="staff-topbar">
+      <div><p class="staff-subtitle">Gestionale Hair Cut Dream</p><h1 class="staff-title">Agenda giornaliera</h1></div>
+      <button class="btn ghost small" onclick="loadStaffAgenda()">Aggiorna</button>
+    </div>
+    <div class="staff-agenda-v63-actions">
+      <button class="btn ghost small" type="button" onclick="shiftStaffDate(-1)">‹ Giorno precedente</button>
+      <button id="staffDateLabel" class="btn primary small" type="button" onclick="goStaffToday()">Oggi</button>
+      <button class="btn ghost small" type="button" onclick="shiftStaffDate(1)">Giorno successivo ›</button>
+    </div>
+    <div id="staffBarberSwitch" class="barber-switch" style="margin-top:10px"></div>
+    <div class="staff-kpis" style="margin-top:10px">
+      <div class="staff-kpi"><b id="staffCountKpi">0</b><span>APPUNTAMENTI</span></div>
+      <div class="staff-kpi"><b id="staffNextKpi">—</b><span>PROSSIMO</span></div>
+      <div class="staff-kpi"><b id="staffMinutesKpi">0 min</b><span>TEMPO PRENOTATO</span></div>
+    </div>
+    <div class="view-switch hide"><button id="dayViewBtn" class="view-btn active">Giorno</button><button id="weekViewBtn" class="view-btn">Settimana</button></div>
+  </div>
+  <div id="staffAgendaView"></div>
+</div>
 
       <div id="staffClientsPage" class="staff-page hide">
         <div class="card">
@@ -1287,7 +1269,7 @@ async function notifyStaffPush(type, id){
 async function init(){
   if("serviceWorker" in navigator){
     try{
-      const reg = await navigator.serviceWorker.register("./sw.js?v=60", { updateViaCache:"none" });
+      const reg = await navigator.serviceWorker.register("./sw.js?v=63", { updateViaCache:"none" });
       await reg.update();
     }catch(e){
       console.error("Service worker update error:", e);
@@ -1451,6 +1433,7 @@ function fmtShortDate(d){ return new Intl.DateTimeFormat("it-IT",{day:"2-digit",
 
 async function loadStaffAgenda(){
   if(!sb || !$("staffAgendaView")) return;
+  staffViewMode="day";
   $("staffDateLabel").textContent=staffDateText();
   let q=sb.from("appointments").select("*, services(name), barbers(full_name)").neq("status","cancelled");
   if(staffViewMode==="day") q=q.eq("appointment_date",staffCurrentDate);
@@ -1470,31 +1453,56 @@ function renderStaffAgenda(){
   const rows=staffAgendaRows;
   $("staffCountKpi").textContent=rows.length;
   $("staffMinutesKpi").textContent=`${rows.reduce((n,a)=>n+Number(a.duration_minutes||0),0)} min`;
-  const now=new Date();
-  const today=new Date().toISOString().slice(0,10);
+  const now=new Date(), today=new Date().toISOString().slice(0,10);
   const next=rows.find(a=>a.appointment_date>today || (a.appointment_date===today && new Date(`${a.appointment_date}T${a.start_time}`)>=now));
-  $("staffNextKpi").textContent=next ? `${next.start_time.slice(0,5)}` : "—";
-
+  $("staffNextKpi").textContent=next ? next.start_time.slice(0,5) : "—";
   const root=$("staffAgendaView");
-  if(!rows.length){ root.innerHTML=`<div class="card empty-state">Nessun appuntamento nel periodo selezionato.</div>`; return; }
 
-  if(staffViewMode==="week"){
-    const start=startOfWeekISO(staffCurrentDate);
-    root.innerHTML=Array.from({length:7},(_,i)=>addDaysISO(start,i)).map(day=>{
-      const dayRows=rows.filter(a=>a.appointment_date===day);
-      return `<div class="card week-day"><div class="week-day-title">${new Intl.DateTimeFormat('it-IT',{weekday:'long',day:'2-digit',month:'long'}).format(new Date(day+'T12:00:00'))}</div>${dayRows.length?dayRows.map(staffAppointmentCard).join(''):'<div class="muted">Nessun appuntamento</div>'}</div>`;
-    }).join('');
-    return;
-  }
+  // V6.3 uses a day timeline. If an old week state exists, return to day.
+  staffViewMode="day";
+  const shownBarbers=staffSelectedBarberId==="all"?barbers:barbers.filter(b=>b.id===staffSelectedBarberId);
+  if(!shownBarbers.length){root.innerHTML='<div class="card empty-state">Nessun barbiere configurato.</div>';return}
 
-  if(staffSelectedBarberId==="all"){
-    root.innerHTML=`<div class="agenda-columns">${barbers.map(b=>{
-      const list=rows.filter(a=>a.barber_id===b.id);
-      return `<div class="agenda-column"><h3>${escapeHtml(b.full_name)}</h3>${list.length?list.map(staffAppointmentCard).join(''):'<div class="empty-state">Nessun appuntamento</div>'}</div>`;
-    }).join('')}</div>`;
-  } else {
-    root.innerHTML=`<div class="card">${rows.map(staffAppointmentCard).join('')}</div>`;
+  const startMin=8*60+30, endMin=20*60, step=15;
+  const slots=[]; for(let m=startMin;m<endMin;m+=step) slots.push(m);
+  const fmt=m=>`${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`;
+  const toMinutes=t=>{const [h,m]=String(t).slice(0,5).split(":").map(Number);return h*60+m};
+
+  let html=`<div class="timeline-wrap"><div class="timeline-board" style="--barber-count:${shownBarbers.length}">
+    <div class="timeline-head"></div>${shownBarbers.map(b=>`<div class="timeline-head"><span class="online-dot"></span>${escapeHtml(b.full_name)}</div>`).join("")}`;
+
+  for(const minute of slots){
+    html+=`<div class="timeline-time">${fmt(minute)}</div>`;
+    for(const b of shownBarbers){
+      const starting=rows.filter(a=>a.barber_id===b.id && toMinutes(a.start_time)===minute);
+      const occupied=rows.some(a=>{
+        if(a.barber_id!==b.id)return false;
+        const s=toMinutes(a.start_time), e=s+Number(a.duration_minutes||15);
+        return minute>s && minute<e;
+      });
+      if(occupied){ html+=`<div class="timeline-cell" style="visibility:hidden"></div>`; continue; }
+      const ap=starting[0];
+      if(ap){
+        const h=Math.max(54,(Number(ap.duration_minutes||15)/15)*62-8);
+        html+=`<div class="timeline-cell"><div class="timeline-appointment status-${escapeHtml(ap.status||"booked")}" style="height:${h}px" onclick="event.stopPropagation();openEditAppointment('${ap.id}')">
+          <strong>${escapeHtml(ap.customer_name||"Cliente")}</strong>
+          <small>${escapeHtml(ap.services?.name||"Servizio")}</small>
+          <small>${ap.start_time.slice(0,5)} · ${Number(ap.duration_minutes||0)} min</small>
+        </div></div>`;
+      }else{
+        html+=`<div class="timeline-cell free" onclick="openManualAt('${b.id}','${fmt(minute)}')" title="Aggiungi appuntamento"></div>`;
+      }
+    }
   }
+  html+=`</div></div>`;
+  root.innerHTML=html;
+}
+
+function openManualAt(barberId,time){
+  $("manualDate").value=staffCurrentDate||new Date().toISOString().slice(0,10);
+  $("manualBarber").value=barberId;
+  if($("manualTime")) $("manualTime").value=time;
+  $("manualDialog").showModal();
 }
 
 function staffAppointmentCard(a){
