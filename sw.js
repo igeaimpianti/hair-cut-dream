@@ -1,4 +1,4 @@
-const CACHE="hair-cut-dream-v60";
+const CACHE="hair-cut-dream-v61";
 
 const ASSETS=[
   "./",
@@ -24,7 +24,8 @@ self.addEventListener("activate",e=>
     Promise.all([
       caches.keys().then(ks=>
         Promise.all(
-          ks.filter(k=>k!==CACHE).map(k=>caches.delete(k))
+          ks.filter(k=>k!==CACHE)
+            .map(k=>caches.delete(k))
         )
       ),
       self.clients.claim()
@@ -89,7 +90,9 @@ self.addEventListener("push",e=>
           body:d.body || "Hai un nuovo aggiornamento.",
           icon:"./icon-192.png",
           badge:"./icon-192.png",
+
           tag:d.tag || ("hcd-"+Date.now()),
+
           data:{
             url:d.url || "./",
             type:d.type || "",
@@ -111,18 +114,18 @@ self.addEventListener("notificationclick",e=>{
         self.registration.scope
       ).href;
 
-      const ws=await clients.matchAll({
+      const windows=await clients.matchAll({
         type:"window",
         includeUncontrolled:true
       });
 
-      for(const c of ws){
-        if(c.url.startsWith(self.location.origin)){
+      for(const client of windows){
+        if(client.url.startsWith(self.location.origin)){
           try{
-            await c.navigate(target);
+            await client.navigate(target);
           }catch{}
 
-          return c.focus();
+          return client.focus();
         }
       }
 
