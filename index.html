@@ -478,72 +478,12 @@ body:not(.staff-mode) .card{
 .push-onboarding{max-width:420px}.push-onboarding .bell{font-size:48px;text-align:center;margin:4px 0 12px}
 @media(min-width:700px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v6-hero img{height:320px}}
 
-/* ===== FIX BARRA CLIENTE V6 ===== */
 
-#customerTabs{
-  position: fixed !important;
+.notification-item{background:#fff;border:1px solid var(--v6-line);border-radius:19px;padding:15px;margin:10px 0;cursor:pointer;position:relative}
+.notification-item.unread{border-color:#10131a;box-shadow:0 7px 18px rgba(0,0,0,.06)}
+.notification-item.unread:before{content:"";position:absolute;right:14px;top:14px;width:9px;height:9px;border-radius:50%;background:#111}
+.notification-item h3{margin:0 22px 5px 0;font-size:16px}.notification-item p{margin:0;color:#606a78;white-space:pre-wrap}.notification-item time{display:block;color:#9aa2ad;font-size:11px;margin-top:9px}
 
-  left: 50% !important;
-  right: auto !important;
-  bottom: 16px !important;
-
-  transform: translateX(-50%) !important;
-
-  width: calc(100% - 24px) !important;
-  max-width: 720px !important;
-
-  margin: 0 !important;
-  padding: 8px 6px 7px !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-
-  box-sizing: border-box !important;
-
-  background: #050505 !important;
-  border-radius: 24px !important;
-
-  z-index: 1000 !important;
-}
-
-#customerTabs.hide{
-  display: none !important;
-}
-
-#customerTabs .tab{
-  width: 100% !important;
-  min-width: 0 !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  padding: 4px 0 !important;
-  margin: 0 !important;
-
-  text-align: center !important;
-}
-
-#customerTabs .bookingTab{
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-
-  transform: translateY(-15px) !important;
-}
-
-#customerTabs .bookingIcon{
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-#customerTabs .tab > span:last-child{
-  width: 100% !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-}
-    
 </style>
 </head>
 <body>
@@ -634,6 +574,7 @@ body:not(.staff-mode) .card{
   <div class="v6-menu">
     <div class="v6-menu-row" onclick="openBooking()"><b>✂️</b><b>Prenotazioni</b><span>›</span></div>
     <div class="v6-menu-row" onclick="goCustomerProducts()"><b>🛍️</b><b>Prodotti</b><span>›</span></div>
+    <div class="v6-menu-row" onclick="showCustomerNotifications()"><b>🔔</b><b>Notifiche</b><span id="homeNotificationBadge" class="v6-cart-count" style="display:none;background:#050505;color:#fff">0</span><span>›</span></div>
     <div class="v6-menu-row" onclick="showCustomerOrders()"><b>📦</b><b>I miei ordini</b><span>›</span></div>
   </div>
 
@@ -674,12 +615,28 @@ body:not(.staff-mode) .card{
       <div class="grow"><strong>Notifiche push</strong><small id="customerPushStatus">Controllo stato…</small></div>
       <button type="button" onclick="enableCustomerPushNotifications()">Attiva</button>
     </div>
+    <div class="v6-profile-setting" onclick="showCustomerNotifications()" style="cursor:pointer">
+      <div class="ico">🔔</div>
+      <div class="grow"><strong>Centro notifiche</strong><small>Leggi tutte le comunicazioni ricevute.</small></div>
+      <span id="notificationCenterBadge" class="v6-cart-count" style="display:none;background:#050505;color:#fff">0</span>
+      <button type="button" onclick="event.stopPropagation();showCustomerNotifications()">Apri</button>
+    </div>
     <div class="v6-profile-setting">
       <div class="ico">🛍️</div>
       <div class="grow"><strong>I miei ordini</strong><small>Controlla gli ordini da ritirare in salone.</small></div>
       <button type="button" onclick="showCustomerOrders()">Apri</button>
     </div>
     <button class="btn secondary" style="width:100%;margin-top:10px" onclick="logout()">Esci</button>
+  </div>
+</div>
+<div id="customerNotifications" class="page hide">
+  <div class="card">
+    <div class="row">
+      <div><span class="eyebrow">HAIR CUT DREAM</span><h2>Notifiche</h2></div>
+      <button class="btn ghost small" type="button" onclick="markAllNotificationsRead()">Segna tutte lette</button>
+    </div>
+    <p class="muted">Qui trovi tutte le comunicazioni ricevute dal salone.</p>
+    <div id="customerNotificationsList"></div>
   </div>
 </div>
 <div id="customerOrders" class="page hide">
@@ -1908,10 +1865,15 @@ async function afterLogin(user){
     await ensureCustomer(profile);
     $("helloName").textContent = (profile.full_name || "Cliente").split(" ")[0];
     $("profileSummary").innerHTML = `<p><strong>${escapeHtml(profile.full_name || "")}</strong><br>${escapeHtml(user.email || "")}</p>`;
-    await Promise.all([loadCustomerAppointments(), loadProducts()]);
+    await Promise.all([loadCustomerAppointments(), loadProducts(), loadCustomerNotifications()]);
     $("v6HelloName") && ($("v6HelloName").textContent=(profile.full_name || "Cliente").split(" ")[0]);
     refreshCustomerPushStatus();
     setTimeout(maybeShowPushOnboarding, 900);
+    const launchParams=new URLSearchParams(location.search);
+    if(launchParams.get("notifications")){ setTimeout(()=>{showCustomerNotifications();history.replaceState({},document.title,location.pathname);},500); }
+    if(launchParams.get("notification")){
+      setTimeout(async()=>{await showCustomerNotifications(); const nid=launchParams.get("notification"); if(nid) await openCustomerNotification(nid); history.replaceState({},document.title,location.pathname);},500);
+    }
     startRealtimeAppointments();
   }
 }
@@ -2162,6 +2124,34 @@ async function deleteStaffAppointment(id){
   else { msg("Appuntamento eliminato.","ok"); loadStaffAgenda(); }
 }
 
+
+
+async function loadCustomerNotifications(){
+  if(!sessionUser) return;
+  const {data,error}=await sb.from("customer_notifications").select("*").eq("user_id",sessionUser.id).order("created_at",{ascending:false});
+  if(error){console.warn("Notifications:",error.message);return}
+  const list=data||[], unread=list.filter(n=>!n.read_at).length;
+  ["notificationCenterBadge","homeNotificationBadge"].forEach(id=>{const el=$(id);if(!el)return;el.textContent=unread;el.style.display=unread?"inline-grid":"none"});
+  const root=$("customerNotificationsList");if(!root)return;
+  root.innerHTML=list.length?list.map(n=>`<article class="notification-item ${n.read_at?"":"unread"}" onclick="openCustomerNotification('${n.id}')"><h3>${escapeHtml(n.title||"Hair Cut Dream")}</h3><p>${escapeHtml(n.message||"")}</p><time>${new Date(n.created_at).toLocaleString("it-IT")}</time></article>`).join(""):`<div class="empty-state">Non hai ancora ricevuto notifiche.</div>`;
+}
+async function showCustomerNotifications(){
+  document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));
+  $("customerNotifications").classList.remove("hide");
+  await loadCustomerNotifications();
+}
+async function openCustomerNotification(id){
+  const {data,error}=await sb.from("customer_notifications").update({read_at:new Date().toISOString()}).eq("id",id).eq("user_id",sessionUser.id).select("*").single();
+  if(error)return msg(error.message,"error");
+  await loadCustomerNotifications();
+  alert(`${data.title||"Hair Cut Dream"}\n\n${data.message||""}\n\n${new Date(data.created_at).toLocaleString("it-IT")}`);
+}
+async function markAllNotificationsRead(){
+  if(!sessionUser)return;
+  const {error}=await sb.from("customer_notifications").update({read_at:new Date().toISOString()}).eq("user_id",sessionUser.id).is("read_at",null);
+  if(error)return msg(error.message,"error");
+  await loadCustomerNotifications();
+}
 
 function euro(v){ return new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR"}).format(Number(v||0)); }
 function saveCart(){ localStorage.setItem("hcd_cart",JSON.stringify(cart)); updateCartCount(); }
