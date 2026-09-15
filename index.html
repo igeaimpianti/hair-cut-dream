@@ -421,6 +421,63 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
   stroke-linejoin:round;
 }
 
+
+/* ===== Hair Cut Dream V6 ===== */
+:root{--v6-bg:#f5f6f8;--v6-ink:#10131a;--v6-soft:#8d98aa;--v6-line:#e8ebef}
+body:not(.staff-mode){background:var(--v6-bg)}
+body:not(.staff-mode) .content{padding-bottom:118px}
+body:not(.staff-mode) .card{
+  border:1px solid rgba(16,19,26,.05); border-radius:26px;
+  box-shadow:0 10px 28px rgba(16,19,26,.06); background:#fff;
+}
+#customerTabs{
+  left:18px; right:18px; bottom:16px; width:auto; max-width:760px; margin:auto;
+  background:#050505; border-radius:24px; padding:8px 5px 7px;
+  box-shadow:0 14px 34px rgba(0,0,0,.22); border:1px solid #242424;
+}
+#customerTabs .tab{color:#9299a5; font-weight:800; font-size:11px}
+#customerTabs .tab.active{color:#fff}
+#customerTabs .staff-color-icon{background:transparent!important;color:currentColor!important;width:31px;height:31px;margin-bottom:1px}
+#customerTabs .staff-color-icon svg{width:23px;height:23px;stroke-width:2}
+#customerTabs .bookingTab{transform:translateY(-15px);color:#fff}
+#customerTabs .bookingIcon{
+  width:54px;height:54px;border-radius:50%;background:#050505;border:5px solid var(--v6-bg);
+  display:grid;place-items:center;font-size:38px;font-weight:300;line-height:1;box-shadow:none
+}
+.v6-hero{background:#0b0b0c;border-radius:0 0 34px 34px;overflow:hidden;margin:-16px -16px 18px;position:relative}
+.v6-hero img{width:100%;height:245px;object-fit:cover;display:block;opacity:.88}
+.v6-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.56))}
+.v6-hero-copy{position:absolute;left:22px;right:22px;bottom:22px;color:#fff}
+.v6-hero-copy small{font-weight:800;letter-spacing:.14em;opacity:.8}
+.v6-hero-copy h1{margin:5px 0 3px;font-size:30px}
+.v6-quick-book{display:flex;align-items:center;gap:14px;background:#050505;color:#fff;padding:18px;border-radius:22px;margin:0 0 18px;cursor:pointer}
+.v6-quick-book .v6-qicon{width:50px;height:50px;border-radius:15px;background:#3a3a3c;display:grid;place-items:center;font-size:24px}
+.v6-quick-book strong{display:block;font-size:19px}.v6-quick-book small{color:#c6c6ca;font-size:14px}.v6-quick-book .arrow{margin-left:auto;font-size:30px}
+.v6-section-title{font-size:13px;letter-spacing:.15em;color:#9aa1ac;font-weight:900;margin:24px 4px 10px}
+.v6-menu{background:#fff;border-radius:24px;overflow:hidden;border:1px solid var(--v6-line);box-shadow:0 8px 22px rgba(0,0,0,.04)}
+.v6-menu-row{display:flex;align-items:center;gap:14px;padding:18px;border-bottom:1px solid #eee;cursor:pointer}
+.v6-menu-row:last-child{border-bottom:0}.v6-menu-row b{font-size:17px}.v6-menu-row span:last-child{margin-left:auto;color:#b6bcc5;font-size:25px}
+.v6-products-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}
+.v6-products-head h1{margin:0;font-size:29px}.v6-cart-btn{border:0;background:#050505;color:#fff;border-radius:16px;padding:12px 15px;font-weight:900;position:relative}
+.v6-cart-count{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:10px;background:#fff;color:#000;margin-left:6px;font-size:11px}
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product-card{background:#fff;border:1px solid var(--v6-line);border-radius:22px;overflow:hidden;box-shadow:0 7px 20px rgba(0,0,0,.04)}
+.product-card img,.product-placeholder{width:100%;aspect-ratio:1/1;object-fit:cover;background:#eceff2;display:grid;place-items:center;font-size:38px}
+.product-card-body{padding:13px}.product-card h3{font-size:16px;margin:0 0 5px}.product-card p{font-size:12px;color:#7f8998;min-height:32px;margin:0 0 10px}
+.product-price{font-weight:950;font-size:18px}.product-add{width:100%;margin-top:10px;border:0;border-radius:13px;padding:10px;background:#050505;color:#fff;font-weight:900}
+.cart-item,.order-card,.admin-product-card{background:#fff;border:1px solid var(--v6-line);border-radius:20px;padding:15px;margin:10px 0}
+.cart-item{display:grid;grid-template-columns:1fr auto;gap:8px}.cart-actions{display:flex;gap:8px;align-items:center}.cart-actions button{width:32px;height:32px;border-radius:10px;border:1px solid #ddd;background:#fff;font-weight:900}
+.order-status{display:inline-block;border-radius:999px;background:#eef1f5;padding:6px 9px;font-size:11px;font-weight:900}
+.v6-profile-setting{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--v6-line);border-radius:18px;margin:12px 0;background:#fff}
+.v6-profile-setting .ico{width:42px;height:42px;border-radius:13px;background:#eef3ff;display:grid;place-items:center;font-size:20px}
+.v6-profile-setting .grow{flex:1}.v6-profile-setting small{display:block;color:#8c96a4;margin-top:3px}
+.v6-profile-setting button{border:0;background:#050505;color:#fff;border-radius:12px;padding:10px 12px;font-weight:850}
+.admin-product-card{display:flex;gap:13px;align-items:center}.admin-product-card img,.admin-product-card .product-placeholder{width:66px;height:66px;border-radius:15px;flex:0 0 66px}
+.admin-product-card .grow{flex:1}.admin-product-card .actions{display:flex;gap:6px;flex-wrap:wrap}
+.broadcast-box textarea{min-height:130px;resize:vertical}
+.push-onboarding{max-width:420px}.push-onboarding .bell{font-size:48px;text-align:center;margin:4px 0 12px}
+@media(min-width:700px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v6-hero img{height:320px}}
+
 </style>
 </head>
 <body>
@@ -501,6 +558,19 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 
     <section id="customerApp" class="hide">
       <div id="customerHome" class="page">
+  <div class="v6-hero">
+    <img src="banner-haircutdream.png" alt="Hair Cut Dream">
+    <div class="v6-hero-overlay"></div>
+    <div class="v6-hero-copy"><small>HAIR CUT DREAM</small><h1>Ciao, <span id="v6HelloName">Cliente</span></h1><div>Il tuo stile, senza attese.</div></div>
+  </div>
+  <div class="v6-quick-book" onclick="openBooking()"><div class="v6-qicon">▦</div><div><strong>Prenota ora</strong><small>Scegli servizio, barbiere e orario</small></div><div class="arrow">›</div></div>
+  <div class="v6-section-title">ESPLORA</div>
+  <div class="v6-menu">
+    <div class="v6-menu-row" onclick="openBooking()"><b>✂️</b><b>Prenotazioni</b><span>›</span></div>
+    <div class="v6-menu-row" onclick="goCustomerProducts()"><b>🛍️</b><b>Prodotti</b><span>›</span></div>
+    <div class="v6-menu-row" onclick="showCustomerOrders()"><b>📦</b><b>I miei ordini</b><span>›</span></div>
+  </div>
+
         <div class="card">
           <p class="muted">Ciao,</p>
           <h1 id="helloName">Cliente</h1>
@@ -512,18 +582,16 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
         </div>
       </div>
 
-<div id="customerServices" class="page hide">
-  <div class="card">
-    <h2>I nostri servizi</h2>
-    <p class="muted">
-      Scopri i servizi disponibili presso Hair Cut Dream.
-    </p>
-
-    <div id="customerServicesList"></div>
+<div id="customerProducts" class="page hide">
+  <div class="v6-products-head">
+    <div><span class="eyebrow">HAIR CUT DREAM</span><h1>Prodotti</h1></div>
+    <button class="v6-cart-btn" type="button" onclick="openCart()">Carrello <span id="cartCount" class="v6-cart-count">0</span></button>
   </div>
+  <p class="muted">Ordina i tuoi prodotti preferiti e pagali direttamente in salone al ritiro.</p>
+  <div id="customerProductsList" class="product-grid"></div>
 </div>
-      
-      <div id="customerAppointments" class="page hide">
+
+<div id="customerAppointments" class="page hide">
         <div class="card">
           <h2>I miei appuntamenti</h2>
           <div id="customerAppointmentsList"></div>
@@ -531,16 +599,27 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
       </div>
 
       <div id="customerProfile" class="page hide">
-        <div class="card">
-          <h2>Profilo</h2>
-          <div id="profileSummary"></div>
-          <div class="notice">
-            L'accesso biometrico con Face ID / impronta verrà attivato con Passkey in una fase dedicata. Non lo simuliamo: lo implementeremo in modo sicuro.
-          </div>
-          <button class="btn secondary" onclick="logout()">Esci</button>
-        </div>
-      </div>
-    </section>
+  <div class="card">
+    <span class="eyebrow">IL MIO ACCOUNT</span>
+    <h2>Profilo</h2>
+    <div id="profileSummary"></div>
+    <div class="v6-profile-setting">
+      <div class="ico">🔔</div>
+      <div class="grow"><strong>Notifiche push</strong><small id="customerPushStatus">Controllo stato…</small></div>
+      <button type="button" onclick="enableCustomerPushNotifications()">Attiva</button>
+    </div>
+    <div class="v6-profile-setting">
+      <div class="ico">🛍️</div>
+      <div class="grow"><strong>I miei ordini</strong><small>Controlla gli ordini da ritirare in salone.</small></div>
+      <button type="button" onclick="showCustomerOrders()">Apri</button>
+    </div>
+    <button class="btn secondary" style="width:100%;margin-top:10px" onclick="logout()">Esci</button>
+  </div>
+</div>
+<div id="customerOrders" class="page hide">
+  <div class="card"><div class="row"><h2>I miei ordini</h2><button class="btn ghost small" onclick="goCustomerProfile()">Indietro</button></div><div id="customerOrdersList"></div></div>
+</div>
+</section>
 
     <section id="staffApp" class="hide">
       <div id="staffAgendaPage" class="staff-page">
@@ -595,7 +674,19 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
         </div>
       </div>
 
-      <div id="staffMorePage" class="staff-page hide">
+      <div id="staffProductsPage" class="staff-page hide">
+  <div class="card">
+    <div class="row"><div><span class="eyebrow">NEGOZIO</span><h1 class="staff-title">Prodotti</h1></div><button class="btn primary small" onclick="openProductEditor()">+ Prodotto</button></div>
+    <p class="muted">Gestisci la vetrina visibile ai clienti.</p><div id="staffProductsList"></div>
+  </div>
+</div>
+<div id="staffOrdersPage" class="staff-page hide">
+  <div class="card">
+    <div class="row"><div><span class="eyebrow">RITIRO IN SALONE</span><h1 class="staff-title">Ordini</h1></div><button class="btn ghost small" onclick="loadStaffOrders()">Aggiorna</button></div>
+    <div id="staffOrdersList"></div>
+  </div>
+</div>
+<div id="staffMorePage" class="staff-page hide">
         <div class="staff-section-head">
           <div><span class="eyebrow">IMPOSTAZIONI</span><h1 class="staff-title">Altro</h1><p class="muted">Gestisci disponibilità, assenze e account del salone.</p></div>
         </div>
@@ -606,6 +697,13 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
         </div>
 
         <div class="settings-grid">
+  <button class="setting-card" type="button" onclick="openStaffProducts()">
+    <span class="setting-icon">🛍️</span><span><strong>Prodotti</strong><small>Foto, nome, descrizione, prezzo e disponibilità</small></span><span class="setting-arrow">›</span>
+  </button>
+  <button class="setting-card" type="button" onclick="openStaffOrders()">
+    <span class="setting-icon">📦</span><span><strong>Ordini clienti</strong><small>Visualizza e gestisci gli ordini con ritiro in salone</small></span><span class="setting-arrow">›</span>
+  </button>
+
           <button class="setting-card" type="button" onclick="openStaffHoursPage()">
             <span class="setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
             <span><strong>Orari e disponibilità</strong><small>Giorni, aperture e fasce orarie per ogni barbiere</small></span>
@@ -628,13 +726,11 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
             <span><strong>Notifiche</strong><small id="staffPushStatus">Controllo stato notifiche…</small></span>
             <span class="setting-arrow">›</span>
           </button>
-          <button class="setting-card" type="button" onclick="testStaffNotification()">
-            <span class="setting-icon notification-test-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 3v3M5.6 5.6l2.1 2.1M18.4 5.6l-2.1 2.1"/><path d="M6 14a6 6 0 0 1 12 0c0 4 2 4 2 6H4c0-2 2-2 2-6"/><path d="M10 22h4"/></svg>
-            </span>
-            <span><strong>Test notifica</strong><small>Invia subito una notifica di prova su questo dispositivo.</small></span>
-            <span class="setting-arrow">›</span>
-          </button>
+          <button class="setting-card" type="button" onclick="openBroadcastDialog()">
+      <span class="setting-icon notification-test-icon">📣</span>
+      <span><strong>Invia notifica ai clienti</strong><small>Scrivi un messaggio e invialo ai clienti che hanno attivato le notifiche.</small></span>
+      <span class="setting-arrow">›</span>
+    </button>
           <button class="setting-card" type="button" onclick="refreshStaffAll()">
             <span class="setting-icon"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span>
             <span><strong>Sincronizza dati</strong><small>Ricarica agenda, clienti, servizi e disponibilità</small></span>
@@ -668,54 +764,17 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
 
   <nav id="customerTabs" class="tabs hide">
   <button class="tab active" data-page="customerHome" onclick="goPage(this)">
-    <span class="tabIcon staff-color-icon customer-home-color">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 11.5 12 4l9 7.5"/>
-        <path d="M5.5 10.5V20h13v-9.5"/>
-        <path d="M9.5 20v-6h5v6"/>
-      </svg>
-    </span>
-    <span>Home</span>
+    <span class="tabIcon staff-color-icon"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span>Home</span>
   </button>
-
-  <button class="tab" data-page="customerServices" onclick="goPage(this)">
-    <span class="tabIcon staff-color-icon customer-services-color">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="6.5" cy="7" r="2.5"/>
-        <circle cx="6.5" cy="17" r="2.5"/>
-        <path d="M8.5 8.5 20 3"/>
-        <path d="M8.5 15.5 20 21"/>
-        <path d="m11 12 9-4.5"/>
-        <path d="m11 12 9 4.5"/>
-      </svg>
-    </span>
-    <span>Servizi</span>
-  </button>
-
-  <button class="tab bookingTab" onclick="openBooking()">
-    <span class="bookingIcon">＋</span>
-    <span>PRENOTA</span>
-  </button>
-
   <button class="tab" data-page="customerAppointments" onclick="goPage(this)">
-    <span class="tabIcon staff-color-icon customer-appointments-color">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="5" width="18" height="16" rx="3"/>
-        <path d="M8 3v4M16 3v4M3 10h18"/>
-        <path d="M7.5 14h3M13.5 14h3M7.5 18h3"/>
-      </svg>
-    </span>
-    <span>Appuntamenti</span>
+    <span class="tabIcon staff-color-icon"><svg viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="3" cy="6" r=".6"/><circle cx="3" cy="12" r=".6"/><circle cx="3" cy="18" r=".6"/></svg></span><span>Appuntamenti</span>
   </button>
-
+  <button class="tab bookingTab" onclick="openBooking()"><span class="bookingIcon">＋</span><span>PRENOTA</span></button>
+  <button class="tab" data-page="customerProducts" onclick="goPage(this)">
+    <span class="tabIcon staff-color-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16l-1 13H5L4 7Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg></span><span>Prodotti</span>
+  </button>
   <button class="tab" data-page="customerProfile" onclick="goPage(this)">
-    <span class="tabIcon staff-color-icon customer-profile-color">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4.5 21c.8-4.3 3.3-6.5 7.5-6.5s6.7 2.2 7.5 6.5"/>
-      </svg>
-    </span>
-    <span>Profilo</span>
+    <span class="tabIcon staff-color-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c.8-4.3 3.3-6.5 7.5-6.5s6.7 2.2 7.5 6.5"/></svg></span><span>Profilo</span>
   </button>
 </nav>
 
@@ -899,6 +958,42 @@ dialog[open]{animation:hcdDialogIn .16s ease-out}
   </div>
 </dialog>
 
+
+<dialog id="cartDialog">
+  <div class="dialog-card"><div class="row"><h2>Il tuo carrello</h2><button class="btn ghost small" onclick="$('cartDialog').close()">Chiudi</button></div>
+  <div id="cartItems"></div><div class="row" style="margin-top:14px"><strong>Totale</strong><strong id="cartTotal">€0,00</strong></div>
+  <p class="muted">Pagamento e ritiro direttamente in salone. Nessun pagamento online.</p>
+  <button class="btn primary" style="width:100%" onclick="placeOrder()">ORDINA E RITIRA IN SALONE</button></div>
+</dialog>
+
+<dialog id="productEditorDialog">
+ <form id="productEditorForm" class="dialog-card">
+  <div class="row"><h2 id="productEditorTitle">Nuovo prodotto</h2><button type="button" class="btn ghost small" onclick="$('productEditorDialog').close()">Chiudi</button></div>
+  <input id="productEditId" type="hidden">
+  <div class="field"><label>Nome</label><input id="productName" required maxlength="120"></div>
+  <div class="field"><label>Descrizione</label><textarea id="productDescription" maxlength="800"></textarea></div>
+  <div class="grid two"><div class="field"><label>Prezzo €</label><input id="productPrice" type="number" min="0" step=".01" required></div>
+  <div class="field"><label>Disponibilità</label><select id="productActive"><option value="true">Disponibile</option><option value="false">Non disponibile</option></select></div></div>
+  <div class="field"><label>Foto prodotto</label><input id="productImage" type="file" accept="image/*"></div>
+  <button class="btn primary" style="width:100%" type="submit">SALVA PRODOTTO</button>
+ </form>
+</dialog>
+
+<dialog id="broadcastDialog">
+ <div class="dialog-card broadcast-box"><div class="row"><h2>Notifica ai clienti</h2><button class="btn ghost small" onclick="$('broadcastDialog').close()">Chiudi</button></div>
+ <p class="muted">Il messaggio arriverà ai clienti registrati che hanno autorizzato le notifiche push.</p>
+ <div class="field"><label>Messaggio</label><textarea id="broadcastMessage" maxlength="220" placeholder="Es. Buon Natale a tutti ❤️"></textarea></div>
+ <div id="broadcastCounter" class="muted">0 / 220</div>
+ <button class="btn primary" style="width:100%;margin-top:12px" onclick="sendBroadcast()">INVIA A TUTTI</button></div>
+</dialog>
+
+<dialog id="pushOnboardingDialog">
+ <div class="dialog-card push-onboarding"><div class="bell">🔔</div><h2 style="text-align:center">Attiva le notifiche</h2>
+ <p class="muted" style="text-align:center">Ricevi conferme, aggiornamenti sugli ordini e comunicazioni di Hair Cut Dream.</p>
+ <button class="btn primary" style="width:100%" onclick="enableCustomerPushNotifications(true)">ATTIVA NOTIFICHE</button>
+ <button class="btn ghost" style="width:100%;margin-top:8px" onclick="dismissPushOnboarding()">Non ora</button></div>
+</dialog>
+
 <dialog id="iosInstallDialog">
   <div class="dialog-body">
     <div class="row"><h2>Installa Hair Cut Dream</h2><button class="btn ghost small" type="button" onclick="document.getElementById('iosInstallDialog').close()">Chiudi</button></div>
@@ -925,6 +1020,10 @@ let staffClients = [];
 let realtimeChannel = null;
 let hoursEditorBarberId = null;
 let currentProfile = null;
+let products = [];
+let cart = JSON.parse(localStorage.getItem("hcd_cart") || "{}");
+let staffOrders = [];
+
 
 const $ = id => document.getElementById(id);
 
@@ -967,6 +1066,8 @@ function goPage(btn){
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   btn.classList.add("active");
   if(id==="customerAppointments") loadCustomerAppointments();
+  if(id==="customerProducts") loadProducts();
+  if(id==="customerProfile") refreshCustomerPushStatus();
 }
 
 
@@ -1012,6 +1113,7 @@ async function enableStaffPushNotifications(){
     const permission = await Notification.requestPermission();
     if(permission !== "granted"){
       await refreshPushStatus();
+    await Promise.all([loadProducts(), loadStaffOrders()]);
       return msg("Notifiche non autorizzate sul dispositivo.","error");
     }
     const reg = await navigator.serviceWorker.ready;
@@ -1042,29 +1144,6 @@ async function enableStaffPushNotifications(){
 }
 
 
-async function testStaffNotification(){
-  if(!("Notification" in window) || !("serviceWorker" in navigator)){
-    return msg("Questo dispositivo non supporta le notifiche.","error");
-  }
-  if(Notification.permission !== "granted"){
-    return msg("Prima attiva le notifiche su questo dispositivo.","error");
-  }
-  try{
-    const reg = await navigator.serviceWorker.ready;
-    await reg.showNotification("Hair Cut Dream",{
-      body:"Notifica di prova: il dispositivo è pronto a ricevere gli avvisi.",
-      icon:"./icon-192.png",
-      badge:"./icon-192.png",
-      tag:"hcd-local-test-"+Date.now(),
-      data:{url:"./"}
-    });
-    msg("Test inviato. Dovresti vedere la notifica adesso.","ok");
-  }catch(e){
-    console.error("Notification test error", e);
-    msg("Errore test notifica: "+(e.message||e),"error");
-  }
-}
-
 async function notifyStaffPush(type, id){
   if(!sb || !sessionUser || !id) return;
   try{
@@ -1080,7 +1159,7 @@ async function notifyStaffPush(type, id){
 async function init(){
   if("serviceWorker" in navigator){
     try{
-      const reg = await navigator.serviceWorker.register("./sw.js?v=56", { updateViaCache:"none" });
+      const reg = await navigator.serviceWorker.register("./sw.js?v=60", { updateViaCache:"none" });
       await reg.update();
     }catch(e){
       console.error("Service worker update error:", e);
@@ -1763,7 +1842,10 @@ async function afterLogin(user){
     await ensureCustomer(profile);
     $("helloName").textContent = (profile.full_name || "Cliente").split(" ")[0];
     $("profileSummary").innerHTML = `<p><strong>${escapeHtml(profile.full_name || "")}</strong><br>${escapeHtml(user.email || "")}</p>`;
-    await loadCustomerAppointments();
+    await Promise.all([loadCustomerAppointments(), loadProducts()]);
+    $("v6HelloName") && ($("v6HelloName").textContent=(profile.full_name || "Cliente").split(" ")[0]);
+    refreshCustomerPushStatus();
+    setTimeout(maybeShowPushOnboarding, 900);
     startRealtimeAppointments();
   }
 }
@@ -2012,6 +2094,136 @@ async function deleteStaffAppointment(id){
   const {error}=await sb.from("appointments").delete().eq("id",id);
   if(error) msg(error.message,"error");
   else { msg("Appuntamento eliminato.","ok"); loadStaffAgenda(); }
+}
+
+
+function euro(v){ return new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR"}).format(Number(v||0)); }
+function saveCart(){ localStorage.setItem("hcd_cart",JSON.stringify(cart)); updateCartCount(); }
+function updateCartCount(){ const n=Object.values(cart).reduce((a,b)=>a+Number(b||0),0); if($("cartCount")) $("cartCount").textContent=n; }
+
+async function loadProducts(){
+  if(!sb) return;
+  const {data,error}=await sb.from("products").select("*").order("name");
+  if(error){ console.warn("Products:",error.message); return; }
+  products=data||[];
+  renderCustomerProducts();
+  if(appRole==="admin"||appRole==="barber") renderStaffProducts();
+  updateCartCount();
+}
+function renderCustomerProducts(){
+  const root=$("customerProductsList"); if(!root) return;
+  const list=products.filter(p=>p.active!==false);
+  root.innerHTML=list.length?list.map(p=>`<article class="product-card">
+    ${p.image_url?`<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}">`:`<div class="product-placeholder">🧴</div>`}
+    <div class="product-card-body"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"Disponibile in salone")}</p>
+    <div class="product-price">${euro(p.price)}</div><button class="product-add" onclick="addToCart('${p.id}')">AGGIUNGI</button></div></article>`).join("")
+    :`<div class="empty-state" style="grid-column:1/-1">Nessun prodotto disponibile al momento.</div>`;
+}
+function addToCart(id){ cart[id]=(cart[id]||0)+1; saveCart(); msg("Prodotto aggiunto al carrello.","ok"); }
+function openCart(){ renderCart(); $("cartDialog").showModal(); }
+function renderCart(){
+  const root=$("cartItems"); if(!root) return;
+  const rows=Object.entries(cart).filter(([id,q])=>q>0&&products.some(p=>p.id===id));
+  let total=0;
+  root.innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>x.id===id); const sub=Number(p.price)*q; total+=sub; return `<div class="cart-item"><div><strong>${escapeHtml(p.name)}</strong><div class="muted">${euro(p.price)} cad.</div></div><div class="cart-actions"><button onclick="changeCart('${id}',-1)">−</button><b>${q}</b><button onclick="changeCart('${id}',1)">+</button></div></div>`}).join(""):`<div class="empty-state">Il carrello è vuoto.</div>`;
+  $("cartTotal").textContent=euro(total);
+}
+function changeCart(id,d){ cart[id]=Math.max(0,(cart[id]||0)+d); if(!cart[id]) delete cart[id]; saveCart(); renderCart(); }
+
+async function placeOrder(){
+  if(!customerRow) return msg("Accedi come cliente per ordinare.","error");
+  const rows=Object.entries(cart).filter(([id,q])=>q>0&&products.some(p=>p.id===id));
+  if(!rows.length) return msg("Il carrello è vuoto.","error");
+  const total=rows.reduce((s,[id,q])=>s+Number(products.find(p=>p.id===id).price)*q,0);
+  const {data:order,error}=await sb.from("orders").insert({
+    customer_id:customerRow.id, profile_id:sessionUser.id, customer_name:customerRow.full_name,
+    customer_phone:customerRow.phone, total_amount:total, status:"received"
+  }).select("id").single();
+  if(error) return msg(error.message,"error");
+  const items=rows.map(([id,q])=>{const p=products.find(x=>x.id===id);return {order_id:order.id,product_id:id,product_name:p.name,unit_price:p.price,quantity:q};});
+  const {error:itemErr}=await sb.from("order_items").insert(items);
+  if(itemErr) return msg("Ordine creato ma dettaglio prodotti non salvato: "+itemErr.message,"error");
+  cart={}; saveCart(); $("cartDialog").close();
+  try{ await sb.functions.invoke("send-hcd-push",{body:{type:"new_order",order_id:order.id}}); }catch(e){console.warn(e)}
+  msg("Ordine inviato. Pagherai e ritirerai direttamente in salone.","ok");
+  await loadCustomerOrders();
+}
+async function loadCustomerOrders(){
+  if(!sessionUser) return;
+  const {data,error}=await sb.from("orders").select("*,order_items(*)").eq("profile_id",sessionUser.id).order("created_at",{ascending:false});
+  if(error){console.warn(error);return}
+  const root=$("customerOrdersList"); if(!root)return;
+  root.innerHTML=(data||[]).length?(data||[]).map(o=>`<div class="order-card"><div class="row"><strong>Ordine ${String(o.id).slice(0,8).toUpperCase()}</strong><span class="order-status">${orderStatus(o.status)}</span></div><div class="muted" style="margin:7px 0">${new Date(o.created_at).toLocaleString("it-IT")}</div>${(o.order_items||[]).map(i=>`<div>${i.quantity}× ${escapeHtml(i.product_name)} · ${euro(Number(i.unit_price)*i.quantity)}</div>`).join("")}<div class="row" style="margin-top:10px"><b>Totale</b><b>${euro(o.total_amount)}</b></div></div>`).join(""):`<div class="empty-state">Non hai ancora effettuato ordini.</div>`;
+}
+function orderStatus(s){return ({received:"Ricevuto",preparing:"In preparazione",ready:"Pronto al ritiro",collected:"Ritirato",cancelled:"Annullato"})[s]||s}
+function showCustomerOrders(){document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));$("customerOrders").classList.remove("hide");loadCustomerOrders();}
+function goCustomerProfile(){document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));$("customerProfile").classList.remove("hide");}
+function goCustomerProducts(){document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));$("customerProducts").classList.remove("hide");loadProducts();}
+
+async function refreshCustomerPushStatus(){
+  const el=$("customerPushStatus"); if(!el)return;
+  if(!("Notification" in window)||!("serviceWorker" in navigator)){el.textContent="Non supportate su questo dispositivo";return}
+  const reg=await navigator.serviceWorker.ready; const sub=await reg.pushManager.getSubscription();
+  el.textContent=(Notification.permission==="granted"&&sub)?"Attive su questo dispositivo":Notification.permission==="denied"?"Bloccate nelle impostazioni del dispositivo":"Non attive";
+}
+async function enableCustomerPushNotifications(fromDialog=false){
+  if(!sessionUser)return;
+  try{
+    const permission=await Notification.requestPermission();
+    if(permission!=="granted"){refreshCustomerPushStatus();return msg("Notifiche non autorizzate.","error")}
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(HCD_VAPID_PUBLIC_KEY)});
+    const j=sub.toJSON();
+    const {error}=await sb.from("push_subscriptions").upsert({user_id:sessionUser.id,endpoint:j.endpoint,p256dh:j.keys?.p256dh,auth_key:j.keys?.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
+    if(error)throw error;
+    localStorage.setItem("hcd_push_prompted","1");
+    if(fromDialog&&$("pushOnboardingDialog").open)$("pushOnboardingDialog").close();
+    refreshCustomerPushStatus(); msg("Notifiche attivate.","ok");
+  }catch(e){msg("Errore notifiche: "+(e.message||e),"error")}
+}
+function maybeShowPushOnboarding(){
+  const standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  if(appRole!=="customer"||!standalone||localStorage.getItem("hcd_push_prompted")==="1"||Notification.permission==="granted")return;
+  $("pushOnboardingDialog")?.showModal();
+}
+function dismissPushOnboarding(){localStorage.setItem("hcd_push_prompted","1");$("pushOnboardingDialog").close();}
+
+function openStaffProducts(){document.querySelectorAll("#staffApp .staff-page").forEach(x=>x.classList.add("hide"));$("staffProductsPage").classList.remove("hide");loadProducts();}
+function openStaffOrders(){document.querySelectorAll("#staffApp .staff-page").forEach(x=>x.classList.add("hide"));$("staffOrdersPage").classList.remove("hide");loadStaffOrders();}
+function renderStaffProducts(){
+ const root=$("staffProductsList");if(!root)return;
+ root.innerHTML=products.length?products.map(p=>`<div class="admin-product-card">${p.image_url?`<img src="${escapeHtml(p.image_url)}">`:`<div class="product-placeholder">🧴</div>`}<div class="grow"><strong>${escapeHtml(p.name)}</strong><div class="muted">${euro(p.price)} · ${p.active!==false?"Disponibile":"Nascosto"}</div></div><div class="actions"><button class="btn ghost small" onclick="openProductEditor('${p.id}')">Modifica</button><button class="btn danger small" onclick="deleteProduct('${p.id}')">Elimina</button></div></div>`).join(""):`<div class="empty-state">Nessun prodotto.</div>`;
+}
+function openProductEditor(id=""){
+ const p=products.find(x=>x.id===id);$("productEditId").value=p?.id||"";$("productName").value=p?.name||"";$("productDescription").value=p?.description||"";$("productPrice").value=p?.price??"";$("productActive").value=String(p?.active!==false);$("productImage").value="";$("productEditorTitle").textContent=p?"Modifica prodotto":"Nuovo prodotto";$("productEditorDialog").showModal();
+}
+$("productEditorForm")?.addEventListener("submit",async e=>{
+ e.preventDefault(); const id=$("productEditId").value; let imageUrl=products.find(x=>x.id===id)?.image_url||null; const file=$("productImage").files?.[0];
+ if(file){const ext=(file.name.split(".").pop()||"jpg").toLowerCase();const path=`${crypto.randomUUID()}.${ext}`;const {error:uErr}=await sb.storage.from("product-images").upload(path,file,{upsert:false});if(uErr)return msg(uErr.message,"error");const {data:urlData}=sb.storage.from("product-images").getPublicUrl(path);imageUrl=urlData.publicUrl;}
+ const payload={name:$("productName").value.trim(),description:$("productDescription").value.trim()||null,price:Number($("productPrice").value),active:$("productActive").value==="true",image_url:imageUrl};
+ const q=id?sb.from("products").update(payload).eq("id",id):sb.from("products").insert(payload);const {error}=await q;if(error)return msg(error.message,"error");$("productEditorDialog").close();await loadProducts();msg("Prodotto salvato.","ok");
+});
+async function deleteProduct(id){if(!confirm("Eliminare questo prodotto dalla vetrina?"))return;const {error}=await sb.from("products").delete().eq("id",id);if(error)return msg(error.message,"error");await loadProducts();}
+
+async function loadStaffOrders(){
+ const {data,error}=await sb.from("orders").select("*,order_items(*)").order("created_at",{ascending:false});if(error){console.warn(error);return}
+ staffOrders=data||[];const root=$("staffOrdersList");if(!root)return;
+ root.innerHTML=staffOrders.length?staffOrders.map(o=>`<div class="order-card"><div class="row"><div><strong>${escapeHtml(o.customer_name||"Cliente")}</strong><div class="muted">${escapeHtml(o.customer_phone||"")} · ${new Date(o.created_at).toLocaleString("it-IT")}</div></div><span class="order-status">${orderStatus(o.status)}</span></div>${(o.order_items||[]).map(i=>`<div style="margin-top:5px">${i.quantity}× ${escapeHtml(i.product_name)} · ${euro(Number(i.unit_price)*i.quantity)}</div>`).join("")}<div class="row" style="margin-top:12px"><b>Totale ${euro(o.total_amount)}</b><select onchange="updateOrderStatus('${o.id}',this.value)"><option value="received" ${o.status==="received"?"selected":""}>Ricevuto</option><option value="preparing" ${o.status==="preparing"?"selected":""}>In preparazione</option><option value="ready" ${o.status==="ready"?"selected":""}>Pronto al ritiro</option><option value="collected" ${o.status==="collected"?"selected":""}>Ritirato</option><option value="cancelled" ${o.status==="cancelled"?"selected":""}>Annullato</option></select></div></div>`).join(""):`<div class="empty-state">Nessun ordine ricevuto.</div>`;
+}
+async function updateOrderStatus(id,status){
+ const {error}=await sb.from("orders").update({status,updated_at:new Date().toISOString()}).eq("id",id);if(error)return msg(error.message,"error");
+ if(status==="ready"){try{await sb.functions.invoke("send-hcd-push",{body:{type:"order_ready",order_id:id}})}catch(e){console.warn(e)}}
+ msg("Stato ordine aggiornato.","ok");loadStaffOrders();
+}
+function openBroadcastDialog(){$("broadcastMessage").value="";$("broadcastCounter").textContent="0 / 220";$("broadcastDialog").showModal();}
+$("broadcastMessage")?.addEventListener("input",()=>{$("broadcastCounter").textContent=`${$("broadcastMessage").value.length} / 220`});
+async function sendBroadcast(){
+ const message=$("broadcastMessage").value.trim();if(!message)return msg("Scrivi prima il messaggio.","error");
+ if(!confirm(`Inviare questa notifica a tutti i clienti?\n\n${message}`))return;
+ const {data,error}=await sb.functions.invoke("send-hcd-push",{body:{type:"broadcast_clients",message}});
+ if(error)return msg("Invio non riuscito: "+error.message,"error");
+ $("broadcastDialog").close();msg(`Notifica inviata. Dispositivi raggiunti: ${data?.sent??0}.`,"ok");
 }
 
 function toMin(t){ const [h,m]=t.slice(0,5).split(":").map(Number); return h*60+m; }
