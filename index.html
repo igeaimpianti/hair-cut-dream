@@ -484,72 +484,23 @@ body:not(.staff-mode) .card{
 .notification-item.unread:before{content:"";position:absolute;right:14px;top:14px;width:9px;height:9px;border-radius:50%;background:#111}
 .notification-item h3{margin:0 22px 5px 0;font-size:16px}.notification-item p{margin:0;color:#606a78;white-space:pre-wrap}.notification-item time{display:block;color:#9aa2ad;font-size:11px;margin-top:9px}
 
-/* ===== FIX BARRA CLIENTE V6 ===== */
 
-#customerTabs{
-  position: fixed !important;
-
-  left: 50% !important;
-  right: auto !important;
-  bottom: 16px !important;
-
-  transform: translateX(-50%) !important;
-
-  width: calc(100% - 24px) !important;
-  max-width: 720px !important;
-
-  margin: 0 !important;
-  padding: 8px 6px 7px !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-
-  box-sizing: border-box !important;
-
-  background: #050505 !important;
-  border-radius: 24px !important;
-
-  z-index: 1000 !important;
+/* ===== V6.2 Notification detail + biometric ===== */
+.notification-detail-page{
+  min-height:calc(100dvh - 145px); background:#fff; border-radius:30px;
+  padding:22px; display:flex; flex-direction:column; position:relative;
+  box-shadow:0 10px 28px rgba(16,19,26,.06); border:1px solid var(--v6-line);
 }
+.notification-back{width:44px;height:44px;border-radius:14px;border:1px solid #e7e9ed;background:#fff;font-size:24px;cursor:pointer}
+.notification-detail-icon{width:70px;height:70px;border-radius:22px;background:#050505;color:#fff;display:grid;place-items:center;font-size:31px;margin:36px 0 18px}
+.notification-detail-label{font-size:12px;font-weight:950;letter-spacing:.15em;color:#9aa2ad}
+.notification-detail-page h1{font-size:30px;line-height:1.08;margin:8px 0 20px;color:#0d1015}
+.notification-detail-message{font-size:18px;line-height:1.55;color:#343b46;white-space:pre-wrap;overflow-wrap:anywhere}
+.notification-detail-date{font-size:13px;color:#9aa2ad;margin:24px 0}
+.notification-detail-close{margin-top:auto;width:100%}
+.or-divider{display:flex;align-items:center;gap:10px;color:#9aa2ad;font-size:12px;margin:12px 0}
+.or-divider:before,.or-divider:after{content:"";height:1px;background:#e5e7eb;flex:1}
 
-#customerTabs.hide{
-  display: none !important;
-}
-
-#customerTabs .tab{
-  width: 100% !important;
-  min-width: 0 !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  padding: 4px 0 !important;
-  margin: 0 !important;
-
-  text-align: center !important;
-}
-
-#customerTabs .bookingTab{
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-
-  transform: translateY(-15px) !important;
-}
-
-#customerTabs .bookingIcon{
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-#customerTabs .tab > span:last-child{
-  width: 100% !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-}
-    
 </style>
 </head>
 <body>
@@ -624,7 +575,11 @@ body:not(.staff-mode) .card{
             <button class="btn primary" type="submit">ACCEDI</button>
             <button class="btn ghost" type="button" onclick="forgotPassword()">Password dimenticata?</button>
           </div>
-        </form>
+        <div id="passkeyLoginWrap" class="hide" style="margin-top:10px">
+      <div class="or-divider"><span>oppure</span></div>
+      <button id="passkeyLoginButton" class="btn secondary" style="width:100%" type="button" onclick="loginWithBiometric()">🔐 ACCEDI CON BIOMETRIA</button>
+    </div>
+    </form>
       </div>
     </section>
 
@@ -681,6 +636,11 @@ body:not(.staff-mode) .card{
       <div class="grow"><strong>Notifiche push</strong><small id="customerPushStatus">Controllo stato…</small></div>
       <button type="button" onclick="enableCustomerPushNotifications()">Attiva</button>
     </div>
+    <div class="v6-profile-setting">
+      <div class="ico">🔐</div>
+      <div class="grow"><strong>Accesso biometrico</strong><small id="biometricStatus">Controllo disponibilità…</small></div>
+      <button id="biometricButton" type="button" onclick="toggleBiometricAccess()">Abilita</button>
+    </div>
     <div class="v6-profile-setting" onclick="showCustomerNotifications()" style="cursor:pointer">
       <div class="ico">🔔</div>
       <div class="grow"><strong>Centro notifiche</strong><small>Leggi tutte le comunicazioni ricevute.</small></div>
@@ -693,6 +653,17 @@ body:not(.staff-mode) .card{
       <button type="button" onclick="showCustomerOrders()">Apri</button>
     </div>
     <button class="btn secondary" style="width:100%;margin-top:10px" onclick="logout()">Esci</button>
+  </div>
+</div>
+<div id="customerNotificationDetail" class="page hide">
+  <div class="notification-detail-page">
+    <button class="notification-back" type="button" onclick="showCustomerNotifications()">←</button>
+    <div class="notification-detail-icon">🔔</div>
+    <div class="notification-detail-label">HAIR CUT DREAM</div>
+    <h1 id="notificationDetailTitle">Notifica</h1>
+    <div id="notificationDetailMessage" class="notification-detail-message"></div>
+    <div id="notificationDetailDate" class="notification-detail-date"></div>
+    <button class="btn primary notification-detail-close" type="button" onclick="showCustomerNotifications()">TORNA ALLE NOTIFICHE</button>
   </div>
 </div>
 <div id="customerNotifications" class="page hide">
@@ -1091,7 +1062,9 @@ body:not(.staff-mode) .card{
   </div>
 </dialog>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+refreshBiometricStatus();
+</script>
 <script src="config.js"></script>
 <script>
 let sb = null;
@@ -1934,6 +1907,7 @@ async function afterLogin(user){
     await Promise.all([loadCustomerAppointments(), loadProducts(), loadCustomerNotifications()]);
     $("v6HelloName") && ($("v6HelloName").textContent=(profile.full_name || "Cliente").split(" ")[0]);
     refreshCustomerPushStatus();
+    refreshBiometricStatus();
     setTimeout(maybeShowPushOnboarding, 900);
     const launchParams=new URLSearchParams(location.search);
     if(launchParams.get("notifications")){ setTimeout(()=>{showCustomerNotifications();history.replaceState({},document.title,location.pathname);},500); }
@@ -2192,6 +2166,104 @@ async function deleteStaffAppointment(id){
 
 
 
+
+const HCD_PASSKEY_FLAG="hcd_passkey_enabled";
+const HCD_PASSKEY_ID="hcd_passkey_credential_id";
+const HCD_PASSKEY_USER="hcd_passkey_user_id";
+
+function bytesToB64url(bytes){
+  let s=""; new Uint8Array(bytes).forEach(b=>s+=String.fromCharCode(b));
+  return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function b64urlToBytes(s){
+  s=s.replace(/-/g,"+").replace(/_/g,"/");
+  while(s.length%4)s+="=";
+  const raw=atob(s), out=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+  return out;
+}
+async function biometricAvailable(){
+  if(!window.PublicKeyCredential || !navigator.credentials) return false;
+  try{
+    if(PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable)
+      return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    return true;
+  }catch{return false}
+}
+async function refreshBiometricStatus(){
+  const available=await biometricAvailable();
+  const enabled=localStorage.getItem(HCD_PASSKEY_FLAG)==="1";
+  const status=$("biometricStatus"), btn=$("biometricButton"), loginWrap=$("passkeyLoginWrap");
+  if(status){
+    status.textContent=!available?"Non disponibile su questo dispositivo":
+      enabled?"Attivo su questo dispositivo":"Usa Face ID, Touch ID o la biometria del dispositivo";
+  }
+  if(btn){btn.disabled=!available;btn.textContent=enabled?"Disabilita":"Abilita";}
+  if(loginWrap)loginWrap.classList.toggle("hide",!(available&&enabled));
+}
+async function toggleBiometricAccess(){
+  const enabled=localStorage.getItem(HCD_PASSKEY_FLAG)==="1";
+  if(enabled){
+    localStorage.removeItem(HCD_PASSKEY_FLAG);
+    localStorage.removeItem(HCD_PASSKEY_ID);
+    localStorage.removeItem(HCD_PASSKEY_USER);
+    await refreshBiometricStatus();
+    return msg("Accesso biometrico disabilitato su questo dispositivo.","ok");
+  }
+  await enableBiometricAccess();
+}
+async function enableBiometricAccess(){
+  if(!sessionUser)return msg("Accedi prima al tuo account.","error");
+  if(!(await biometricAvailable()))return msg("Biometria/passkey non disponibile su questo dispositivo.","error");
+  try{
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const userId=new TextEncoder().encode(sessionUser.id);
+    const credential=await navigator.credentials.create({publicKey:{
+      challenge,
+      rp:{name:"Hair Cut Dream",id:location.hostname},
+      user:{id:userId,name:sessionUser.email||sessionUser.id,displayName:currentProfile?.full_name||"Cliente Hair Cut Dream"},
+      pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],
+      authenticatorSelection:{authenticatorAttachment:"platform",residentKey:"preferred",userVerification:"required"},
+      timeout:60000,
+      attestation:"none"
+    }});
+    if(!credential)throw new Error("Registrazione annullata");
+    localStorage.setItem(HCD_PASSKEY_FLAG,"1");
+    localStorage.setItem(HCD_PASSKEY_ID,bytesToB64url(credential.rawId));
+    localStorage.setItem(HCD_PASSKEY_USER,sessionUser.id);
+    await refreshBiometricStatus();
+    msg("Accesso biometrico attivato su questo dispositivo.","ok");
+  }catch(e){
+    if(e?.name==="NotAllowedError")return msg("Attivazione biometrica annullata.","error");
+    msg("Impossibile attivare la biometria: "+(e.message||e),"error");
+  }
+}
+async function loginWithBiometric(){
+  const id=localStorage.getItem(HCD_PASSKEY_ID);
+  if(!id)return msg("Accesso biometrico non configurato su questo dispositivo.","error");
+  try{
+    const assertion=await navigator.credentials.get({publicKey:{
+      challenge:crypto.getRandomValues(new Uint8Array(32)),
+      allowCredentials:[{id:b64urlToBytes(id),type:"public-key",transports:["internal"]}],
+      userVerification:"required",timeout:60000
+    }});
+    if(!assertion)throw new Error("Verifica annullata");
+
+    /* WebAuthn verifies the device/user presence. Supabase session remains the
+       account session; if it has expired, a server-side passkey verifier is
+       required rather than storing a password in the PWA. */
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){
+      msg("Biometria verificata, ma la sessione è scaduta. Accedi una volta con email e password.","error");
+      return;
+    }
+    await afterLogin(session);
+  }catch(e){
+    if(e?.name==="NotAllowedError")return msg("Verifica biometrica annullata.","error");
+    msg("Accesso biometrico non riuscito: "+(e.message||e),"error");
+  }
+}
+
 async function loadCustomerNotifications(){
   if(!sessionUser) return;
   const {data,error}=await sb.from("customer_notifications").select("*").eq("user_id",sessionUser.id).order("created_at",{ascending:false});
@@ -2207,10 +2279,20 @@ async function showCustomerNotifications(){
   await loadCustomerNotifications();
 }
 async function openCustomerNotification(id){
-  const {data,error}=await sb.from("customer_notifications").update({read_at:new Date().toISOString()}).eq("id",id).eq("user_id",sessionUser.id).select("*").single();
+  const {data,error}=await sb.from("customer_notifications")
+    .update({read_at:new Date().toISOString()})
+    .eq("id",id).eq("user_id",sessionUser.id)
+    .select("*").single();
   if(error)return msg(error.message,"error");
-  await loadCustomerNotifications();
-  alert(`${data.title||"Hair Cut Dream"}\n\n${data.message||""}\n\n${new Date(data.created_at).toLocaleString("it-IT")}`);
+
+  document.querySelectorAll("#customerApp .page").forEach(x=>x.classList.add("hide"));
+  $("customerNotificationDetail").classList.remove("hide");
+  $("notificationDetailTitle").textContent=data.title||"Hair Cut Dream";
+  $("notificationDetailMessage").textContent=data.message||"";
+  $("notificationDetailDate").textContent=new Date(data.created_at).toLocaleString("it-IT",{
+    weekday:"long",day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"
+  });
+  loadCustomerNotifications();
 }
 async function markAllNotificationsRead(){
   if(!sessionUser)return;
