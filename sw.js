@@ -1,6 +1,6 @@
-const CACHE = "hair-cut-dream-v56";
-const APP_VERSION = "5.6";
-const ASSETS = [
+const CACHE="hair-cut-dream-v60";
+
+const ASSETS=[
   "./",
   "./index.html",
   "./manifest.webmanifest",
@@ -10,102 +10,125 @@ const ASSETS = [
   "./apple-touch-icon.png"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS)).catch(err => {
-      console.error("SW cache install error", err);
-    })
+self.addEventListener("install",e=>{
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c=>c.addAll(ASSETS))
+      .catch(()=>{})
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
+self.addEventListener("activate",e=>
+  e.waitUntil(
     Promise.all([
-      caches.keys().then(keys =>
-        Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      caches.keys().then(ks=>
+        Promise.all(
+          ks.filter(k=>k!==CACHE).map(k=>caches.delete(k))
+        )
       ),
       self.clients.claim()
     ])
-  );
-});
+  )
+);
 
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-  const url = new URL(event.request.url);
+self.addEventListener("fetch",e=>{
+  if(e.request.method!=="GET") return;
 
-  if (
-    event.request.mode === "navigate" ||
-    url.pathname.endsWith("/index.html") ||
-    url.pathname.endsWith("/sw.js")
-  ) {
-    event.respondWith(
-      fetch(event.request, { cache: "no-store" })
-        .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copy));
-          return response;
+  const u=new URL(e.request.url);
+
+  if(
+    e.request.mode==="navigate" ||
+    u.pathname.endsWith("/index.html") ||
+    u.pathname.endsWith("/sw.js")
+  ){
+    e.respondWith(
+      fetch(e.request,{cache:"no-store"})
+        .then(r=>{
+          const c=r.clone();
+          caches.open(CACHE).then(x=>x.put(e.request,c));
+          return r;
         })
-        .catch(() => caches.match(event.request).then(r => r || caches.match("./index.html")))
+        .catch(()=>
+          caches.match(e.request)
+            .then(r=>r||caches.match("./index.html"))
+        )
     );
     return;
   }
 
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE).then(cache => cache.put(event.request, copy));
-        return response;
+  e.respondWith(
+    fetch(e.request)
+      .then(r=>{
+        const c=r.clone();
+        caches.open(CACHE).then(x=>x.put(e.request,c));
+        return r;
       })
-      .catch(() => caches.match(event.request))
+      .catch(()=>caches.match(e.request))
   );
 });
 
-self.addEventListener("push", event => {
-  event.waitUntil((async () => {
-    let data = {};
-    try {
-      data = event.data ? event.data.json() : {};
-    } catch (_) {
-      data = { body: event.data ? event.data.text() : "Nuovo aggiornamento Hair Cut Dream" };
-    }
+self.addEventListener("push",e=>
+  e.waitUntil(
+    (async()=>{
+      let d={};
 
-    const title = data.title || "Hair Cut Dream";
-    const options = {
-      body: data.body || "Hai un nuovo aggiornamento nel gestionale.",
-      icon: "./icon-192.png",
-      badge: "./icon-192.png",
-      tag: data.tag || ("hair-cut-dream-" + Date.now()),
-      renotify: true,
-      requireInteraction: false,
-      data: {
-        url: data.url || "./",
-        type: data.type || "",
-        version: APP_VERSION
+      try{
+        d=e.data ? e.data.json() : {};
+      }catch{
+        d={
+          body:e.data
+            ? e.data.text()
+            : "Nuovo aggiornamento"
+        };
       }
-    };
 
-    await self.registration.showNotification(title, options);
-  })());
-});
-
-self.addEventListener("notificationclick", event => {
-  event.notification.close();
-
-  event.waitUntil((async () => {
-    const target = new URL(event.notification.data?.url || "./", self.registration.scope).href;
-    const windows = await clients.matchAll({ type: "window", includeUncontrolled: true });
-
-    for (const client of windows) {
-      if (client.url.startsWith(self.location.origin)) {
-        if ("navigate" in client) {
-          try { await client.navigate(target); } catch (_) {}
+      await self.registration.showNotification(
+        d.title || "Hair Cut Dream",
+        {
+          body:d.body || "Hai un nuovo aggiornamento.",
+          icon:"./icon-192.png",
+          badge:"./icon-192.png",
+          tag:d.tag || ("hcd-"+Date.now()),
+          data:{
+            url:d.url || "./",
+            type:d.type || "",
+            order_id:d.order_id || null
+          }
         }
-        if ("focus" in client) return client.focus();
-      }
-    }
+      );
+    })()
+  )
+);
 
-    if (clients.openWindow) return clients.openWindow(target);
-  })());
+self.addEventListener("notificationclick",e=>{
+  e.notification.close();
+
+  e.waitUntil(
+    (async()=>{
+      const target=new URL(
+        e.notification.data?.url || "./",
+        self.registration.scope
+      ).href;
+
+      const ws=await clients.matchAll({
+        type:"window",
+        includeUncontrolled:true
+      });
+
+      for(const c of ws){
+        if(c.url.startsWith(self.location.origin)){
+          try{
+            await c.navigate(target);
+          }catch{}
+
+          return c.focus();
+        }
+      }
+
+      return clients.openWindow
+        ? clients.openWindow(target)
+        : null;
+    })()
+  );
 });
